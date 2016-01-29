@@ -36,6 +36,13 @@ func main() {
 
 /*
 at the terminal:
+go run main.go Todd
+
+or at the terminal:
+go build
+./03_os-Args Todd
+
+or at the terminal:
 go install
 03_os-Args Todd
 */

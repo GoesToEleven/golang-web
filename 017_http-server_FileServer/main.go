@@ -35,7 +35,7 @@ func main() {
 	http.HandleFunc("/dog/", bar)
 	http.HandleFunc("/toby", chien)
 
-	http.Handle("/resources/", http.StripPrefix("/resources", http.FileServer(http.Dir("./assets"))))
+	http.Handle("/resources/", http.StripPrefix("/resources", http.FileServer(http.Dir("assets"))))
 
 	http.ListenAndServe(":8080", nil)
 }

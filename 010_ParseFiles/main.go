@@ -19,7 +19,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	err = tpl.Execute(os.Stdout, Page{
+	err = tpl.Execute(os.Stdout, &Page{
 		Title: "Which file?",
 		Body:  "hello page 1",
 	})
