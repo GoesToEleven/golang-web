@@ -10,6 +10,9 @@ import (
 
 func main() {
 	name := os.Args[1]
+	fmt.Println(os.Args[0])
+	fmt.Println(os.Args[1])
+//	fmt.Println(os.Args[2])
 	str := fmt.Sprint(`
 <!DOCTYPE html>
 <html lang="en">

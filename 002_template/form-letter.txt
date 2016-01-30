@@ -1,4 +1,4 @@
-Dear <<first-name>>,
+Dear {first-name},
 
 Merry Christmas!
 
