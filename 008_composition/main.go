@@ -6,7 +6,6 @@ import (
 	"text/template"
 )
 
-
 type person struct {
 	Name string
 	Age  int

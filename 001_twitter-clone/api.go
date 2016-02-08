@@ -29,9 +29,8 @@ func checkUserName(res http.ResponseWriter, req *http.Request, _ httprouter.Para
 		// there is an err, there is a NO user
 		fmt.Fprint(res, "false")
 		return
-	} else {
-		fmt.Fprint(res, "true")
 	}
+	fmt.Fprint(res, "true")
 }
 
 func createUser(res http.ResponseWriter, req *http.Request, _ httprouter.Params) {
@@ -71,13 +70,12 @@ func loginProcess(res http.ResponseWriter, req *http.Request, _ httprouter.Param
 		sd.LoginFail = true
 		tpl.ExecuteTemplate(res, "login.html", sd)
 		return
-	} else {
-		user.UserName = req.FormValue("userName")
-		// success logging in
-		createSession(res, req, user)
-		// redirect
-		http.Redirect(res, req, "/", 302)
 	}
+	user.UserName = req.FormValue("userName")
+	// success logging in
+	createSession(res, req, user)
+	// redirect
+	http.Redirect(res, req, "/", 302)
 }
 
 func createSession(res http.ResponseWriter, req *http.Request, user User) {
