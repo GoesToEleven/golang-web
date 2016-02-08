@@ -6,12 +6,14 @@ import (
 	"text/template"
 )
 
+var tpl *template.Template
+
+func init() {
+	tpl = template.Must(template.ParseFiles("tpl.gohtml"))
+}
+
 func main() {
-	tpl, err := template.ParseFiles("tpl.gohtml")
-	if err != nil {
-		log.Fatalln(err)
-	}
-	err = tpl.Execute(os.Stdout, []string{"Gandhi", "MLK", "Buddha", "Jesus", "Muhammad"})
+	err := tpl.Execute(os.Stdout, []string{"Gandhi", "MLK", "Buddha", "Jesus", "Muhammad"})
 	if err != nil {
 		log.Fatalln(err)
 	}

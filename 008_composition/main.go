@@ -6,9 +6,16 @@ import (
 	"text/template"
 )
 
+
 type person struct {
 	Name string
 	Age  int
+}
+
+var tpl *template.Template
+
+func init() {
+	tpl = template.Must(template.ParseFiles("tpl.gohtml"))
 }
 
 func main() {
@@ -17,12 +24,7 @@ func main() {
 		Age:  42,
 	}
 
-	tpl, err := template.ParseFiles("tpl.gohtml")
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	err = tpl.Execute(os.Stdout, p1)
+	err := tpl.Execute(os.Stdout, p1)
 	if err != nil {
 		log.Fatalln(err)
 	}

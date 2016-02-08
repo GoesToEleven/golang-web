@@ -12,6 +12,12 @@ type Page struct {
 	Input   string
 }
 
+var tpl *template.Template
+
+func init() {
+	tpl = template.Must(template.ParseFiles("tpl.gohtml"))
+}
+
 func main() {
 
 	home := Page{
@@ -20,12 +26,7 @@ func main() {
 		Input:   `<script>alert("Yow!");</script>`,
 	}
 
-	tpl, err := template.ParseFiles("tpl.gohtml")
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	err = tpl.Execute(os.Stdout, home)
+	err := tpl.Execute(os.Stdout, home)
 	if err != nil {
 		log.Fatalln(err)
 	}

@@ -16,6 +16,12 @@ type doubleZero struct {
 	LicenseToKill bool
 }
 
+var tpl *template.Template
+
+func init() {
+	tpl = template.Must(template.ParseFiles("tpl.gohtml"))
+}
+
 func main() {
 	p1 := doubleZero{
 		person: person{
@@ -25,12 +31,7 @@ func main() {
 		LicenseToKill: false,
 	}
 
-	tpl, err := template.ParseFiles("tpl.gohtml")
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	err = tpl.Execute(os.Stdout, p1)
+	err := tpl.Execute(os.Stdout, p1)
 	if err != nil {
 		log.Fatalln(err)
 	}
