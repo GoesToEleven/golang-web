@@ -1,0 +1,1 @@
+http.Handle("/favicon.ico", http.NotFoundHandler())
