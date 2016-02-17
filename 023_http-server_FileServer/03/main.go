@@ -21,9 +21,9 @@ func dogs(res http.ResponseWriter, req *http.Request) {
 
 func main() {
 
-	fs := http.FileServer(http.Dir("public"))
-	http.Handle("/pics/", fs)
 	http.HandleFunc("/", dogs)
+
+	http.Handle("/resources/", http.StripPrefix("/resources", http.FileServer(http.Dir("public"))))
 
 	http.ListenAndServe(":8080", nil)
 }
