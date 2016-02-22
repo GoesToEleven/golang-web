@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	http.Handle("/favicon.ico", http.NotFoundHandler())
 	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
 		key := "q"
 		val := req.FormValue(key)

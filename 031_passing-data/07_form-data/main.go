@@ -28,6 +28,7 @@ func main() {
 		fmt.Println("fName: ", fName)
 		fmt.Println("[]byte(fName): ", []byte(fName))
 		fmt.Println("typeOf: ", reflect.TypeOf(fName))
+		fmt.Printf("%T\n", fName)
 
 		// execute template
 		err = tpl.Execute(res, Person{fName, lName})

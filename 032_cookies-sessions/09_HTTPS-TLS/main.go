@@ -14,10 +14,13 @@ func main() {
 	http.HandleFunc("/", handler)
 	log.Printf("About to listen on 10443. Go to https://127.0.0.1:10443/")
 
-	go http.ListenAndServe(":9999", nil)
+//	go http.ListenAndServe(":8080", nil)
 	err := http.ListenAndServeTLS(":10443", "cert.pem", "key.pem", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 }
+
+// Generate unsigned certificate
+// go run $(go env GOROOT)/src/crypto/tls/generate_cert.go --host=somedomainname.com

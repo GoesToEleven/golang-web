@@ -51,7 +51,7 @@ func main() {
 			</head>
 			<body>
 			<h1>LOG IN</h1>
-			<form method="post" action="http://localhost:9000/">
+			<form method="post" action="http://localhost:8080/">
 				<h3>User name</h3>
 				<input type="text" name="userName" id="userName">
 				<h3>Password</h3>
@@ -74,12 +74,12 @@ func main() {
 				<title></title>
 			</head>
 			<body>
-			<h1><a href="http://localhost:9000/logout">LOG OUT</a></h1>
+			<h1><a href="http://localhost:8080/logout">LOG OUT</a></h1>
 			</body>
 			</html>`
 		}
 
 		io.WriteString(res, html)
 	})
-	http.ListenAndServe(":9000", nil)
+	http.ListenAndServe(":8080", nil)
 }

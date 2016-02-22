@@ -11,6 +11,7 @@ func main() {
 		val := req.URL.Query().Get(key)
 		io.WriteString(res, "Do my search:"+val)
 	})
+
 	http.ListenAndServe(":8080", nil)
 }
 
