@@ -1,7 +1,8 @@
 package main
 
 import (
-	"io"
+	"fmt"
+	"github.com/nu7hatch/gouuid"
 	"net/http"
 )
 
@@ -11,29 +12,21 @@ func main() {
 		cookie, err := req.Cookie("session-id")
 		// cookie is not set
 		if err != nil {
-			//id, _ := uuid.NewV4()
+			id, _ := uuid.NewV4()
 			cookie = &http.Cookie{
-				Name: "session-id",
+				Name:  "session-id",
+				Value: id.String() + " email=jon@email.com" + " JSON data" + " Whatever",
 			}
+			http.SetCookie(res, cookie)
 		}
-
-		if req.FormValue("email") != "" {
-			cookie.Value = req.FormValue("email")
-		}
-
-		http.SetCookie(res, cookie)
-
-		io.WriteString(res, `<!DOCTYPE html>
-<html>
-  <body>
-    <form>
-    `+cookie.Value+`
-      <input type="email" name="email">
-      <input type="submit">
-    </form>
-  </body>
-</html>`)
+		fmt.Println(cookie)
 
 	})
 	http.ListenAndServe(":8080", nil)
 }
+
+// go get uuid
+// https://github.com/nu7hatch/gouuid
+// NewV4
+
+// https://en.wikipedia.org/wiki/Universally_unique_identifier

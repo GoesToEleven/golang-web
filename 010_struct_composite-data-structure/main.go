@@ -1,9 +1,9 @@
 package main
 
 import (
+	"log"
 	"os"
 	"text/template"
-	"log"
 )
 
 type course struct {

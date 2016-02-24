@@ -21,18 +21,18 @@ func init() {
 func main() {
 	h := hotels{
 		hotel{
-			Name: "Hotel California",
+			Name:    "Hotel California",
 			Address: "42 Sunset Boulevard",
-			City: "Los Angeles",
-			Zip: "95612",
-			Region: "southern",
+			City:    "Los Angeles",
+			Zip:     "95612",
+			Region:  "southern",
 		},
 		hotel{
-			Name: "H",
+			Name:    "H",
 			Address: "4",
-			City: "L",
-			Zip: "95612",
-			Region: "southern",
+			City:    "L",
+			Zip:     "95612",
+			Region:  "southern",
 		},
 	}
 	err := tpl.Execute(os.Stdout, h)

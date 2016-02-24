@@ -1,10 +1,10 @@
 package main
 
 import (
-	"io"
-	"net/http"
 	"html/template"
+	"io"
 	"log"
+	"net/http"
 )
 
 func foo(res http.ResponseWriter, req *http.Request) {

@@ -40,7 +40,7 @@ func main() {
 		err = tpl.Execute(res, nil)
 		if err != nil {
 			http.Error(res, err.Error(), 500)
-			log.Fatalln(err)
+			log.Println(err)
 		}
 	})
 

@@ -17,7 +17,6 @@ type region struct {
 
 type Regions []region
 
-
 var tpl *template.Template
 
 func init() {
@@ -30,18 +29,18 @@ func main() {
 			Region: "Southern",
 			Hotels: []hotel{
 				hotel{
-					Name: "Hotel California",
+					Name:    "Hotel California",
 					Address: "42 Sunset Boulevard",
-					City: "Los Angeles",
-					Zip: "95612",
-					Region: "southern",
+					City:    "Los Angeles",
+					Zip:     "95612",
+					Region:  "southern",
 				},
 				hotel{
-					Name: "H",
+					Name:    "H",
 					Address: "4",
-					City: "L",
-					Zip: "95612",
-					Region: "southern",
+					City:    "L",
+					Zip:     "95612",
+					Region:  "southern",
 				},
 			},
 		},
@@ -49,18 +48,18 @@ func main() {
 			Region: "Northern",
 			Hotels: []hotel{
 				hotel{
-					Name: "Hotel California",
+					Name:    "Hotel California",
 					Address: "42 Sunset Boulevard",
-					City: "Los Angeles",
-					Zip: "95612",
-					Region: "southern",
+					City:    "Los Angeles",
+					Zip:     "95612",
+					Region:  "southern",
 				},
 				hotel{
-					Name: "H",
+					Name:    "H",
 					Address: "4",
-					City: "L",
-					Zip: "95612",
-					Region: "southern",
+					City:    "L",
+					Zip:     "95612",
+					Region:  "southern",
 				},
 			},
 		},
@@ -68,18 +67,18 @@ func main() {
 			Region: "Central",
 			Hotels: []hotel{
 				hotel{
-					Name: "Hotel California",
+					Name:    "Hotel California",
 					Address: "42 Sunset Boulevard",
-					City: "Los Angeles",
-					Zip: "95612",
-					Region: "southern",
+					City:    "Los Angeles",
+					Zip:     "95612",
+					Region:  "southern",
 				},
 				hotel{
-					Name: "H",
+					Name:    "H",
 					Address: "4",
-					City: "L",
-					Zip: "95612",
-					Region: "southern",
+					City:    "L",
+					Zip:     "95612",
+					Region:  "southern",
 				},
 			},
 		},

@@ -8,7 +8,7 @@ import (
 
 type item struct {
 	Name, Descrip, Meal string
-	Price float64
+	Price               float64
 }
 
 type items []item
@@ -22,22 +22,22 @@ func init() {
 func main() {
 	m := items{
 		item{
-			Name: "Oatmeal",
+			Name:    "Oatmeal",
 			Descrip: "yum yum",
-			Meal: "Breakfast",
-			Price: 4.95,
+			Meal:    "Breakfast",
+			Price:   4.95,
 		},
 		item{
-			Name: "Hamburger",
+			Name:    "Hamburger",
 			Descrip: "Delicous good eating for you",
-			Meal: "Lunch",
-			Price: 6.95,
+			Meal:    "Lunch",
+			Price:   6.95,
 		},
 		item{
-			Name: "Pasta Bolognese",
+			Name:    "Pasta Bolognese",
 			Descrip: "From Italy delicious eating",
-			Meal: "Dinner",
-			Price: 7.95,
+			Meal:    "Dinner",
+			Price:   7.95,
 		},
 	}
 	err := tpl.Execute(os.Stdout, m)

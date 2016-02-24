@@ -41,9 +41,14 @@ func main() {
 		err = tpl.Execute(res, nil)
 		if err != nil {
 			http.Error(res, err.Error(), 500)
-			log.Fatalln(err)
+			log.Println(err)
 		}
 	})
 
 	http.ListenAndServe(":8080", nil)
 }
+
+// THIS IS GREAT:
+// http.Error(res, err.Error(), 500)
+// log.Println(err)
+// return

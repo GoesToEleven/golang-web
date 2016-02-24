@@ -1,9 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
-	"fmt"
 )
 
 type Snoop int

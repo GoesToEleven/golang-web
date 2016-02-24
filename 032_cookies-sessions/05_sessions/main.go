@@ -1,20 +1,12 @@
 package main
 
 import (
-	"crypto/hmac"
-	"crypto/sha256"
-	"fmt"
 	"io"
 	"net/http"
 )
 
-func getCode(data string) string {
-	h := hmac.New(sha256.New, []byte("ourkey"))
-	io.WriteString(h, data)
-	return fmt.Sprintf("%x", h.Sum(nil))
-}
-
 func main() {
+
 	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
 		cookie, err := req.Cookie("session-id")
 		// cookie is not set
@@ -29,15 +21,14 @@ func main() {
 			cookie.Value = req.FormValue("email")
 		}
 
-		fmt.Println(getCode(cookie.Value))
 		http.SetCookie(res, cookie)
+
 		io.WriteString(res, `<!DOCTYPE html>
 <html>
   <body>
-    <form method="POST">
+    <form>
     `+cookie.Value+`
       <input type="email" name="email">
-      <input type="password" name="password">
       <input type="submit">
     </form>
   </body>
@@ -46,8 +37,3 @@ func main() {
 	})
 	http.ListenAndServe(":8080", nil)
 }
-
-
-// https://en.wikipedia.org/wiki/Hash-based_message_authentication_code
-// https://en.wikipedia.org/wiki/Message_authentication_code
-// https://en.wikipedia.org/wiki/Replay_attack

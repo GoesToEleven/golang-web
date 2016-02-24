@@ -7,6 +7,12 @@ import (
 
 func main() {
 	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
+
+		if req.URL.Path == "/favicon.ico" {
+			http.NotFound(res, req)
+			return
+		}
+
 		cookie, err := req.Cookie("my-cookie")
 		fmt.Println(cookie, err)
 

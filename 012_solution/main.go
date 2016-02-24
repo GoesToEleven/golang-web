@@ -16,7 +16,7 @@ type semester struct {
 }
 
 type year struct {
-	AcaYear string
+	AcaYear              string
 	Fall, Spring, Summer semester
 }
 

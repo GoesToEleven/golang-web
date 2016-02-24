@@ -15,7 +15,6 @@ type region struct {
 	Hotels []hotel
 }
 
-
 var tpl *template.Template
 
 func init() {
@@ -27,16 +26,16 @@ func main() {
 		Region: "Southern",
 		Hotels: []hotel{
 			hotel{
-				Name: "Hotel California",
+				Name:    "Hotel California",
 				Address: "42 Sunset Boulevard",
-				City: "Los Angeles",
-				Zip: "95612",
+				City:    "Los Angeles",
+				Zip:     "95612",
 			},
 			hotel{
-				Name: "H",
+				Name:    "H",
 				Address: "4",
-				City: "L",
-				Zip: "95612",
+				City:    "L",
+				Zip:     "95612",
 			},
 		},
 	}
