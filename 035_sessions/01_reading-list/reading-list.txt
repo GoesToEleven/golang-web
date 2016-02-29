@@ -4,6 +4,9 @@ http://security.stackexchange.com/questions/30707/demystifying-web-authenticatio
 
 http://security.stackexchange.com/questions/7398/secure-session-cookies
 
+http://stackoverflow.com/questions/3240246/signed-session-cookies-a-good-idea
+
+http://stackoverflow.com/questions/5459682/how-to-protect-session-id-and-cookies-without-using-ssl-https
 
 HMAC
 
