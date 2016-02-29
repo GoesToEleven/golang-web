@@ -35,6 +35,8 @@ func foo(res http.ResponseWriter, req *http.Request) {
 		cookie = &http.Cookie{
 			Name:  "session-id",
 			Value: "",
+			// Secure: true,
+			HttpOnly: true,
 		}
 	}
 
@@ -45,16 +47,16 @@ func foo(res http.ResponseWriter, req *http.Request) {
 
 	http.SetCookie(res, cookie)
 	io.WriteString(res, `<!DOCTYPE html>
-<html>
-  <body>
-    <form method="POST">
-    `+cookie.Value+`
-      <input type="email" name="email">
-      <input type="submit">
-    </form>
-    <a href="/authenticate">Validate This HMAC</a>
-  </body>
-</html>`)
+	<html>
+	  <body>
+	    <form method="POST">
+	    `+cookie.Value+`
+	      <input type="email" name="email">
+	      <input type="submit">
+	    </form>
+	    <a href="/authenticate">Validate This HMAC</a>
+	  </body>
+	</html>`)
 
 }
 
@@ -75,9 +77,12 @@ func auth(res http.ResponseWriter, req *http.Request) {
 	email := xs[0]
 	codeRcvd := xs[1]
 	codeCheck := getCode(email)
+	//codeCheck := getCode(email + "s")
 
 	if codeRcvd != codeCheck {
 		log.Println("HMAC codes didn't match")
+		log.Println(codeRcvd)
+		log.Println(codeCheck)
 		http.Redirect(res, req, "/", 302)
 		return
 	}

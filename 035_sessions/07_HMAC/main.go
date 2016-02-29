@@ -28,10 +28,12 @@ func foo(res http.ResponseWriter, req *http.Request) {
 
 	cookie, err := req.Cookie("session-id")
 	if err != nil {
-		//id, _ := uuid.NewV4()
 		cookie = &http.Cookie{
 			Name:  "session-id",
 			Value: "",
+			// Secure: true,
+			HttpOnly: true,
+
 		}
 	}
 
@@ -42,14 +44,14 @@ func foo(res http.ResponseWriter, req *http.Request) {
 
 	http.SetCookie(res, cookie)
 	io.WriteString(res, `<!DOCTYPE html>
-<html>
-  <body>
-    <form method="POST">
-    `+cookie.Value+`
-      <input type="email" name="email">
-      <input type="submit">
-    </form>
-  </body>
-</html>`)
+	<html>
+	  <body>
+	    <form method="POST">
+	    `+cookie.Value+`
+	      <input type="email" name="email">
+	      <input type="submit">
+	    </form>
+	  </body>
+	</html>`)
 
 }
