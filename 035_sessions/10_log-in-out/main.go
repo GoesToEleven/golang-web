@@ -3,7 +3,6 @@ package main
 import (
 	"io"
 	"net/http"
-	"strconv"
 )
 
 func main() {
@@ -51,7 +50,7 @@ func foo(res http.ResponseWriter, req *http.Request) {
 	var html string
 
 	// not logged in
-	if cookie.Value == strconv.Itoa(0) {
+	if cookie.Value == "0" {
 		html = `
 			<!DOCTYPE html>
 			<html lang="en">
@@ -72,7 +71,7 @@ func foo(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// logged in
-	if cookie.Value == strconv.Itoa(1) {
+	if cookie.Value == "1" {
 		html = `
 			<!DOCTYPE html>
 			<html lang="en">
