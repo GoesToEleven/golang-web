@@ -31,7 +31,6 @@ func foo(res http.ResponseWriter, req *http.Request) {
 
 	cookie, err := req.Cookie("session-id")
 	if err != nil {
-		//id, _ := uuid.NewV4()
 		cookie = &http.Cookie{
 			Name:  "session-id",
 			Value: "",
@@ -64,16 +63,17 @@ func auth(res http.ResponseWriter, req *http.Request) {
 
 	cookie, err := req.Cookie("session-id")
 	if err != nil {
-		http.Redirect(res, req, "/", 302)
+		http.Redirect(res, req, "/", 303)
 		return
 	}
 
 	if cookie.Value == "" {
-		http.Redirect(res, req, "/", 302)
+		http.Redirect(res, req, "/", 303)
 		return
 	}
 
 	xs := strings.Split(cookie.Value, "|")
+	fmt.Println("HERE'S THE SLICE", xs)
 	email := xs[0]
 	codeRcvd := xs[1]
 	codeCheck := getCode(email)
@@ -83,7 +83,7 @@ func auth(res http.ResponseWriter, req *http.Request) {
 		log.Println("HMAC codes didn't match")
 		log.Println(codeRcvd)
 		log.Println(codeCheck)
-		http.Redirect(res, req, "/", 302)
+		http.Redirect(res, req, "/", 303)
 		return
 	}
 

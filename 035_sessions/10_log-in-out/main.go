@@ -11,8 +11,9 @@ func main() {
 }
 
 func foo(res http.ResponseWriter, req *http.Request) {
+
 	cookie, err := req.Cookie("logged-in")
-	// no cookie
+
 	if err == http.ErrNoCookie {
 		cookie = &http.Cookie{
 			Name:  "logged-in",
@@ -44,6 +45,9 @@ func foo(res http.ResponseWriter, req *http.Request) {
 			//Secure: true,
 			HttpOnly: true,
 		}
+		http.SetCookie(res, cookie)
+		http.Redirect(res, req, "/", 303)
+		return
 	}
 
 	http.SetCookie(res, cookie)
@@ -87,3 +91,15 @@ func foo(res http.ResponseWriter, req *http.Request) {
 
 	io.WriteString(res, html)
 }
+
+// NOT GOOD PRACTICE
+// adding user data to a cookie
+// with no way of knowing whether or not
+// they might have altered that data
+//
+// HMAC would allow us to determine
+// whether or not the data in the cookie was altered
+//
+// however, best to store user data
+// on the server
+// and keep backups
