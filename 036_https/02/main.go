@@ -12,9 +12,7 @@ func handler(w http.ResponseWriter, req *http.Request) {
 
 func main() {
 	http.HandleFunc("/", handler)
-	log.Println("Go to https://localhost:10443/ or https://127.0.0.1:10443/")
 
-	go http.ListenAndServe(":8080", http.RedirectHandler("https://127.0.0.1:10443/", 301))
 	err := http.ListenAndServeTLS(":10443", "cert.pem", "key.pem", nil)
 	if err != nil {
 		log.Fatal(err)

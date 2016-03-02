@@ -9,7 +9,6 @@ func init() {
 	http.HandleFunc("/", handler)
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello, worlddddddddxxxxxx!")
-	w.Write([]byte("Hello, world!"))
+func handler(res http.ResponseWriter, req *http.Request) {
+	fmt.Fprint(res, "Hello, Daniel!")
 }
