@@ -8,6 +8,8 @@ import (
 	"crypto/sha256"
 	"io"
 "github.com/nu7hatch/gouuid"
+	"strings"
+	"strconv"
 )
 
 type model struct {
@@ -35,8 +37,13 @@ func index(res http.ResponseWriter, req *http.Request) {
 		}
 		http.SetCookie(res, cookie)
 	}
-	io.WriteString(res, cookie.Value)
+	fmt.Fprintln(res, cookie.Value)
+	xs := strings.Split(cookie.Value, "|")
+	for i, v := range xs {
+		fmt.Fprintln(res, strconv.Itoa(i) + " - " + v)
+	}
 }
+
 
 func foo() string {
 	m := model{

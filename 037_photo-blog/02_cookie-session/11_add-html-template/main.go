@@ -8,11 +8,19 @@ import (
 	"crypto/sha256"
 	"io"
 "github.com/nu7hatch/gouuid"
+	"strings"
+"html/template"
 )
 
 type model struct {
 	State bool
 	Pictures []string
+}
+
+var tpl *template.Template
+
+func init() {
+	tpl, _ = template.ParseGlob("templates/*.html")
 }
 
 func main() {
@@ -35,8 +43,29 @@ func index(res http.ResponseWriter, req *http.Request) {
 		}
 		http.SetCookie(res, cookie)
 	}
-	io.WriteString(res, cookie.Value)
+	fmt.Fprintln(res, cookie.Value)
+	xs := strings.Split(cookie.Value, "|")
+	// usrToken := xs[0]
+	usrPics := xs[1]
+	usrCode := xs[2]
+	fmt.Fprintln(res, data)
+	fmt.Fprintln(res, usrPics)
+	if usrCode == getCode(usrPics) {
+		fmt.Fprintln(res, "Code valid")
+	} else {
+		fmt.Fprintln(res, "Code Invalid")
+	}
+
+	var m model
+	err = json.Unmarshal([]byte(usrPics), &m)
+	if err != nil {
+		fmt.Println("error unmarshalling: ", err)
+	}
+
+	fmt.Fprintln(res, m)
+	tpl.ExecuteTemplate(res, "index.html", m)
 }
+
 
 func foo() string {
 	m := model{

@@ -9,7 +9,6 @@ import (
 	"io"
 "github.com/nu7hatch/gouuid"
 	"strings"
-	"strconv"
 )
 
 type model struct {
@@ -39,8 +38,15 @@ func index(res http.ResponseWriter, req *http.Request) {
 	}
 	fmt.Fprintln(res, cookie.Value)
 	xs := strings.Split(cookie.Value, "|")
-	for i, v := range xs {
-		fmt.Fprintln(res, strconv.Itoa(i) + " - " + v)
+	// usrToken := xs[0]
+	usrPics := xs[1]
+	usrCode := xs[2]
+	fmt.Fprintln(res, data)
+	fmt.Fprintln(res, usrPics)
+	if usrCode == getCode(usrPics) {
+		fmt.Fprintln(res, "Code valid")
+	} else {
+		fmt.Fprintln(res, "Code Invalid")
 	}
 }
 

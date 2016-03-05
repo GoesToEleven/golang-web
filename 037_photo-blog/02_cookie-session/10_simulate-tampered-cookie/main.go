@@ -39,7 +39,7 @@ func index(res http.ResponseWriter, req *http.Request) {
 	fmt.Fprintln(res, cookie.Value)
 	xs := strings.Split(cookie.Value, "|")
 	// usrToken := xs[0]
-	usrPics := xs[1]
+	usrPics := xs[1] + "ah-hahahahahaha!"
 	usrCode := xs[2]
 	fmt.Fprintln(res, data)
 	fmt.Fprintln(res, usrPics)

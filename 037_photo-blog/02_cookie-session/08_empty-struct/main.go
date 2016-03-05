@@ -46,14 +46,7 @@ func index(res http.ResponseWriter, req *http.Request) {
 
 
 func foo() string {
-	m := model{
-		State: true,
-		Pictures: []string{
-			"one.jpg",
-			"two.jpg",
-			"three.jpg",
-		},
-	}
+	m := model{}
 
 	bs, err := json.Marshal(m)
 	if err != nil {
