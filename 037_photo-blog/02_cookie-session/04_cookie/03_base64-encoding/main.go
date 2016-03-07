@@ -2,54 +2,16 @@ package main
 
 import (
 	"fmt"
-	"encoding/json"
-	"net/http"
-	"io"
 	"encoding/base64"
 )
 
-type model struct {
-	State bool
-	Pictures []string
-}
-
 func main() {
-	http.HandleFunc("/", index)
-	http.Handle("/favicon.ico", http.NotFoundHandler())
-	http.ListenAndServe(":8080", nil)
-}
+	s := "Love is but a song to sing Fear's the way we die You can make the mountains ring Or make the angels cry Though the bird is on the wing And you may not know why Come on people now Smile on your brother Everybody get together Try to love one another Right now"
 
-func index(res http.ResponseWriter, req *http.Request) {
-	data := foo()
-	cookie, err := req.Cookie("session")
-	if err != nil {
-		cookie = &http.Cookie{
-			Name:  "session-id",
-			Value: data,
-			// Secure: true,
-			HttpOnly: true,
-		}
-		http.SetCookie(res, cookie)
-	}
-	io.WriteString(res, cookie.Value)
-}
+	s64 := base64.StdEncoding.EncodeToString([]byte(s))
 
-func foo() string {
-	m := model{
-		State: true,
-		Pictures: []string{
-			"one.jpg",
-			"two.jpg",
-			"three.jpg",
-		},
-	}
-
-	bs, err := json.Marshal(m)
-	if err != nil {
-		fmt.Println("error: ", err)
-	}
-
-	encodeURL := "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
-	str := base64.NewEncoding(encodeURL).EncodeToString(bs)
-	return str
+	fmt.Println(len(s))
+	fmt.Println(len(s64))
+	fmt.Println(s)
+	fmt.Println(s64)
 }
