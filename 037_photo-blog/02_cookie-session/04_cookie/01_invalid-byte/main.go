@@ -52,4 +52,6 @@ func foo() string {
 }
 
 // invalid bytes message
+// info about double-quotes in cookies:
+// https://github.com/golang/go/issues/10195
 // https://tools.ietf.org/html/rfc6265#section-4.2
