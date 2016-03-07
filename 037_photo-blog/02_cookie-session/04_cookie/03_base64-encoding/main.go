@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"io"
+	"encoding/base64"
 )
 
 type model struct {
@@ -48,5 +49,7 @@ func foo() string {
 		fmt.Println("error: ", err)
 	}
 
-	return string(bs)
+	encodeURL := "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
+	str := base64.NewEncoding(encodeURL).EncodeToString(bs)
+	return str
 }
