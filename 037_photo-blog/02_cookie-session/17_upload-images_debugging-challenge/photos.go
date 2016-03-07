@@ -12,6 +12,7 @@ import (
 )
 
 func uploadPhoto(src multipart.File, hdr *multipart.FileHeader, c *http.Cookie) *http.Cookie {
+	fmt.Println("UPLOADING PHOTO") // DEBUGGING
 	defer src.Close()
 	fName := getSha(src) + ".jpg"
 	wd, _ := os.Getwd()
@@ -23,12 +24,6 @@ func uploadPhoto(src multipart.File, hdr *multipart.FileHeader, c *http.Cookie) 
 	return addPhoto(fName, c)
 }
 
-func getSha(src multipart.File) string {
-	h := sha1.New()
-	io.Copy(h, src)
-	return fmt.Sprintf("%x", h.Sum(nil))
-}
-
 func addPhoto(fName string, c *http.Cookie) *http.Cookie {
 	m := Model(c)
 	m.Pictures = append(m.Pictures, fName)
@@ -38,4 +33,10 @@ func addPhoto(fName string, c *http.Cookie) *http.Cookie {
 
 	cookie := currentVisitor(m, id)
 	return cookie
+}
+
+func getSha(src multipart.File) string {
+	h := sha1.New()
+	io.Copy(h, src)
+	return fmt.Sprintf("%x", h.Sum(nil))
 }

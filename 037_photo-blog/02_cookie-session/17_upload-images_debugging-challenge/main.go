@@ -27,13 +27,14 @@ func index(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		cookie = newVisitor()
 		http.SetCookie(res, cookie)
-		fmt.Println("no cookie newvisitor ran")
+		fmt.Println("no cookie newvisitor ran") // DEBUGGING
 	}
 
 	if tampered(cookie.Value) {
+		fmt.Println("INSIDE IF TAMPERED COOKIE") // DEBUGGING
 		cookie = newVisitor()
 		http.SetCookie(res, cookie)
-		fmt.Println("tampered cookie newvisitor ran")
+		fmt.Println("tampered cookie newvisitor ran") // DEBUGGING
 	}
 
 	if req.Method == "POST" {
@@ -44,7 +45,7 @@ func index(res http.ResponseWriter, req *http.Request) {
 		}
 		cookie = uploadPhoto(src, hdr, cookie)
 		http.SetCookie(res, cookie)
-		fmt.Println("upload photo ran")
+		fmt.Println("upload photo ran") // DEBUGGING
 	}
 
 	m := Model(cookie)

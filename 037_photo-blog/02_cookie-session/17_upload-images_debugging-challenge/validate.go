@@ -19,8 +19,8 @@ func tampered(s string) bool {
 	// usrToken := xs[0]
 	usrData := xs[1]
 	usrCode := xs[2]
-	fmt.Println("usrData", getCode(usrData))
-	fmt.Println("usrCode", usrCode)
+	fmt.Println("usrData", getCode(usrData)) // DEBUGGING
+	fmt.Println("usrCode", usrCode) // DEBUGGING
 	if usrCode != getCode(usrData) {
 		return true
 	}
