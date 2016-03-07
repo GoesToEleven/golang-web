@@ -13,7 +13,7 @@ func main() {
 
 	fmt.Println(s64)
 
-	bs, err := base64.URLEncoding.DecodeString(s64)
+	bs, err := base64.StdEncoding.DecodeString(s64)
 	if err != nil {
 		log.Println("I'm giving her all she's got Captain!", err)
 	}

@@ -41,6 +41,7 @@ func index(res http.ResponseWriter, req *http.Request) {
 	xs := strings.Split(cookie.Value, "|")
 	for i, v := range xs {
 		fmt.Fprintln(res, strconv.Itoa(i) + " - " + v)
+		fmt.Fprintln(res, i, "-", v)
 	}
 }
 

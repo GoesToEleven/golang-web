@@ -7,8 +7,8 @@ import (
 )
 
 type model struct {
-	state bool
-	pictures []string
+	State bool
+	Pictures []string
 }
 
 func main() {
