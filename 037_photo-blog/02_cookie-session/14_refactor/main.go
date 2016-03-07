@@ -21,12 +21,12 @@ func index(res http.ResponseWriter, req *http.Request) {
 
 	cookie, err := req.Cookie("session")
 	if err != nil {
-		cookie := newVisitor()
+		cookie = newVisitor()
 		http.SetCookie(res, cookie)
 	}
 
 	if tampered(cookie.Value) {
-		cookie := newVisitor()
+		cookie = newVisitor()
 		http.SetCookie(res, cookie)
 	}
 
