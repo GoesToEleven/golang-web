@@ -14,7 +14,6 @@ func main() {
 	http.ListenAndServeTLS(":10443", "cert.pem", "key.pem", nil)
 }
 
-
 // Go to https://localhost:10443/ or https://127.0.0.1:10443/
 
 // Generate unsigned certificate

@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/nu7hatch/gouuid"
-	"net/http"
 	"io"
+	"net/http"
 	"strings"
 )
 

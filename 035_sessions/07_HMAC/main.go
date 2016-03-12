@@ -33,7 +33,6 @@ func foo(res http.ResponseWriter, req *http.Request) {
 			Value: "",
 			// Secure: true,
 			HttpOnly: true,
-
 		}
 	}
 
