@@ -11,6 +11,9 @@ type model struct {
 	pictures []string
 }
 
+// What went wrong?
+// See the next file for the answer.
+
 func main() {
 	m := model{
 		state: true,
@@ -28,6 +31,3 @@ func main() {
 
 	os.Stdout.Write(bs)
 }
-
-// What went wrong?
-// See the next file for the answer.
