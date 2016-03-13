@@ -1,10 +1,20 @@
+- download one of the JSON data files below
+
+- In a Go file, unmarshal the json data into a data structure
+
+- You do not need to unmarshal every field
+
+- dispaly the data in a webpage using a template
+
+
+**************************************
+DATA
+**************************************
 http://www.data.gov/developers/apis
 
 http://catalog.data.gov/dataset?q=-aapi+api+OR++res_format%3Aapi#topic=developers_navigation
 
 http://catalog.data.gov/dataset/nyc-social-media-usage-555a2
-
-http://catalog.data.gov/dataset/medical-marijuana-statistics-county-information
 
 http://catalog.data.gov/dataset/most-popular-baby-names-by-sex-and-mothers-ethnic-group-new-york-city-8c742
 
