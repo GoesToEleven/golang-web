@@ -1,27 +1,29 @@
-- install python 2.7
+install python 2.7
 
 ******************
 
-- install app engine sdk for go
+install app engine sdk for go
+
 https://cloud.google.com/appengine/downloads#Google_App_Engine_SDK_for_Go
 
-- you can put app engine sdk wherever you like
+you can put app engine sdk wherever you like
 
 ******************
 
-- create PATH variable to app engine sdk
+create PATH variable to app engine sdk
 
 ******************
 
-- app engine code
---- no func main
---- use func init to set routes
+app engine code
+-- no func main
+-- use func init to set routes
 http.HandleFunc("/", handler)
---- include an app.yaml
+-- include an app.yaml
 
 ******************
 
-create an project id at google developer's console
+create a project id at google developer's console
+
 https://console.developers.google.com/project
 
 ******************
@@ -49,12 +51,12 @@ deploys to app engine
 view your app here once deployed
 http://_your-project-id_.appspot.com/
 
-and if "goapp deploy" doesn't work
+******************
+
+if "goapp deploy" doesn't work
 
 appcfg.py update .
 
-*** or ***
+*or*
 
 appcfg.py -A <YOUR_PROJECT_ID_> -V v1 update myapp/
-
-
