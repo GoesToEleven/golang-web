@@ -14,6 +14,13 @@ create PATH variable to app engine sdk
 
 ******************
 
+go get appengine code with this command at the terminal:
+(note: this url could potentially change in the future)
+(find it on godoc.org searching for "appengine")
+
+go get google.golang.org/appengine
+
+******************
 app engine code
 -- no func main
 -- use func init to set routes

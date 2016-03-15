@@ -89,6 +89,7 @@ Location: http://example.org/other
 <p> According to RFC 7231, which obsoletes RFC 2616, "A 303 response to a GET request indicates that the origin server does not have a representation of the target resource that can be transferred by the server over HTTP. However, the Location field value refers to a resource that is descriptive of the target resource, such that making a retrieval request on that other resource might result in a representation that is useful to recipients without implying that it represents the original target resource."</p>
 
 <p>This status code should be used with the location header, as described below. If a server responds to a POST or other non-idempotent request with a 303 See Other response and a value for the location header, the client is expected to obtain the resource mentioned in the location header <strong>using the GET method</strong>; to trigger a request to the target resource using the same method, the server is expected to provide a 307 Temporary Redirect response.</p>
+<p>Daniel (paraphrased): "Good for using once you have processed a form submitted by POST method, and now that the form has been processed, redirect to a new URL using the GET method."</p>
 
 <h1>307 Temporary Redirect</h1>
 <p>Client request:</p>
@@ -102,6 +103,7 @@ HTTP/1.1 307 Temporary Redirect
 Location: http://example.org/other
 </pre>
 <p>This is the <strong>same as 302</strong> except it tells the browser that the next request should be made with the <strong>same verb as the original</strong>, in this case POST. In other words, even a POST to the original link, should redirected by a POST to the new link.</p>
+<p>Daniel (paraphrased): "If you use this to redirect and the method was POST, then you redirect to the 'Location' URL and the method of the redirect will also be POST so all of the data goes with the redirect to the new 'Location.'"</p>
 
 <h1>418 Teapot</h1>
 <p>This code was defined in 1998 as one of the traditional IETF April Fools' jokes, in RFC 2324, Hyper Text Coffee Pot Control Protocol, and is not expected to be implemented by actual HTTP servers. The RFC specifies this code should be returned by tea pots requested to brew coffee. This HTTP status is used as an easter egg in some websites, including <a href="http://www.google.com/teapot">http://www.google.com/teapot</a></p>

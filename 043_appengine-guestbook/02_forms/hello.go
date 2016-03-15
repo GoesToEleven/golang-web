@@ -11,14 +11,14 @@ func init() {
 	http.HandleFunc("/sign", sign)
 }
 
-func root(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, guestbookForm)
+func root(res http.ResponseWriter, req *http.Request) {
+	fmt.Fprint(res, guestbookForm)
 }
 
 const guestbookForm = `
 <html>
   <body>
-    <form action="/sign" method="post">
+    <form action="/sign" method="POST">
       <div><textarea name="content" rows="3" cols="60"></textarea></div>
       <div><input type="submit" value="Sign Guestbook"></div>
     </form>
@@ -26,10 +26,10 @@ const guestbookForm = `
 </html>
 `
 
-func sign(w http.ResponseWriter, r *http.Request) {
-	err := signTemplate.Execute(w, r.FormValue("content"))
+func sign(res http.ResponseWriter, req *http.Request) {
+	err := signTemplate.Execute(res, req.FormValue("content"))
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(res, err.Error(), http.StatusInternalServerError)
 	}
 }
 
