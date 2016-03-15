@@ -1,8 +1,8 @@
 package main
 
 import (
-"net/http"
-"html/template"
+	"html/template"
+	"net/http"
 )
 
 var tpl *template.Template

@@ -1,16 +1,16 @@
 package main
 
 import (
-"encoding/json"
-"log"
+	"encoding/json"
 	"fmt"
+	"log"
 )
 
 // You can choose to only unmarshal some of the json data
 // Create a data structure that only has fields for some of the data
 type city struct {
 	Latitude, Longitude float64
-	City string
+	City                string
 }
 
 type cities []city

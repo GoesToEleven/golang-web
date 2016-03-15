@@ -2,21 +2,21 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"fmt"
+	"log"
 )
 
 type thumbnail struct {
-	URL string
+	URL           string
 	Height, Width int
 }
 
 type img struct {
 	Width, Height int
-	Title string
-	Thumbnail thumbnail
-	Animated bool
-	IDs []int
+	Title         string
+	Thumbnail     thumbnail
+	Animated      bool
+	IDs           []int
 }
 
 func main() {

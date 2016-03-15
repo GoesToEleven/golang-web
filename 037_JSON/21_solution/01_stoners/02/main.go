@@ -1,18 +1,18 @@
 package main
 
 import (
-	"os"
-	"log"
-	"io/ioutil"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"log"
+	"os"
 )
 
-type cities struct{
+type cities struct {
 	Data [][]interface{} `json:"data"`
 }
 
-func main(){
+func main() {
 	nf, err := os.Open("who-is-getting-high.json")
 	if err != nil {
 		log.Fatalln(err)

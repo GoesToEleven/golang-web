@@ -1,15 +1,14 @@
 package main
 
 import (
-"encoding/json"
-"log"
+	"encoding/json"
 	"fmt"
+	"log"
 )
 
-
 type city struct {
-	Precision string `json:"precision,omitempty"`
-	Latitude, Longitude float64
+	Precision                          string `json:"precision,omitempty"`
+	Latitude, Longitude                float64
 	Address, City, State, Zip, Country string
 }
 

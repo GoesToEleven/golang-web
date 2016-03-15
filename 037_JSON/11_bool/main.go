@@ -2,8 +2,8 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"fmt"
+	"log"
 )
 
 func main() {

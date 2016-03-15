@@ -6,11 +6,11 @@ import (
 
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/datastore"
-	"strings"
 )
 
 func init() {
 	http.HandleFunc("/", index)
+	http.HandleFunc("/words", showWords)
 }
 
 type Word struct {
@@ -20,18 +20,14 @@ type Word struct {
 
 func index(res http.ResponseWriter, req *http.Request) {
 
-	res.Header().Set("Content-Type", "text/html")
-
-	if req.Method == "POST" {
-		putWord(res, req)
-	}
-
 	if req.URL.Path == "/favicon.ico" {
 		http.NotFound(res, req)
 	}
 
-	if req.URL.Path != "/" {
-		showWord(res, req)
+	res.Header().Set("Content-Type", "text/html")
+
+	if req.Method == "POST" {
+		putWord(res, req)
 	}
 
 	fmt.Fprintln(res, `
@@ -63,27 +59,28 @@ func putWord(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func showWord(res http.ResponseWriter, req *http.Request) {
+func showWords(res http.ResponseWriter, req *http.Request) {
+
+	html := ""
+	q := datastore.NewQuery("Word")
 	ctx := appengine.NewContext(req)
 
-	term := strings.Split(req.URL.Path, "/")[1]
-	key := datastore.NewKey(ctx, "Word", term, 0, nil)
-
-	var entity Word
-	err := datastore.Get(ctx, key, &entity)
-
-	if err == datastore.ErrNoSuchEntity {
-		http.NotFound(res, req)
-		return
-	} else if err != nil {
-		http.Error(res, err.Error(), 500)
-		return
+	iterator := q.Run(ctx)
+	for {
+		var entity Word
+		_, err := iterator.Next(&entity)
+		if err == datastore.Done {
+			break
+		} else if err != nil {
+			http.Error(res, err.Error(), 500)
+			return
+		}
+		html += `
+			<dt>` + entity.Term + `</dt>
+			<dd>` + entity.Definition + `</dd>
+		`
 	}
 
-	fmt.Fprintln(res, `
-		<dl>
-			<dt>`+entity.Term+`</dt>
-			<dd>`+entity.Definition+`</dd>
-		</dl>
-	`)
+	res.Header().Set("Content-Type", "text/html")
+	fmt.Fprintln(res, `<dl>`+html+`</dl>`)
 }

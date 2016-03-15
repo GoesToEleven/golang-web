@@ -1,13 +1,13 @@
 package main
 
 import (
-	"os"
-	"log"
-	"io/ioutil"
 	"fmt"
+	"io/ioutil"
+	"log"
+	"os"
 )
 
-func main(){
+func main() {
 	nf, err := os.Open("who-is-getting-high.json")
 	if err != nil {
 		log.Fatalln(err)

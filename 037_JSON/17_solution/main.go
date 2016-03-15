@@ -1,13 +1,13 @@
 package main
 
 import (
-"encoding/json"
-"log"
+	"encoding/json"
 	"fmt"
+	"log"
 )
 
 type code struct {
-	Code int
+	Code    int
 	Descrip string
 }
 

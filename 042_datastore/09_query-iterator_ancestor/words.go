@@ -10,12 +10,12 @@ import (
 
 func init() {
 	http.HandleFunc("/", index)
-	http.HandleFunc("/words", showWords)
+	http.HandleFunc("/words", showTools)
 }
 
-type Word struct {
-	Term       string
-	Definition string
+type Tool struct {
+	Name        string
+	Description string
 }
 
 func index(res http.ResponseWriter, req *http.Request) {
@@ -27,29 +27,31 @@ func index(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "text/html")
 
 	if req.Method == "POST" {
-		putWord(res, req)
+		putTool(res, req)
 	}
 
 	fmt.Fprintln(res, `
 			<form method="POST" action="/">
-				<h1>Word</h1>
-				<input type="text" name="term"><br>
-				<h1>Definition</h1>
-				<textarea name="definition"></textarea>
+				<h1>Tool</h1>
+				<input type="text" name="name"><br>
+				<h1>Description</h1>
+				<textarea name="descrip"></textarea>
 				<input type="submit">
 			</form>`)
 }
 
-func putWord(res http.ResponseWriter, req *http.Request) {
-	term := req.FormValue("term")
-	definition := req.FormValue("definition")
+func putTool(res http.ResponseWriter, req *http.Request) {
+	name := req.FormValue("name")
+	descrip := req.FormValue("descrip")
 
 	ctx := appengine.NewContext(req)
-	key := datastore.NewKey(ctx, "Word", term, 0, nil)
+	parentKey := datastore.NewKey(ctx, "House", "Garage", 0, nil)
+	key := datastore.NewKey(ctx, "Tools", name, 0, parentKey)
+	// 1 write / second
 
-	entity := &Word{
-		Term:       term,
-		Definition: definition,
+	entity := &Tool{
+		Name:        name,
+		Description: descrip,
 	}
 
 	_, err := datastore.Put(ctx, key, entity)
@@ -59,15 +61,18 @@ func putWord(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func showWords(res http.ResponseWriter, req *http.Request) {
+func showTools(res http.ResponseWriter, req *http.Request) {
 
 	html := ""
-	q := datastore.NewQuery("Word")
 	ctx := appengine.NewContext(req)
+	parentKey := datastore.NewKey(ctx, "House", "Garage", 0, nil)
+	q := datastore.NewQuery("Tools").Ancestor(parentKey)
+	// Ancestor query:
+	// Strongly consistent results
 
 	iterator := q.Run(ctx)
 	for {
-		var entity Word
+		var entity Tool
 		_, err := iterator.Next(&entity)
 		if err == datastore.Done {
 			break
@@ -76,8 +81,8 @@ func showWords(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 		html += `
-			<dt>` + entity.Term + `</dt>
-			<dd>` + entity.Definition + `</dd>
+			<dt>` + entity.Name + `</dt>
+			<dd>` + entity.Description + `</dd>
 		`
 	}
 
