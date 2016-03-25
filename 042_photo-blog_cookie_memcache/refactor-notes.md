@@ -145,7 +145,7 @@ WebStorm has a great feature which allows us to command-click the the identifier
 
 ### If There Is Data In Memcache ...
 
-Now, anytime `func Model` is called, it will check to see if there is data in memcache and, if so, it will use the []string picture paths from that data.
+Now, anytime `func Model` is called, it will check to see if there is data in memcache and, if so, it will use the `[]string` picture paths from that data.
  
  ```go
 func retrieveMemc(req *http.Request, id string) model {
@@ -185,7 +185,7 @@ func unmarshalModel(bs []byte) model {
 ```
 # Upload Photos
 
-When we upload photos, we will need to also add the new file information to our paths of photos which we are storing in the model as type []string.
+When we upload photos, we will need to also add the new file information to our paths of photos which we are storing in the model as type `[]string`.
 
 To increase code readability, there is some redundant code in here which could be refactored.
 
