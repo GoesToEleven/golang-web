@@ -27,6 +27,20 @@ func makeCookie(mm []byte, id string, req *http.Request) *http.Cookie {
 }
 ```
 
+```go
+func storeMemc(bs []byte, id string, req *http.Request) {
+	ctx := appengine.NewContext(req)
+
+	item1 := memcache.Item{
+		Key:   id,
+		Value: bs,
+	}
+
+	memcache.Set(ctx, &item1)
+	// production code should not ignore the error
+}
+```
+
 # FYI, This Is An Unrealistic Example
 
 FYI, this is an unrealistic example though it is building block in your educational process. 
