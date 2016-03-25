@@ -117,3 +117,11 @@ Before we ask for a cookie ...
 ```cookie, _ := req.Cookie("session-id")```
 
 ... we first need to check mecache to see if the data is there. If the data is in memcache, there's no point in requesting the cookie.
+
+
+1. First ordered list item
+2. Another item
+⋅⋅* Unordered sub-list. 
+1. Actual numbers don't matter, just that it's a number
+⋅⋅1. Ordered sub-list
+4. And another item.
