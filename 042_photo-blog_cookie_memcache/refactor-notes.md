@@ -58,7 +58,7 @@ Well, to have the uuid, we have to have the cookie.
 
 And if we have the cookie, we have the []string with paths to the user's photos. 
 
-*So why also get the []string from memcache? We already have it!*
+**So why also get the []string from memcache? We already have it!**
 
 Well, we're getting it from memcache just to learn this process. 
 
