@@ -9,11 +9,22 @@ This is a good point to then also call a func to put our data into memcache.
 This way, the value stored in the cookie will be the same as the value stored in memcache.
 
 ```go
+func makeCookie(mm []byte, id string, req *http.Request) *http.Cookie {
+	b64 := base64.URLEncoding.EncodeToString(mm)
+	code := getCode(b64)
+	cookie := &http.Cookie{
+		Name:  "session-id",
+		Value: id + "|" + b64 + "|" + code,
+		// Secure: true,
+		HttpOnly: true,
+	}
+
 	// send data to be stored in memcache
 	storeMemc(mm, id, req)
 
 	// send data to be stored in a cookie
 	return cookie
+}
 ```
 
 # FYI, This Is An Unrealistic Example
