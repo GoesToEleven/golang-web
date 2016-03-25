@@ -114,7 +114,7 @@ Wherever func Model is called, we will need to update our code to ensure a value
 
 WebStorm has a great feature which allows us to command-click the the identifier in the declaration of a func in order to see where that function is called.
 
-### If Data There Is Data In Memcache ...
+### If There Is Data In Memcache ...
 
 Now, anytime `func Model` is called, it will check to see if there is data in memcache and, if so, it will use that data:
  
@@ -128,24 +128,6 @@ func retrieveMemc(req *http.Request, id string) model {
 	}
 	return m
 }
- ```
- 
- ```go
- func unmarshalModel(s string) model {
- 
- 	bs, err := base64.URLEncoding.DecodeString(s)
- 	if err != nil {
- 		log.Println("Error decoding base64", err)
- 	}
- 
- 	var m model
- 	err = json.Unmarshal(bs, &m)
- 	if err != nil {
- 		fmt.Println("error unmarshalling: ", err)
- 	}
- 
- 	return m
- }
  ```
 
 ### Refactored / Abstracted Code
@@ -169,17 +151,6 @@ func unmarshalModel(s string) model {
 	return m
 }
 ```
-### Change func makeCookie signature
-
-We will need to change `func makeCookie` to have a parameter of type `*http.Request` ... 
-
-```go
-func makeCookie(mm []byte, id string, req *http.Request)  *http.Cookie 
-```
-
-Wherever `func makeCookie` is called, we will need to update our code to ensure a value of type `*http.Request` is also passed in. 
-
-WebStorm has a great feature which allows us to command-click the the identifier in the declaration of a func in order to see where that function is called.
 
 # Refactor Code For Appengine
 
