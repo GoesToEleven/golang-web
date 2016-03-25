@@ -16,11 +16,29 @@ type model struct {
 	req	*http.Request
 }
 
-func Model(s string, req *http.Request) model {
-	xs := strings.Split(s, "|")
+func Model(c *http.Cookie, req *http.Request) model {
+	xs := strings.Split(c.Value, "|")
 	usrData := xs[1]
 
-	bs, err := base64.URLEncoding.DecodeString(usrData)
+	m := unmarshalModel(usrData)
+	m.req = req
+
+	// if data is in memcache
+	// get pictures from there
+	// see refactor-notes.md for explanation
+	id := xs[0]
+	m2 := retrieveMemc(req, id)
+	if m2.Pictures != "" {
+		m.Pictures = m2.Pictures
+		log.Println("Picture paths returned from memcache")
+	}
+
+	return m
+}
+
+func unmarshalModel(s string) model {
+
+	bs, err := base64.URLEncoding.DecodeString(s)
 	if err != nil {
 		log.Println("Error decoding base64", err)
 	}
@@ -29,14 +47,6 @@ func Model(s string, req *http.Request) model {
 	err = json.Unmarshal(bs, &m)
 	if err != nil {
 		fmt.Println("error unmarshalling: ", err)
-	}
-	m.req = req
-
-	// if data is in memcache
-	// get pictures from there
-	id := xs[0]
-	if retrieveMemc(req, id) != nil {
-
 	}
 
 	return m

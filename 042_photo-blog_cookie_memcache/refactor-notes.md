@@ -71,43 +71,27 @@ So the whole process, at the end of this will be:
 1. store uuid in **cookie**
 1. store user session info in **memcache**
 1. store user session info and user info in **datastore**
-1. store user files in google cloud storage
+1. store user files in **google cloud storage**
 1. attempt to retrieve user session info from **memcache**
   1. if unable to retrieve user session info from **memcache**, retrieve user session info from **datastore**
     1. store this session info in **memcache**
     1. next we retrieve user session info, it's in **memcache**
-1. retrieve user photos from google cloud storage
+1. retrieve user photos from **google cloud storage**
 
-### Update func Model signature
+# If Data In Memcache, Retrieve Data From Memcache
 
-The user data we work with in our program is a value of type model.
-
-Currently, whenever we get data from a cookie, we call func Model in order to take the data in the cookie and put it into a value of type model.
-
-Currently func Model is declared with a parameter of type *http.Cookie. We then ask for the value of that cookie. This value is a string. The string is the marshalled data.
+We will add this to `func model` so that anytime our code returns a model, it will check to see if there is data in memcache and, if so, it will use that data:
  
- We can change func Model to take in a string instead of a cookie.
- 
- From this ...
- 
- ```func Model(c *http.Cookie, req *http.Request) model```
- 
- ... to this ...
- 
- ```func Model(s string, req *http.Request) model```
+ ```
+ 	id := xs[0]
+ 	m2 := retrieveMemc(req, id)
+ 	if m2.Pictures != "" {
+ 		m.Pictures = m2.Pictures
+ 		log.Println("Picture paths returned from memcache")
+ 	}
+ ```
 
-### Update all calls of func Model
-
-From this ...
-
-``` m := Model(cookie, req) ```
-
-... to this ...
-
-
-``` m := Model(cookie.Value, req) ```
-
-### Add conditional logic to all calls of func Model
+### s
 
 From this ...
 
@@ -120,15 +104,6 @@ From this ...
 
 ```
 
+### Refactored / Abstracted Code
 
-
-
-
-
-
-Before we ask for a cookie ...
-
-
-```cookie, _ := req.Cookie("session-id")```
-
-... we first need to check mecache to see if the data is there. If the data is in memcache, there's no point in requesting the cookie.
+Modularized code in `func Model` and put it in `func unmarshalModel`  

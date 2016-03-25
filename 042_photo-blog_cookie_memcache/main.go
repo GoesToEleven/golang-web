@@ -37,7 +37,7 @@ func index(res http.ResponseWriter, req *http.Request) {
 		http.SetCookie(res, cookie)
 	}
 
-	m := Model(cookie.Value, req)
+	m := Model(cookie, req)
 	tpl.ExecuteTemplate(res, "index.html", m)
 }
 
@@ -52,7 +52,7 @@ func login(res http.ResponseWriter, req *http.Request) {
 	cookie := genCookie(res, req)
 
 	if req.Method == "POST" && req.FormValue("password") == "secret" {
-		m := Model(cookie.Value, req)
+		m := Model(cookie, req)
 		m.State = true
 		m.Name = req.FormValue("name")
 

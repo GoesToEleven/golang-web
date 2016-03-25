@@ -24,7 +24,7 @@ func uploadPhoto(src multipart.File, hdr *multipart.FileHeader, c *http.Cookie, 
 }
 
 func addPhoto(fName string, c *http.Cookie, req *http.Request) *http.Cookie {
-	m := Model(c.Value, req)
+	m := Model(c, req)
 	m.Pictures = append(m.Pictures, fName)
 
 	xs := strings.Split(c.Value, "|")

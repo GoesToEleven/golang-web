@@ -58,11 +58,14 @@ func storeMemc(m model, bs []byte, id string) {
 	// production code should not ignore the error
 }
 
-func retrieveMemc(req *http.Request, id string) {
+func retrieveMemc(req *http.Request, id string) model {
 	ctx := appengine.NewContext(req)
 	item, _ := memcache.Get(ctx, id)
-	// if item != nil
-	return string(item.Value)
+	var m model
+	if item != nil {
+		m = unmarshalModel(item.Value)
+	}
+	return m
 }
 
 func initialModel() (model, []byte) {
