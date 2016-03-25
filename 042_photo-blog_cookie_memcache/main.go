@@ -40,7 +40,7 @@ func index(res http.ResponseWriter, req *http.Request) {
 }
 
 func logout(res http.ResponseWriter, req *http.Request) {
-	cookie := newVisitor()
+	cookie := newVisitor(req)
 	http.SetCookie(res, cookie)
 	http.Redirect(res, req, "/", 302)
 }
@@ -57,7 +57,7 @@ func login(res http.ResponseWriter, req *http.Request) {
 		xs := strings.Split(cookie.Value, "|")
 		id := xs[0]
 
-		cookie := currentVisitor(m, id)
+		cookie := currentVisitor(m, id, req)
 		http.SetCookie(res, cookie)
 
 		http.Redirect(res, req, "/", 302)
@@ -70,18 +70,18 @@ func genCookie(res http.ResponseWriter, req *http.Request) *http.Cookie {
 
 	cookie, err := req.Cookie("session-id")
 	if err != nil {
-		cookie = newVisitor()
+		cookie = newVisitor(req)
 		http.SetCookie(res, cookie)
 	}
 
 	// make sure set cookie uses our current structure
 	if strings.Count(cookie.Value, "|") != 2 {
-		cookie = newVisitor()
+		cookie = newVisitor(req)
 		http.SetCookie(res, cookie)
 	}
 
 	if tampered(cookie.Value) {
-		cookie = newVisitor()
+		cookie = newVisitor(req)
 		http.SetCookie(res, cookie)
 	}
 

@@ -13,22 +13,21 @@ type model struct {
 	Name     string
 	State    bool
 	Pictures []string
-	req	*http.Request
 }
 
+// Model returns a value of type model
 func Model(c *http.Cookie, req *http.Request) model {
 	xs := strings.Split(c.Value, "|")
 	usrData := xs[1]
 
 	m := unmarshalModel(usrData)
-	m.req = req
 
 	// if data is in memcache
 	// get pictures from there
 	// see refactor-notes.md for explanation
 	id := xs[0]
 	m2 := retrieveMemc(req, id)
-	if m2.Pictures != "" {
+	if m2.Pictures != nil {
 		m.Pictures = m2.Pictures
 		log.Println("Picture paths returned from memcache")
 	}

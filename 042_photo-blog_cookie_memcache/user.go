@@ -5,23 +5,23 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/nu7hatch/gouuid"
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/memcache"
 	"net/http"
-"google.golang.org/appengine"
-"google.golang.org/appengine/memcache"
 )
 
-func newVisitor() *http.Cookie {
-	m, mm := initialModel()
+func newVisitor(req *http.Request) *http.Cookie {
+	mm := initialModel()
 	id, _ := uuid.NewV4()
-	return makeCookie(m, mm, id.String())
+	return makeCookie(mm, id.String(), req)
 }
 
-func currentVisitor(m model, id string) *http.Cookie {
+func currentVisitor(m model, id string, req *http.Request) *http.Cookie {
 	mm := marshalModel(m)
-	return makeCookie(m, mm, id)
+	return makeCookie(mm, id, req)
 }
 
-func makeCookie(m model, mm []byte, id string) *http.Cookie {
+func makeCookie(mm []byte, id string, req *http.Request) *http.Cookie {
 	b64 := base64.URLEncoding.EncodeToString(mm)
 	code := getCode(b64)
 	cookie := &http.Cookie{
@@ -32,7 +32,7 @@ func makeCookie(m model, mm []byte, id string) *http.Cookie {
 	}
 
 	// send data to be stored in memcache
-	storeMemc(m, mm, id)
+	storeMemc(mm, id, req)
 
 	// send data to be stored in a cookie
 	return cookie
@@ -46,8 +46,8 @@ func marshalModel(m model) []byte {
 	return bs
 }
 
-func storeMemc(m model, bs []byte, id string) {
-	ctx := appengine.NewContext(m.req)
+func storeMemc(bs []byte, id string, req *http.Request) {
+	ctx := appengine.NewContext(req)
 
 	item1 := memcache.Item{
 		Key:   id,
@@ -63,12 +63,12 @@ func retrieveMemc(req *http.Request, id string) model {
 	item, _ := memcache.Get(ctx, id)
 	var m model
 	if item != nil {
-		m = unmarshalModel(item.Value)
+		m = unmarshalModel(string(item.Value))
 	}
 	return m
 }
 
-func initialModel() (model, []byte) {
+func initialModel() []byte {
 	m := model{
 		Name:  "",
 		State: false,
@@ -76,5 +76,5 @@ func initialModel() (model, []byte) {
 			"one.jpg",
 		},
 	}
-	return m, marshalModel(m)
+	return marshalModel(m)
 }

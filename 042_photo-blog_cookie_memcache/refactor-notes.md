@@ -8,41 +8,13 @@ This is a good point to then also call a func to put our data into memcache.
 
 This way, the value stored in the cookie will be the same as the value stored in memcache.
 
-### Add field to model
-
-I'm adding this field to the model:
-
-`req 	*http.Request`
-
-This will allow us to get the context from the model.  We will need the context to store an item in memcache.
-
-Notice that this field is lower case and not exported when we marshal our data.
-
-### Change func Model signature
-
-We wil need to change `func Model` to have a parameter of type `*http.Request` ...
-
 ```go
-func Model(c *http.Cookie, req *http.Request) model 
+	// send data to be stored in memcache
+	storeMemc(mm, id, req)
+
+	// send data to be stored in a cookie
+	return cookie
 ```
-
-... this way, whenever we ask for the model, it will have the current `*http.Request` value for the user.
-
-Wherever func Model is called, we will need to update our code to ensure a value of type `*http.Request` is also passed in. 
-
-WebStorm has a great feature which allows us to command-click the the identifier in the declaration of a func in order to see where that function is called.
-
-### Change func makeCookie signature
-
-We will need to change `func makeCookie` to have a parameter of type model ... 
-
-```go
-func makeCookie(m model, mm []byte, id string) *http.Cookie 
-```
-
-Wherever `func makeCookie` is called, we will need to update our code to ensure a value of type model is also passed in. 
-
-WebStorm has a great feature which allows us to command-click the the identifier in the declaration of a func in order to see where that function is called.
 
 # FYI, This Is An Unrealistic Example
 
@@ -80,9 +52,27 @@ So the whole process, at the end of this will be:
 
 # Retrieve Data From Memcache
 
+### Change func Model signature
+
+The function `func Model` returns the a value of type model
+
+We wil need to change `func Model` to have a parameter of type `*http.Request` ...
+
+```go
+func Model(c *http.Cookie, req *http.Request) model 
+```
+
+... this way, whenever we ask for the model, it will have the current `*http.Request` value for the user.
+
+We will use the `*http.Request` value to interact with memcache.
+
+Wherever func Model is called, we will need to update our code to ensure a value of type `*http.Request` is also passed in. 
+
+WebStorm has a great feature which allows us to command-click the the identifier in the declaration of a func in order to see where that function is called.
+
 ### If Data There Is Data In Memcache ...
 
-We will add this to `func model` so that anytime our code returns a model, it will check to see if there is data in memcache and, if so, it will use that data:
+We will add this to `func Model` so that anytime our code returns a model, it will check to see if there is data in memcache and, if so, it will use that data:
  
  ```go
  	id := xs[0]
@@ -114,6 +104,17 @@ func unmarshalModel(s string) model {
 	return m
 }
 ```
+### Change func makeCookie signature
+
+We will need to change `func makeCookie` to have a parameter of type `*http.Request` ... 
+
+```go
+func makeCookie(mm []byte, id string, req *http.Request)  *http.Cookie 
+```
+
+Wherever `func makeCookie` is called, we will need to update our code to ensure a value of type `*http.Request` is also passed in. 
+
+WebStorm has a great feature which allows us to command-click the the identifier in the declaration of a func in order to see where that function is called.
 
 # Refactor Code For Appengine
 

@@ -30,7 +30,7 @@ func addPhoto(fName string, c *http.Cookie, req *http.Request) *http.Cookie {
 	xs := strings.Split(c.Value, "|")
 	id := xs[0]
 
-	cookie := currentVisitor(m, id)
+	cookie := currentVisitor(m, id, req)
 	return cookie
 }
 
