@@ -22,7 +22,7 @@ Notice that this field is lower case and not exported when we marshal our data.
 
 We wil need to change `func Model` to have a parameter of type `*http.Request` ...
 
-```golang
+```go
 func Model(c *http.Cookie, req *http.Request) model 
 ```
 
