@@ -101,7 +101,6 @@ func Model(c *http.Cookie, req *http.Request) model {
 
 	// if data is in memcache
 	// get pictures from there
-	// see refactor-notes.md for explanation
 	id := xs[0]
 	m2 := retrieveMemc(req, id)
 	if m2.Pictures != nil {
@@ -120,7 +119,7 @@ WebStorm has a great feature which allows us to command-click the the identifier
 
 ### If There Is Data In Memcache ...
 
-Now, anytime `func Model` is called, it will check to see if there is data in memcache and, if so, it will use that data:
+Now, anytime `func Model` is called, it will check to see if there is data in memcache and, if so, it will use the []string picture paths from that data.
  
  ```go
 func retrieveMemc(req *http.Request, id string) model {
