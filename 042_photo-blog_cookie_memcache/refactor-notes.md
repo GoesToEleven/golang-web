@@ -74,8 +74,8 @@ So the whole process, at the end of this will be:
 1. store user files in google cloud storage
 1. attempt to retrieve user session info from memcache
   1. if unable to retrieve user session info from memcache, retrieve user session info from datastore
-    1. if user session info retrieved from datastore, store that session info in memcache
-      1. this way, next time we want user session info, it's in memcache
+    1. store this session info in memcache
+    1. next we retrieve user session info, it's in memcache
 1. retrieve user photos from google cloud storage
 
 ### Update func Model signature
