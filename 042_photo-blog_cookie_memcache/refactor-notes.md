@@ -78,11 +78,13 @@ So the whole process, at the end of this will be:
     1. next we retrieve user session info, it's in **memcache**
 1. retrieve user photos from **google cloud storage**
 
-# If Data In Memcache, Retrieve Data From Memcache
+# Retrieve Data From Memcache
+
+### If Data There Is Data In Memcache ...
 
 We will add this to `func model` so that anytime our code returns a model, it will check to see if there is data in memcache and, if so, it will use that data:
  
- ```
+ ```go
  	id := xs[0]
  	m2 := retrieveMemc(req, id)
  	if m2.Pictures != "" {
