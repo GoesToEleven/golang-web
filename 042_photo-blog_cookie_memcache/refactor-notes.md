@@ -93,19 +93,24 @@ We will add this to `func model` so that anytime our code returns a model, it wi
  	}
  ```
 
-### s
-
-From this ...
-
-``` m := Model(cookie.Value, req) ```
-
-... to this ...
-
-
-``` 
-
-```
-
 ### Refactored / Abstracted Code
 
 Modularized code in `func Model` and put it in `func unmarshalModel`  
+
+```
+func unmarshalModel(s string) model {
+
+	bs, err := base64.URLEncoding.DecodeString(s)
+	if err != nil {
+		log.Println("Error decoding base64", err)
+	}
+
+	var m model
+	err = json.Unmarshal(bs, &m)
+	if err != nil {
+		fmt.Println("error unmarshalling: ", err)
+	}
+
+	return m
+}
+```
