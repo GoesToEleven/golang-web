@@ -13,23 +13,31 @@ type model struct {
 	Name     string
 	State    bool
 	Pictures []string
+	req	*http.Request
 }
 
-func Model(c *http.Cookie) model {
-	xs := strings.Split(c.Value, "|")
+func Model(s string, req *http.Request) model {
+	xs := strings.Split(s, "|")
 	usrData := xs[1]
 
-	// decode from base64
 	bs, err := base64.URLEncoding.DecodeString(usrData)
 	if err != nil {
 		log.Println("Error decoding base64", err)
 	}
 
-	// unmarshal from JSON
 	var m model
 	err = json.Unmarshal(bs, &m)
 	if err != nil {
 		fmt.Println("error unmarshalling: ", err)
 	}
+	m.req = req
+
+	// if data is in memcache
+	// get pictures from there
+	id := xs[0]
+	if retrieveMemc(req, id) != nil {
+
+	}
+
 	return m
 }

@@ -33,17 +33,16 @@ func index(res http.ResponseWriter, req *http.Request) {
 			log.Println("error uploading photo: ", err)
 			// TODO: create error page to show user
 		}
-		cookie = uploadPhoto(src, hdr, cookie)
+		cookie = uploadPhoto(src, hdr, cookie, req)
 		http.SetCookie(res, cookie)
 	}
 
-	m := Model(cookie)
+	m := Model(cookie.Value, req)
 	tpl.ExecuteTemplate(res, "index.html", m)
 }
 
 func logout(res http.ResponseWriter, req *http.Request) {
-	cookie, _ := req.Cookie("session-id")
-	cookie = newVisitor()
+	cookie := newVisitor()
 	http.SetCookie(res, cookie)
 	http.Redirect(res, req, "/", 302)
 }
@@ -53,7 +52,7 @@ func login(res http.ResponseWriter, req *http.Request) {
 	cookie := genCookie(res, req)
 
 	if req.Method == "POST" && req.FormValue("password") == "secret" {
-		m := Model(cookie)
+		m := Model(cookie.Value, req)
 		m.State = true
 		m.Name = req.FormValue("name")
 

@@ -32,8 +32,8 @@ func guestbookKey(c context.Context) *datastore.Key {
 	return datastore.NewKey(c, "Guestbook", "default_guestbook", 0, nil)
 }
 
-func root(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
+func root(res http.ResponseWriter, req *http.Request) {
+	c := appengine.NewContext(req)
 	// Ancestor queries, as shown here, are strongly consistent with the High
 	// Replication Datastore. Queries that span entity groups are eventually
 	// consistent. If we omitted the .Ancestor from this query there would be
@@ -42,11 +42,11 @@ func root(w http.ResponseWriter, r *http.Request) {
 	q := datastore.NewQuery("Greeting").Ancestor(guestbookKey(c)).Order("-Date").Limit(10)
 	greetings := make([]Greeting, 0, 10)
 	if _, err := q.GetAll(c, &greetings); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	if err := guestbookTemplate.Execute(w, greetings); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if err := guestbookTemplate.Execute(res, greetings); err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
 	}
 }
 
@@ -72,10 +72,10 @@ var guestbookTemplate = template.Must(template.New("book").Parse(`
 </html>
 `))
 
-func sign(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
+func sign(res http.ResponseWriter, req *http.Request) {
+	c := appengine.NewContext(req)
 	g := Greeting{
-		Content: r.FormValue("content"),
+		Content: req.FormValue("content"),
 		Date:    time.Now(),
 	}
 	if u := user.Current(c); u != nil {
@@ -88,8 +88,8 @@ func sign(w http.ResponseWriter, r *http.Request) {
 	key := datastore.NewIncompleteKey(c, "Greeting", guestbookKey(c))
 	_, err := datastore.Put(c, key, &g)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	http.Redirect(w, r, "/", http.StatusFound)
+	http.Redirect(res, req, "/", http.StatusFound)
 }

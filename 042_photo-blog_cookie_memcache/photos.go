@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-func uploadPhoto(src multipart.File, hdr *multipart.FileHeader, c *http.Cookie) *http.Cookie {
+func uploadPhoto(src multipart.File, hdr *multipart.FileHeader, c *http.Cookie, req *http.Request) *http.Cookie {
 	defer src.Close()
 	fName := getSha(src) + ".jpg"
 	wd, _ := os.Getwd()
@@ -20,11 +20,11 @@ func uploadPhoto(src multipart.File, hdr *multipart.FileHeader, c *http.Cookie) 
 	defer dst.Close()
 	src.Seek(0, 0)
 	io.Copy(dst, src)
-	return addPhoto(fName, c)
+	return addPhoto(fName, c, req)
 }
 
-func addPhoto(fName string, c *http.Cookie) *http.Cookie {
-	m := Model(c)
+func addPhoto(fName string, c *http.Cookie, req *http.Request) *http.Cookie {
+	m := Model(c.Value, req)
 	m.Pictures = append(m.Pictures, fName)
 
 	xs := strings.Split(c.Value, "|")

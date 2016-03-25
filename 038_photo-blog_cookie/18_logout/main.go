@@ -42,8 +42,7 @@ func index(res http.ResponseWriter, req *http.Request) {
 }
 
 func logout(res http.ResponseWriter, req *http.Request) {
-	cookie, _ := req.Cookie("session-id")
-	cookie = newVisitor()
+	cookie := newVisitor()
 	http.SetCookie(res, cookie)
 	http.Redirect(res, req, "/", 302)
 }
