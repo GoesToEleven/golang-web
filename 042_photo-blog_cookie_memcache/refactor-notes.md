@@ -55,13 +55,13 @@ Eventually we will store our data in the datastore. We will have our uuid in the
 Eventually, we will also store the user's photos in google cloud storage (our hard drive in the cloud). 
 
 So the whole process, at the end of this will be:
-1. store uuid in cookie
-1. store user session info in memcache
-1. store user session info and user info in datastore
-1. store user files in google cloud storage
-1. attempt to retrieve user session info from memcache
-..* if unable to retrieve user session info from memcache, retrieve user session info from datastore
-1. retrieve user photos from google cloud storage
+1 store uuid in cookie
+1 store user session info in memcache
+1 store user session info and user info in datastore
+1 store user files in google cloud storage
+1 attempt to retrieve user session info from memcache
+  *if unable to retrieve user session info from memcache, retrieve user session info from datastore
+1 retrieve user photos from google cloud storage
 
 ### Update func Model signature
 
