@@ -97,7 +97,7 @@ We will add this to `func model` so that anytime our code returns a model, it wi
 
 Modularized code in `func Model` and put it in `func unmarshalModel`  
 
-```
+```go
 func unmarshalModel(s string) model {
 
 	bs, err := base64.URLEncoding.DecodeString(s)
