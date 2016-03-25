@@ -10,26 +10,19 @@ This way, the value stored in the cookie will be the same as the value stored in
 
 ```go
 func makeCookie(mm []byte, id string, req *http.Request) *http.Cookie {
-	
+
 	// Anytime a cookie is created, let's print the id
 	// The id is the key for the value in memcache
 	// Having the id will allow us to lookup the value in memcache
 	log.Println("ID:", id)
-	
-	// SEND DATA TO BE STORED IN MEMCACHE
-	// in memcache:
-	// model encoded to JSON
-	// in cookie:
-	// model encoded to JSON encode to base64
-	storeMemc(mm, id, req)
-	
-	// SEND DATA TO BE STORED IN COOKIE
-	// in memcache:
-	// model encoded to JSON
-	// in cookie:
-	// model encoded to JSON encode to base64
+
 	b64 := base64.URLEncoding.EncodeToString(mm)
-	code := getCode(b64)
+
+	// SEND DATA TO BE STORED IN MEMCACHE
+	storeMemc([]byte(b64), id, req)
+
+	// SEND DATA TO BE STORED IN COOKIE
+	code := getCode(b64) // hmac
 	cookie := &http.Cookie{
 		Name:  "session-id",
 		Value: id + "|" + b64 + "|" + code,
@@ -43,20 +36,25 @@ func makeCookie(mm []byte, id string, req *http.Request) *http.Cookie {
 ```go
 func storeMemc(bs []byte, id string, req *http.Request) {
 	ctx := appengine.NewContext(req)
-
 	item1 := memcache.Item{
 		Key:   id,
 		Value: bs,
 	}
-
 	memcache.Set(ctx, &item1)
-	// production code should not ignore the error
 }
 ```
 
 Wherever `func makeCookie` is called, we will need to update our code to ensure a value of type `*http.Request` is also passed in. 
 
 WebStorm has a great feature which allows us to command-click the the identifier in the declaration of a func in order to see where that function is called.
+
+Good to note: memcache is key:value storage. Our key is the uuid for the user. Our value is the same value we are writing to our cookie. Remember, our cookie has `id|value|hmac code`. In both the cookie and memcache, the value is the `model` data marshaled to `JSON` and then encoded to `base64`.
+
+Remember this: 
+model --> JSON --> base64
+
+To unwind this, we will need to do this:
+base64 --> JSON --> model
 
 # FYI, This Is An Unrealistic Example
 
