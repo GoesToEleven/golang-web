@@ -12,7 +12,7 @@ This way, the value stored in the cookie will be the same as the value stored in
 
 I'm adding this field to the model:
 
-req	*http.Request
+`req 	*http.Request`
 
 This will allow us to get the context from the model.  We will need the context to store an item in memcache.
 
@@ -20,9 +20,9 @@ Notice that this field is lower case and not exported when we marshal our data.
 
 ### Change func Model signature
 
-We wil need to change func Model to have a parameter of type *http.Request ...
+We wil need to change `func Model` to have a parameter of type `*http.Request` ...
 
-```
+```golang
 func Model(c *http.Cookie, req *http.Request) model 
 ```
 
