@@ -52,11 +52,11 @@ Good to note: memcache is key:value storage. Our key is the uuid for the user. O
 
 Remember this: 
 
-model --> JSON --> base64
+**model --> JSON --> base64**
 
 To unwind this, we will need to do this:
 
-base64 --> JSON --> model
+**base64 --> JSON --> model**
 
 # FYI, This Is An Unrealistic Example
 
@@ -120,20 +120,23 @@ func Model(c *http.Cookie, req *http.Request) model {
 	xs := strings.Split(c.Value, "|")
 	usrData := xs[1]
 
-	m := unmarshalModel(usrData)
+	bs, err := base64.URLEncoding.DecodeString(usrData)
+	if err != nil {
+		log.Println("Error decoding base64", err)
+	}
 
-	// if data is in memcache
-	// get pictures from there
+	m := unmarshalModel(bs)
+
 	id := xs[0]
 	m2 := retrieveMemc(req, id)
 	if m2.Pictures != nil {
 		m.Pictures = m2.Pictures
-		log.Println("Picture paths returned from memcache")
+		log.Println("PICTURE PATHS RETURNED FROM MEMCACHE")
+		log.Println(m.Pictures)
 	}
 
 	return m
 }
-
 ```
 
 Wherever func Model is called, we will need to update our code to ensure a value of type `*http.Request` is also passed in. 
@@ -148,9 +151,17 @@ Now, anytime `func Model` is called, it will check to see if there is data in me
 func retrieveMemc(req *http.Request, id string) model {
 	ctx := appengine.NewContext(req)
 	item, _ := memcache.Get(ctx, id)
+
+	// decode item.Value from base64
+	bs, err := base64.URLEncoding.DecodeString(string(item.Value))
+	if err != nil {
+		log.Println("Error decoding base64 in retrieveMemc", err)
+	}
+
+	// unmarshal from JSON
 	var m model
 	if item != nil {
-		m = unmarshalModel(item.Value)
+		m = unmarshalModel(bs)
 	}
 	return m
 }
@@ -171,7 +182,44 @@ func unmarshalModel(bs []byte) model {
 
 	return m
 }
+```
+# Upload Photos
 
+When we upload photos, we will need to also add the new file information to our paths of photos which we are storing in the model as type []string.
+
+To increase code readability, there is some redundant code in here which could be refactored.
+
+```go
+func addPhoto(fName string, c *http.Cookie, req *http.Request) *http.Cookie {
+	xs := strings.Split(c.Value, "|")
+
+	// memcache
+	id := xs[0]
+	m2 := retrieveMemc(req, id)
+	m2.Pictures = append(m2.Pictures, fName)
+	mm := marshalModel(m2)
+	b64 := base64.URLEncoding.EncodeToString(mm)
+	storeMemc([]byte(b64), id, req)
+
+	// cookie
+	usrData := xs[1]
+	bs, err := base64.URLEncoding.DecodeString(usrData)
+	if err != nil {
+		log.Println("Error decoding base64", err)
+	}
+	m := unmarshalModel(bs)
+	m.Pictures = append(m.Pictures, fName)
+	mm = marshalModel(m)
+	b64 = base64.URLEncoding.EncodeToString(mm)
+	code := getCode(b64) // hmac
+	cookie := &http.Cookie{
+		Name:  "session-id",
+		Value: id + "|" + b64 + "|" + code,
+		// Secure: true,
+		HttpOnly: true,
+	}
+	return cookie
+}
 ```
 
 # Refactor Code For Appengine
