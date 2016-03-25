@@ -41,6 +41,10 @@ func storeMemc(bs []byte, id string, req *http.Request) {
 }
 ```
 
+Wherever `func makeCookie` is called, we will need to update our code to ensure a value of type `*http.Request` is also passed in. 
+
+WebStorm has a great feature which allows us to command-click the the identifier in the declaration of a func in order to see where that function is called.
+
 # FYI, This Is An Unrealistic Example
 
 FYI, this is an unrealistic example though it is building block in your educational process. 
