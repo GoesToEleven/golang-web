@@ -20,7 +20,16 @@ func Model(c *http.Cookie, req *http.Request) model {
 	xs := strings.Split(c.Value, "|")
 	usrData := xs[1]
 
-	m := unmarshalModel(usrData)
+	// in cookie:
+	// model encoded to JSON encode to base64
+	// in memcache:
+	// model encoded to JSON
+	bs, err := base64.URLEncoding.DecodeString(usrData)
+	if err != nil {
+		log.Println("Error decoding base64", err)
+	}
+
+	m := unmarshalModel(bs)
 
 	// if data is in memcache
 	// get pictures from there
@@ -35,15 +44,10 @@ func Model(c *http.Cookie, req *http.Request) model {
 	return m
 }
 
-func unmarshalModel(s string) model {
-
-	bs, err := base64.URLEncoding.DecodeString(s)
-	if err != nil {
-		log.Println("Error decoding base64", err)
-	}
+func unmarshalModel(bs []byte) model {
 
 	var m model
-	err = json.Unmarshal(bs, &m)
+	err := json.Unmarshal(bs, &m)
 	if err != nil {
 		fmt.Println("error unmarshalling: ", err)
 	}

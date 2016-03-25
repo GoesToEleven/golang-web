@@ -8,6 +8,7 @@ import (
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/memcache"
 	"net/http"
+	"log"
 )
 
 func newVisitor(req *http.Request) *http.Cookie {
@@ -22,6 +23,24 @@ func currentVisitor(m model, id string, req *http.Request) *http.Cookie {
 }
 
 func makeCookie(mm []byte, id string, req *http.Request) *http.Cookie {
+
+	// Anytime a cookie is created, let's print the id
+	// The id is the key for the value in memcache
+	// Having the id will allow us to lookup the value in memcache
+	log.Println("ID:", id)
+
+	// SEND DATA TO BE STORED IN MEMCACHE
+	// in memcache:
+	// model encoded to JSON
+	// in cookie:
+	// model encoded to JSON encode to base64
+	storeMemc(mm, id, req)
+
+	// SEND DATA TO BE STORED IN COOKIE
+	// in memcache:
+	// model encoded to JSON
+	// in cookie:
+	// model encoded to JSON encode to base64
 	b64 := base64.URLEncoding.EncodeToString(mm)
 	code := getCode(b64)
 	cookie := &http.Cookie{
@@ -30,11 +49,6 @@ func makeCookie(mm []byte, id string, req *http.Request) *http.Cookie {
 		// Secure: true,
 		HttpOnly: true,
 	}
-
-	// send data to be stored in memcache
-	storeMemc(mm, id, req)
-
-	// send data to be stored in a cookie
 	return cookie
 }
 
@@ -63,7 +77,7 @@ func retrieveMemc(req *http.Request, id string) model {
 	item, _ := memcache.Get(ctx, id)
 	var m model
 	if item != nil {
-		m = unmarshalModel(string(item.Value))
+		m = unmarshalModel(item.Value)
 	}
 	return m
 }

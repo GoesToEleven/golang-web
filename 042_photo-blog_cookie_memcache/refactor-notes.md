@@ -10,6 +10,24 @@ This way, the value stored in the cookie will be the same as the value stored in
 
 ```go
 func makeCookie(mm []byte, id string, req *http.Request) *http.Cookie {
+	
+	// Anytime a cookie is created, let's print the id
+	// The id is the key for the value in memcache
+	// Having the id will allow us to lookup the value in memcache
+	log.Println("ID:", id)
+	
+	// SEND DATA TO BE STORED IN MEMCACHE
+	// in memcache:
+	// model encoded to JSON
+	// in cookie:
+	// model encoded to JSON encode to base64
+	storeMemc(mm, id, req)
+	
+	// SEND DATA TO BE STORED IN COOKIE
+	// in memcache:
+	// model encoded to JSON
+	// in cookie:
+	// model encoded to JSON encode to base64
 	b64 := base64.URLEncoding.EncodeToString(mm)
 	code := getCode(b64)
 	cookie := &http.Cookie{
@@ -18,11 +36,6 @@ func makeCookie(mm []byte, id string, req *http.Request) *http.Cookie {
 		// Secure: true,
 		HttpOnly: true,
 	}
-
-	// send data to be stored in memcache
-	storeMemc(mm, id, req)
-
-	// send data to be stored in a cookie
 	return cookie
 }
 ```
@@ -79,6 +92,16 @@ So the whole process, at the end of this will be:
     1. next we retrieve user session info, it's in **memcache**
 1. retrieve user photos from **google cloud storage**
 
+### IMPORTANT! - This Code Is Not Functional
+
+We will be running this code on Google App Engine.
+
+We are not yet storing photos in Google Could Storage.
+
+As our code just tries to write the photos to our server, that write will fail.
+
+This is still, however, a necessary stepping stone in our learning process.
+
 # Retrieve Data From Memcache
 
 ### Change func Model
@@ -127,7 +150,7 @@ func retrieveMemc(req *http.Request, id string) model {
 	item, _ := memcache.Get(ctx, id)
 	var m model
 	if item != nil {
-		m = unmarshalModel(string(item.Value))
+		m = unmarshalModel(item.Value)
 	}
 	return m
 }
@@ -138,21 +161,17 @@ func retrieveMemc(req *http.Request, id string) model {
 Modularized code in `func Model` and put it in `func unmarshalModel`  
 
 ```go
-func unmarshalModel(s string) model {
-
-	bs, err := base64.URLEncoding.DecodeString(s)
-	if err != nil {
-		log.Println("Error decoding base64", err)
-	}
+func unmarshalModel(bs []byte) model {
 
 	var m model
-	err = json.Unmarshal(bs, &m)
+	err := json.Unmarshal(bs, &m)
 	if err != nil {
 		fmt.Println("error unmarshalling: ", err)
 	}
 
 	return m
 }
+
 ```
 
 # Refactor Code For Appengine
@@ -164,3 +183,15 @@ I could have called `package mem` something else like, oh, I don't know, maybe `
 Took code out of `func main` and put it into `func init`
 
 Added `app.yaml` file
+
+# Run Your App
+
+Enter this at the terminal: `goapp serve`
+
+Go to this url: `http://localhost:8080`
+
+Look in your terminal and get the id
+
+Go to this url: `http://localhost:8000/memcache`
+
+Enter the id and see what's in memcache.
