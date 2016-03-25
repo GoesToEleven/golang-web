@@ -92,7 +92,7 @@ So the whole process, at the end of this will be:
     1. next we retrieve user session info, it's in **memcache**
 1. retrieve user photos from **google cloud storage**
 
-### IMPORTANT! - This Code Is Not Functional
+### IMPORTANT! - This Code Runs But Is Not Functional
 
 We will be running this code on Google App Engine.
 
