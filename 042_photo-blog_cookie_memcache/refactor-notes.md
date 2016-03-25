@@ -114,3 +114,13 @@ func unmarshalModel(s string) model {
 	return m
 }
 ```
+
+# Refactor Code For Appengine
+
+`package main` ... to ... `package mem`
+
+I could have called `package mem` something else like, oh, I don't know, maybe `package mickeymouse`
+
+Took code out of `func main` and put it into `func init`
+
+Added `app.yaml` file

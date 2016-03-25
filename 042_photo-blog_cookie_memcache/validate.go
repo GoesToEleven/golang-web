@@ -1,4 +1,4 @@
-package main
+package mem
 
 import (
 	"crypto/hmac"

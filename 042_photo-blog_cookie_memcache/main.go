@@ -1,4 +1,4 @@
-package main
+package mem
 
 import (
 	"html/template"
@@ -11,9 +11,7 @@ var tpl *template.Template
 
 func init() {
 	tpl, _ = template.ParseGlob("templates/*.html")
-}
 
-func main() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/login", login)
 	http.HandleFunc("/logout", logout)
