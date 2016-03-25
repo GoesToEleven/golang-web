@@ -9,6 +9,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"encoding/base64"
+"log"
 )
 
 func uploadPhoto(src multipart.File, hdr *multipart.FileHeader, c *http.Cookie, req *http.Request) *http.Cookie {
@@ -24,13 +26,33 @@ func uploadPhoto(src multipart.File, hdr *multipart.FileHeader, c *http.Cookie, 
 }
 
 func addPhoto(fName string, c *http.Cookie, req *http.Request) *http.Cookie {
-	m := Model(c, req)
-	m.Pictures = append(m.Pictures, fName)
-
 	xs := strings.Split(c.Value, "|")
-	id := xs[0]
 
-	cookie := currentVisitor(m, id, req)
+	// memcache
+	id := xs[0]
+	m2 := retrieveMemc(req, id)
+	m2.Pictures = append(m2.Pictures, fName)
+	mm := marshalModel(m2)
+	b64 := base64.URLEncoding.EncodeToString(mm)
+	storeMemc([]byte(b64), id, req)
+
+	// cookie
+	usrData := xs[1]
+	bs, err := base64.URLEncoding.DecodeString(usrData)
+	if err != nil {
+		log.Println("Error decoding base64", err)
+	}
+	m := unmarshalModel(bs)
+	m.Pictures = append(m.Pictures, fName)
+	mm = marshalModel(m)
+	b64 = base64.URLEncoding.EncodeToString(mm)
+	code := getCode(b64) // hmac
+	cookie := &http.Cookie{
+		Name:  "session-id",
+		Value: id + "|" + b64 + "|" + code,
+		// Secure: true,
+		HttpOnly: true,
+	}
 	return cookie
 }
 

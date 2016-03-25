@@ -20,10 +20,6 @@ func Model(c *http.Cookie, req *http.Request) model {
 	xs := strings.Split(c.Value, "|")
 	usrData := xs[1]
 
-	// in cookie:
-	// model encoded to JSON encode to base64
-	// in memcache:
-	// model encoded to JSON
 	bs, err := base64.URLEncoding.DecodeString(usrData)
 	if err != nil {
 		log.Println("Error decoding base64", err)
@@ -31,9 +27,6 @@ func Model(c *http.Cookie, req *http.Request) model {
 
 	m := unmarshalModel(bs)
 
-	// if data is in memcache
-	// get pictures from there
-	// see refactor-notes.md for explanation
 	id := xs[0]
 	m2 := retrieveMemc(req, id)
 	if m2.Pictures != nil {
