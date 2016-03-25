@@ -77,19 +77,38 @@ So the whole process, at the end of this will be:
 
 # Retrieve Data From Memcache
 
-### Change func Model signature
+### Change func Model
 
-The function `func Model` returns the a value of type model
+The function `func Model` returns the a value of type model - **this has all of the user's session data**.
 
-We wil need to change `func Model` to have a parameter of type `*http.Request` ...
+We wil need to change `func Model` to see if we have data in memcache and, if so, to then get the data from there.
+
+To do this, we will need to have access to the `*http.Request` as this is necessary to access memcache.
+
+Let's modify `func Model` to have a parameter of type `*http.Request` ...
 
 ```go
-func Model(c *http.Cookie, req *http.Request) model 
+// Model returns a value of type model
+func Model(c *http.Cookie, req *http.Request) model {
+	xs := strings.Split(c.Value, "|")
+	usrData := xs[1]
+
+	m := unmarshalModel(usrData)
+
+	// if data is in memcache
+	// get pictures from there
+	// see refactor-notes.md for explanation
+	id := xs[0]
+	m2 := retrieveMemc(req, id)
+	if m2.Pictures != nil {
+		m.Pictures = m2.Pictures
+		log.Println("Picture paths returned from memcache")
+	}
+
+	return m
+}
+
 ```
-
-... this way, whenever we ask for the model, it will have the current `*http.Request` value for the user.
-
-We will use the `*http.Request` value to interact with memcache.
 
 Wherever func Model is called, we will need to update our code to ensure a value of type `*http.Request` is also passed in. 
 
@@ -97,15 +116,36 @@ WebStorm has a great feature which allows us to command-click the the identifier
 
 ### If Data There Is Data In Memcache ...
 
-We will add this to `func Model` so that anytime our code returns a model, it will check to see if there is data in memcache and, if so, it will use that data:
+Now, anytime `func Model` is called, it will check to see if there is data in memcache and, if so, it will use that data:
  
  ```go
- 	id := xs[0]
- 	m2 := retrieveMemc(req, id)
- 	if m2.Pictures != "" {
- 		m.Pictures = m2.Pictures
- 		log.Println("Picture paths returned from memcache")
+func retrieveMemc(req *http.Request, id string) model {
+	ctx := appengine.NewContext(req)
+	item, _ := memcache.Get(ctx, id)
+	var m model
+	if item != nil {
+		m = unmarshalModel(string(item.Value))
+	}
+	return m
+}
+ ```
+ 
+ ```go
+ func unmarshalModel(s string) model {
+ 
+ 	bs, err := base64.URLEncoding.DecodeString(s)
+ 	if err != nil {
+ 		log.Println("Error decoding base64", err)
  	}
+ 
+ 	var m model
+ 	err = json.Unmarshal(bs, &m)
+ 	if err != nil {
+ 		fmt.Println("error unmarshalling: ", err)
+ 	}
+ 
+ 	return m
+ }
  ```
 
 ### Refactored / Abstracted Code
