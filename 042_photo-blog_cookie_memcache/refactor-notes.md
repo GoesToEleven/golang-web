@@ -51,9 +51,11 @@ WebStorm has a great feature which allows us to command-click the the identifier
 Good to note: memcache is key:value storage. Our key is the uuid for the user. Our value is the same value we are writing to our cookie. Remember, our cookie has `id|value|hmac code`. In both the cookie and memcache, the value is the `model` data marshaled to `JSON` and then encoded to `base64`.
 
 Remember this: 
+
 model --> JSON --> base64
 
 To unwind this, we will need to do this:
+
 base64 --> JSON --> model
 
 # FYI, This Is An Unrealistic Example
