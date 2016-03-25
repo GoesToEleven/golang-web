@@ -26,27 +26,39 @@ We wil need to change `func Model` to have a parameter of type `*http.Request` .
 func Model(c *http.Cookie, req *http.Request) model 
 ```
 
-... this way, whenever we ask for the model, it will have the current *http.Request value for the user.
+... this way, whenever we ask for the model, it will have the current `*http.Request` value for the user.
 
-Wherever func Model is called, we will need to update our code to ensure a value of type *http.Request is also passed in. 
+Wherever func Model is called, we will need to update our code to ensure a value of type `*http.Request` is also passed in. 
 
 WebStorm has a great feature which allows us to command-click the the identifier in the declaration of a func in order to see where that function is called.
 
 ### Change func makeCookie signature
 
-We will need to change func makeCookie to have a parameter of type model ... 
+We will need to change `func makeCookie` to have a parameter of type model ... 
 
+```go
 func makeCookie(m model, mm []byte, id string) *http.Cookie 
+```
 
-Wherever func Model is called, we will need to update our code to ensure a value of type model is also passed in. 
+Wherever `func makeCookie` is called, we will need to update our code to ensure a value of type model is also passed in. 
 
 WebStorm has a great feature which allows us to command-click the the identifier in the declaration of a func in order to see where that function is called.
 
-# Retrieve Data From Memcache Instead of Cookie
+# FYI, This Is An Unrealistic Example
 
-## Unrealistic Example
+FYI, this is an unrealistic example though it is building block in your educational process. 
 
-FYI, this is an unrealistic example though it is building block in your educational process. Our uuid which uniquely identifies a user is stored in the cookie. Our []string which stores a user's photos path information are also stored in the cookie. We are now also storing all of that data in memcache. We access that data by the user's uuid (memcache stores key:value pairs). Well, to have the uuid, we have to have the cookie. If we have the cookie, we have the []string with the user's photos. So why also get the []string of photo paths from memcache? We already have it! 
+Our uuid which uniquely identifies a user is stored in the cookie. Our []string which stores the paths to a user's photos are also stored in that cookie. 
+
+We are now also storing all of that data in memcache. 
+
+We access that data in memcache by the user's uuid (memcache stores key:value pairs). 
+
+Well, to have the uuid, we have to have the cookie. 
+
+And if we have the cookie, we have the []string with paths to the user's photos. 
+
+*So why also get the []string from memcache? We already have it!*
 
 Well, we're getting it from memcache just to learn this process. 
 
