@@ -31,7 +31,8 @@ func Model(c *http.Cookie, req *http.Request) model {
 	m2 := retrieveMemc(req, id)
 	if m2.Pictures != nil {
 		m.Pictures = m2.Pictures
-		log.Println("Picture paths returned from memcache")
+		log.Println("PICTURE PATHS RETURNED FROM MEMCACHE")
+		log.Println(m.Pictures)
 	}
 
 	return m
