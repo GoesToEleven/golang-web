@@ -3,20 +3,24 @@ package mem
 import (
 	"github.com/nu7hatch/gouuid"
 	"net/http"
+	"log"
 )
 
-func newVisitor(req *http.Request) *http.Cookie {
-	mm := initialModel()
-	id, _ := uuid.NewV4()
-	return makeCookie(mm, id.String(), req)
+func newVisitor(req *http.Request) (*http.Cookie, error) {
+	m := initialModel()
+	id, err := uuid.NewV4()
+	if err != nil {
+		log.Println("ERROR newVisitor uuid.NewV4", err)
+		return nil, err
+	}
+	return makeCookie(m, id.String(), req)
 }
 
-func currentVisitor(m model, id string, req *http.Request) *http.Cookie {
-	mm := marshalModel(m)
-	return makeCookie(mm, id, req)
+func currentVisitor(m model, id string, req *http.Request) (*http.Cookie, error) {
+	return makeCookie(m, id, req)
 }
 
-func initialModel() []byte {
+func initialModel() model {
 	m := model{
 		Name:  "",
 		State: false,
@@ -24,5 +28,5 @@ func initialModel() []byte {
 			"one.jpg",
 		},
 	}
-	return marshalModel(m)
+	return m
 }

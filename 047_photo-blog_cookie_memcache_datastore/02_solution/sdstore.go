@@ -7,16 +7,16 @@ import (
 	"log"
 )
 
-func storeDstore(m model, id string, req *http.Request) {
+func storeDstore(m model, id string, req *http.Request) error {
 	ctx := appengine.NewContext(req)
 	key := datastore.NewKey(ctx, "Photos", id, 0, nil)
 
 	_, err := datastore.Put(ctx, key, &m)
 	if err != nil {
-		log.Println("ERROR PUTTING IN DATASTORE storeDstore", err)
-		return
+		log.Println("ERROR storeDstore datastore.Put", err)
+		return err
 	}
-	return
+	return nil
 }
 
 func retrieveDstore(id string, req *http.Request) (model, error) {
@@ -26,11 +26,11 @@ func retrieveDstore(id string, req *http.Request) (model, error) {
 	var m model
 	err := datastore.Get(ctx, key, &m)
 	if err == datastore.ErrNoSuchEntity {
-		log.Println("NO DSTORE RETRIEVE", err)
-		return nil, err
+		log.Println("ERROR retrieveDstore datastore.Get", err)
+		return m, err
 	} else if err != nil {
-		log.Println("ERR DSTORE RETRIEVE", err)
-		return nil, err
+		log.Println("ERROR retrieveDstore datastore.Get", err)
+		return m, err
 	}
 	return m, nil
 }
