@@ -2,15 +2,15 @@ package mem
 
 import (
 	"crypto/sha1"
+	"encoding/base64"
 	"fmt"
 	"io"
+	"log"
 	"mime/multipart"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
-	"encoding/base64"
-"log"
 )
 
 func uploadPhoto(src multipart.File, hdr *multipart.FileHeader, c *http.Cookie, req *http.Request) *http.Cookie {

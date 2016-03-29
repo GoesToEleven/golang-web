@@ -38,6 +38,14 @@ func Model(c *http.Cookie, req *http.Request) model {
 	return m
 }
 
+func marshalModel(m model) []byte {
+	bs, err := json.Marshal(m)
+	if err != nil {
+		fmt.Println("error: ", err)
+	}
+	return bs
+}
+
 func unmarshalModel(bs []byte) model {
 
 	var m model

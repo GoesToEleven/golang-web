@@ -65,25 +65,3 @@ func login(res http.ResponseWriter, req *http.Request) {
 	}
 	tpl.ExecuteTemplate(res, "login.html", nil)
 }
-
-func genCookie(res http.ResponseWriter, req *http.Request) *http.Cookie {
-
-	cookie, err := req.Cookie("session-id")
-	if err != nil {
-		cookie = newVisitor(req)
-		http.SetCookie(res, cookie)
-	}
-
-	// make sure set cookie uses our current structure
-	if strings.Count(cookie.Value, "|") != 2 {
-		cookie = newVisitor(req)
-		http.SetCookie(res, cookie)
-	}
-
-	if tampered(cookie.Value) {
-		cookie = newVisitor(req)
-		http.SetCookie(res, cookie)
-	}
-
-	return cookie
-}
