@@ -7,7 +7,12 @@ import (
 )
 
 func newVisitor(req *http.Request) (*http.Cookie, error) {
-	m := initialModel()
+	id, err := uuid.NewV4()
+	if err != nil {
+		log.Println("ERROR newVisitor uuid.NewV4", err)
+		return nil, err
+	}
+	m := initialModel(id.String())
 	return makeCookie(m, req)
 }
 
@@ -15,19 +20,14 @@ func currentVisitor(m model, req *http.Request) (*http.Cookie, error) {
 	return makeCookie(m, req)
 }
 
-func initialModel() model {
-	id, err := uuid.NewV4()
-	if err != nil {
-		log.Println("ERROR newVisitor uuid.NewV4", err)
-		return nil, err
-	}
+func initialModel(id string) model {
 	m := model{
 		Name:  "",
 		State: false,
 		Pictures: []string{
 			"one.jpg",
 		},
-		ID: id.String(),
+		ID: id,
 	}
 	return m
 }

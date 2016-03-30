@@ -23,9 +23,9 @@
     <a href="/login">Please Login</a>
 {{end}}
 
-<h1>EVERYTHING SET ID: ` + id + `</h1>
-<h1><a href="/?id=` + id + `">HOME AGAIN</a></h1>
-<h1><a href="/retrieve?id=` + id + `">RETRIEVE</a></h1>
+<h1>EVERYTHING SET ID: {{.ID}}</h1>
+<h1><a href="/?id={{.ID}}">HOME AGAIN</a></h1>
+<h1><a href="/retrieve?id={{.ID}}">RETRIEVE</a></h1>
 
 </body>
 </html>
