@@ -6,7 +6,7 @@
 # Instructions
 1. Store a uuid in a cookie
   1. Value:uuid
-1. Store the uuid in memcache
+1. Store a value in memcache
   1. key:uuid
   1. value:your name 
 1. Retrieve the uuid from the cookie
