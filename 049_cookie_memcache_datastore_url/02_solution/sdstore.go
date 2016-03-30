@@ -25,10 +25,7 @@ func retrieveDstore(id string, req *http.Request) (model, error) {
 
 	var m model
 	err := datastore.Get(ctx, key, &m)
-	if err == datastore.ErrNoSuchEntity {
-		log.Println("ERROR retrieveDstore datastore.Get", err)
-		return m, err
-	} else if err != nil {
+	if err != nil {
 		log.Println("ERROR retrieveDstore datastore.Get", err)
 		return m, err
 	}

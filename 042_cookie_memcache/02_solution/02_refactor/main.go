@@ -45,30 +45,29 @@ func noConfusion(res http.ResponseWriter, req *http.Request) {
 
 	var html string
 
-	if req.Method == "POST" {
+	// get cookie value
+	var id string
+	cookie, _ := req.Cookie("session-id")
+	if cookie != nil {
+		id = cookie.Value
+		html += `
+				<br>
+				<p>Value from cookie: ` + id + `</p>
+				`
+	}
 
-		// get cookie value
-		cookie, _ := req.Cookie("session-id")
-		id := ???
-		if cookie != nil {
-			html += `
-			<br>
-			<p>Value from cookie: ` + id + `</p>
-			`
-		}
-
-		// get memcache value
-		ctx := appengine.NewContext(req)
-		item, _ := memcache.Get(ctx, id)
-		if item != nil {
-			html += `
+	// get memcache value
+	ctx := appengine.NewContext(req)
+	item, _ := memcache.Get(ctx, id)
+	if item != nil {
+		html += `
 			<br>
 			<p>
 			Value from memcache: ` + string(item.Value) + `
 			</p>
 		`
-		}
 	}
+
 	res.Header().Set("Content-Type", "text/html; charset=utf-8")
 	fmt.Fprint(res, html)
 }
