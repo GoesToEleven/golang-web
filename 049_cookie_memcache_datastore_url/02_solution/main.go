@@ -2,8 +2,9 @@ package dstore
 
 import (
 	"fmt"
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
 	"net/http"
-	"log"
 )
 
 type model struct {
@@ -17,21 +18,22 @@ func init() {
 }
 
 func index(res http.ResponseWriter, req *http.Request) {
+	ctx := appengine.NewContext(req)
 
 	id, err := getID(res, req)
 	if err != nil {
-		log.Println("ERROR index getID", err)
+		log.Errorf(ctx, "ERROR index getID: %s", err)
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	// DATASTORE
 	m := model{
-		Fname:"Todd",
+		Fname: "Todd",
 	}
 	err = storeDstore(m, id, req)
 	if err != nil {
-		log.Println("ERROR index storeDstore", err)
+		log.Errorf(ctx, "ERROR index storeDstore: %s", err)
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -39,23 +41,24 @@ func index(res http.ResponseWriter, req *http.Request) {
 	// MEMCACHE
 	err = storeMemc(m, id, req)
 	if err != nil {
-		log.Println("ERROR index storeMemc", err)
+		log.Errorf(ctx, "ERROR index storeMemc: %s", err)
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	fmt.Fprint(res, `
-	<h1>EVERYTHING SET ID: ` + id + `</h1>
-	<h1><a href="/?id=` + id + `">HOME AGAIN</a></h1>
-	<h1><a href="/retrieve?id=` + id + `">RETRIEVE</a></h1>
+	<h1>EVERYTHING SET ID: `+id+`</h1>
+	<h1><a href="/?id=`+id+`">HOME AGAIN</a></h1>
+	<h1><a href="/retrieve?id=`+id+`">RETRIEVE</a></h1>
 	`)
 }
 
 func noConfusion(res http.ResponseWriter, req *http.Request) {
+	ctx := appengine.NewContext(req)
 
 	id, err := getID(res, req)
 	if err != nil {
-		log.Println("ERROR index getID", err)
+		log.Errorf(ctx, "ERROR index getID: %s", err)
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -63,7 +66,7 @@ func noConfusion(res http.ResponseWriter, req *http.Request) {
 	html := `
 	<form method="POST">
 	    HIDDEN FIELD
-	    <input type="hidden" name="panda" value="`+id+`">
+	    <input type="hidden" name="panda" value="` + id + `">
 	    <input type="submit" value="submit">
 	</form>
 	`
@@ -74,7 +77,7 @@ func noConfusion(res http.ResponseWriter, req *http.Request) {
 		// get value
 		m, err := retrieveMemc(id, req)
 		if err != nil {
-			log.Println("ERROR noConfusion retrieveMemc", err)
+			log.Errorf(ctx, "ERROR noConfusion retrieveMemc: %s", err)
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -82,7 +85,7 @@ func noConfusion(res http.ResponseWriter, req *http.Request) {
 			<br>
 			<h1>
 				<a href="/?id=` + id + `">
-				Go home again, `+ m.Fname +`
+				Go home again, ` + m.Fname + `
 				</a>
 			</h1>
 		`

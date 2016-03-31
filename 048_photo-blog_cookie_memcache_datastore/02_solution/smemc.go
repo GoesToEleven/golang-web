@@ -1,18 +1,18 @@
 package mem
 
 import (
-	"google.golang.org/appengine"
-	"google.golang.org/appengine/memcache"
-	"log"
-	"net/http"
 	"encoding/json"
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
+	"google.golang.org/appengine/memcache"
+	"net/http"
 )
 
 func storeMemc(m model, id string, req *http.Request) error {
 	ctx := appengine.NewContext(req)
 	bs, err := json.Marshal(m)
 	if err != nil {
-		log.Println("ERROR storeMemc json.Marshal: ", err)
+		log.Errorf(ctx, "ERROR storeMemc json.Marshal: %s", err)
 		return err
 	}
 	item1 := memcache.Item{
@@ -21,7 +21,7 @@ func storeMemc(m model, id string, req *http.Request) error {
 	}
 	err = memcache.Set(ctx, &item1)
 	if err != nil {
-		log.Println("ERROR storeMemc memcache.Set: ", err)
+		log.Errorf(ctx, "ERROR storeMemc memcache.Set: %s", err)
 		return err
 	}
 
@@ -46,7 +46,7 @@ func retrieveMemc(id string, req *http.Request) (model, error) {
 	// unmarshal from JSON
 	err = json.Unmarshal(item.Value, &m)
 	if err != nil {
-		log.Println("ERROR retrieveMemc unmarshal", err)
+		log.Errorf(ctx, "ERROR retrieveMemc unmarshal: %s", err)
 		return m, err
 	}
 	return m, nil

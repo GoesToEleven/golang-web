@@ -1,8 +1,9 @@
 package mem
 
 import (
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
 	"html/template"
-	"log"
 	"net/http"
 )
 
@@ -21,10 +22,11 @@ func init() {
 }
 
 func index(res http.ResponseWriter, req *http.Request) {
+	ctx := appengine.NewContext(req)
 
 	id, err := getID(res, req)
 	if err != nil {
-		log.Println("ERROR index getID", err)
+		log.Errorf(ctx, "ERROR index getID: %s", err)
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -32,14 +34,14 @@ func index(res http.ResponseWriter, req *http.Request) {
 	if req.Method == "POST" {
 		src, _, err := req.FormFile("data")
 		if err != nil {
-			log.Println("ERROR index req.FormFile", err)
+			log.Errorf(ctx, "ERROR index req.FormFile: %s", err)
 			// TODO: create error page to show user
 			http.Redirect(res, req, `/?id=`+id, http.StatusSeeOther)
 			return
 		}
 		err = uploadPhoto(src, id, req)
 		if err != nil {
-			log.Println("ERROR index uploadPhoto", err)
+			log.Errorf(ctx, "ERROR index uploadPhoto: %s", err)
 			// expired cookie may exist on client
 			http.Redirect(res, req, "/logout", http.StatusSeeOther)
 			return
@@ -48,7 +50,7 @@ func index(res http.ResponseWriter, req *http.Request) {
 
 	m, err := retrieveMemc(id, req)
 	if err != nil {
-		log.Println("ERROR index retrieveMemc", err)
+		log.Errorf(ctx, "ERROR index retrieveMemc: %s", err)
 		// expired cookie may exist on client
 		http.Redirect(res, req, "/logout", http.StatusSeeOther)
 		return
@@ -59,7 +61,8 @@ func index(res http.ResponseWriter, req *http.Request) {
 func logout(res http.ResponseWriter, req *http.Request) {
 	cookie, err := newVisitor(req)
 	if err != nil {
-		log.Println("ERROR logout getCookie", err)
+		ctx := appengine.NewContext(req)
+		log.Errorf(ctx, "ERROR logout getCookie: %s", err)
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -68,10 +71,11 @@ func logout(res http.ResponseWriter, req *http.Request) {
 }
 
 func login(res http.ResponseWriter, req *http.Request) {
+	ctx := appengine.NewContext(req)
 
 	id, err := getID(res, req)
 	if err != nil {
-		log.Println("ERROR index getID", err)
+		log.Errorf(ctx, "ERROR index getID: %s", err)
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -79,7 +83,7 @@ func login(res http.ResponseWriter, req *http.Request) {
 	if req.Method == "POST" && req.FormValue("password") == "secret" {
 		m, err := retrieveMemc(id, req)
 		if err != nil {
-			log.Println("ERROR index retrieveMemc", err)
+			log.Errorf(ctx, "ERROR index retrieveMemc: %s", err)
 			// expired cookie may exist on client
 			http.Redirect(res, req, "/logout", http.StatusSeeOther)
 			return
@@ -90,7 +94,7 @@ func login(res http.ResponseWriter, req *http.Request) {
 
 		cookie, err := currentVisitor(m, req)
 		if err != nil {
-			log.Println("ERROR login currentVisitor", err)
+			log.Errorf(ctx, "ERROR login currentVisitor: %s", err)
 			http.Redirect(res, req, `/?id=`+cookie.Value, http.StatusSeeOther)
 			return
 		}

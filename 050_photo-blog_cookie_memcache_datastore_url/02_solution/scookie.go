@@ -1,23 +1,25 @@
 package mem
 
 import (
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
 	"net/http"
-	"log"
 )
 
 func makeCookie(m model, req *http.Request) (*http.Cookie, error) {
+	ctx := appengine.NewContext(req)
 
 	// DATASTORE
 	err := storeDstore(m, req)
 	if err != nil {
-		log.Println("ERROR makeCookie storeDstore", err)
+		log.Errorf(ctx, "ERROR makeCookie storeDstore: %s", err)
 		return nil, err
 	}
 
 	// MEMCACHE
 	err = storeMemc(m, req)
 	if err != nil {
-		log.Println("ERROR makeCookie storeMemc", err)
+		log.Errorf(ctx, "ERROR makeCookie storeMemc: %s", err)
 		return nil, err
 	}
 

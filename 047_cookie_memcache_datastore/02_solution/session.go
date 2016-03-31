@@ -1,9 +1,10 @@
 package dstore
 
 import (
-"net/http"
-"github.com/nu7hatch/gouuid"
-	"log"
+	"github.com/nu7hatch/gouuid"
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
+	"net/http"
 )
 
 func getID(res http.ResponseWriter, req *http.Request) (string, error) {
@@ -14,7 +15,8 @@ func getID(res http.ResponseWriter, req *http.Request) (string, error) {
 	if err != nil {
 		pid, err := uuid.NewV4()
 		if err != nil {
-			log.Println("ERROR getID uuid.NewV4", err)
+			ctx := appengine.NewContext(req)
+			log.Errorf(ctx, "ERROR getID uuid.NewV4: %s", err)
 			return id, err
 		}
 		cookie = &http.Cookie{

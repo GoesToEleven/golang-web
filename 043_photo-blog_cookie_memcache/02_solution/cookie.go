@@ -3,8 +3,8 @@ package mem
 import (
 	"encoding/base64"
 	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
 	"google.golang.org/appengine/memcache"
-	"log"
 	"net/http"
 	"strings"
 )
@@ -12,7 +12,6 @@ import (
 func genCookie(res http.ResponseWriter, req *http.Request) *http.Cookie {
 
 	cookie, err := req.Cookie("session-id")
-
 	if err != nil {
 		cookie = newVisitor(req)
 		http.SetCookie(res, cookie)
@@ -49,7 +48,8 @@ func makeCookie(mm []byte, id string, req *http.Request) *http.Cookie {
 	// Anytime a cookie is created, let's print the id
 	// The id is the key for the value in memcache
 	// Having the id will allow us to lookup the value in memcache
-	log.Println("ID:", id)
+	ctx := appengine.NewContext(req)
+	log.Infof(ctx, "ID: %s", id)
 
 	b64 := base64.URLEncoding.EncodeToString(mm)
 

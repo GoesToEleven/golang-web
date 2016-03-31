@@ -4,7 +4,8 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"log"
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
 	"net/http"
 	"strings"
 )
@@ -20,9 +21,10 @@ func Model(c *http.Cookie, req *http.Request) model {
 	xs := strings.Split(c.Value, "|")
 	usrData := xs[1]
 
+	ctx := appengine.NewContext(req)
 	bs, err := base64.URLEncoding.DecodeString(usrData)
 	if err != nil {
-		log.Println("Error decoding base64", err)
+		log.Errorf(ctx, "Error decoding base64: %s", err)
 	}
 
 	m := unmarshalModel(bs)
@@ -31,8 +33,7 @@ func Model(c *http.Cookie, req *http.Request) model {
 	m2 := retrieveMemc(req, id)
 	if m2.Pictures != nil {
 		m.Pictures = m2.Pictures
-		log.Println("PICTURE PATHS RETURNED FROM MEMCACHE")
-		log.Println(m.Pictures)
+		log.Infof(ctx, "PICTURE PATHS RETURNED FROM MEMCACHE %s", m.Pictures)
 	}
 
 	return m

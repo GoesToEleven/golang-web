@@ -1,8 +1,9 @@
 package mem
 
 import (
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
 	"html/template"
-	"log"
 	"net/http"
 	"strings"
 )
@@ -28,7 +29,8 @@ func index(res http.ResponseWriter, req *http.Request) {
 	if req.Method == "POST" {
 		src, hdr, err := req.FormFile("data")
 		if err != nil {
-			log.Println("error uploading photo: ", err)
+			ctx := appengine.NewContext(req)
+			log.Errorf(ctx, "error uploading photo: %s", err)
 			// TODO: create error page to show user
 		}
 		cookie = uploadPhoto(src, hdr, cookie, req)

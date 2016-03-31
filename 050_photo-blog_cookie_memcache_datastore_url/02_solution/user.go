@@ -2,14 +2,16 @@ package mem
 
 import (
 	"github.com/nu7hatch/gouuid"
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
 	"net/http"
-	"log"
 )
 
 func newVisitor(req *http.Request) (*http.Cookie, error) {
 	id, err := uuid.NewV4()
 	if err != nil {
-		log.Println("ERROR newVisitor uuid.NewV4", err)
+		ctx := appengine.NewContext(req)
+		log.Errorf(ctx, "ERROR newVisitor uuid.NewV4: %s", err)
 		return nil, err
 	}
 	m := initialModel(id.String())

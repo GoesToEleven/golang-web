@@ -44,7 +44,7 @@ Make sure it looks like this:
 
 ```go
 application: <your-app-id-here>
-version: v1
+version: 1
 runtime: go
 api_version: go1
 
@@ -52,3 +52,32 @@ handlers:
 - url: /.*
   script: _go_app
 ```
+
+# FYI - Reading Documentation
+
+When you look up documentation on godoc.org, go to the parent package, then look at "Directories"
+
+## Example
+
+For instance, if I wanted to see the documentation on this package:
+
+google.golang.org/appengine/file
+
+I would go to this package
+
+google.golang.org/appengine
+
+Then click on "Directories" (or scroll to the bottom), find the "file" package, then click that link.
+
+
+## Example
+
+For instance, if I wanted to see the documentation on this package:
+
+google.golang.org/cloud/storage
+
+I would go to this package
+
+google.golang.org/cloud
+
+Then click on "Directories" (or scroll to the bottom), find the "storage" package, then click that link.

@@ -232,6 +232,21 @@ Took code out of `func main` and put it into `func init`
 
 Added `app.yaml` file
 
+# Note the use of appengine/log
+
+```go
+google.golang.org/appengine/log
+```
+
+```go
+ctx := appengine.NewContext(req)
+log.Errorf(ctx, "Error decoding base64: %s", err)
+```
+
+Read more about it here:
+
+https://godoc.org/google.golang.org/appengine/log
+
 # Run Your App
 
 Enter this at the terminal: `goapp serve`

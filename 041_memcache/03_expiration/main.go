@@ -3,8 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
-)
-import (
+
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/memcache"
 	"time"

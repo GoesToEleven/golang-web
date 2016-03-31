@@ -3,8 +3,9 @@ package mem
 import (
 	"crypto/sha1"
 	"fmt"
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
 	"io"
-	"log"
 	"mime/multipart"
 	"net/http"
 )
@@ -16,6 +17,7 @@ func uploadPhoto(src multipart.File, id string, req *http.Request) error {
 }
 
 func addPhoto(fName string, id string, req *http.Request) error {
+	ctx := appengine.NewContext(req)
 
 	// DATASTORE
 	md, err := retrieveDstore(id, req)
@@ -25,7 +27,7 @@ func addPhoto(fName string, id string, req *http.Request) error {
 	md.Pictures = append(md.Pictures, fName)
 	err = storeDstore(md, id, req)
 	if err != nil {
-		log.Println("ERROR addPhoto storeDstore", err)
+		log.Errorf(ctx, "ERROR addPhoto storeDstore: %s", err)
 		return err
 	}
 
@@ -33,13 +35,13 @@ func addPhoto(fName string, id string, req *http.Request) error {
 	var mc model
 	mc, err = retrieveMemc(id, req)
 	if err != nil {
-		log.Println("ERROR addPhoto retrieveMemc", err)
+		log.Errorf(ctx, "ERROR addPhoto retrieveMemc: %s", err)
 		return err
 	}
 	mc.Pictures = append(mc.Pictures, fName)
 	err = storeMemc(mc, id, req)
 	if err != nil {
-		log.Println("ERROR addPhoto storeMemc", err)
+		log.Errorf(ctx, "ERROR addPhoto storeMemc: %s", err)
 		return err
 	}
 

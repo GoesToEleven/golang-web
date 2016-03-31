@@ -1,18 +1,19 @@
 package mem
 
 import (
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
 	"net/http"
-	"log"
 )
 
 func getCookie(res http.ResponseWriter, req *http.Request) (*http.Cookie, error) {
 
 	cookie, err := req.Cookie("session-id")
-
 	if err != nil {
 		cookie, err = newVisitor(req)
 		if err != nil {
-			log.Println("ERROR getCookie newVisitor", err)
+			ctx := appengine.NewContext(req)
+			log.Errorf(ctx, "ERROR getCookie newVisitor: %s", err)
 			return nil, err
 		}
 		http.SetCookie(res, cookie)
@@ -23,18 +24,19 @@ func getCookie(res http.ResponseWriter, req *http.Request) (*http.Cookie, error)
 }
 
 func makeCookie(m model, id string, req *http.Request) (*http.Cookie, error) {
+	ctx := appengine.NewContext(req)
 
 	// DATASTORE
 	err := storeDstore(m, id, req)
 	if err != nil {
-		log.Println("ERROR makeCookie storeDstore", err)
+		log.Errorf(ctx, "ERROR makeCookie storeDstore: %s", err)
 		return nil, err
 	}
 
 	// MEMCACHE
 	err = storeMemc(m, id, req)
 	if err != nil {
-		log.Println("ERROR makeCookie storeMemc", err)
+		log.Errorf(ctx, "ERROR makeCookie storeMemc: %s", err)
 		return nil, err
 	}
 

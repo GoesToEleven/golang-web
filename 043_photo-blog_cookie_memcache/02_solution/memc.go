@@ -3,8 +3,8 @@ package mem
 import (
 	"encoding/base64"
 	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
 	"google.golang.org/appengine/memcache"
-	"log"
 	"net/http"
 )
 
@@ -24,7 +24,7 @@ func retrieveMemc(req *http.Request, id string) model {
 	// decode item.Value from base64
 	bs, err := base64.URLEncoding.DecodeString(string(item.Value))
 	if err != nil {
-		log.Println("Error decoding base64 in retrieveMemc", err)
+		log.Errorf(ctx, "Error decoding base64 in retrieveMemc: %s", err)
 	}
 
 	// unmarshal from JSON

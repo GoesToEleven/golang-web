@@ -1,12 +1,14 @@
 package dstore
 
 import (
-"net/http"
-"github.com/nu7hatch/gouuid"
-	"log"
+	"github.com/nu7hatch/gouuid"
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
+	"net/http"
 )
 
 func getID(res http.ResponseWriter, req *http.Request) (string, error) {
+	ctx := appengine.NewContext(req)
 
 	var id, origin string
 	var cookie *http.Cookie
@@ -22,7 +24,7 @@ func getID(res http.ResponseWriter, req *http.Request) (string, error) {
 			origin = "BRAND NEW"
 			pid, err := uuid.NewV4()
 			if err != nil {
-				log.Println("ERROR getID uuid.NewV4", err)
+				log.Errorf(ctx, "ERROR getID uuid.NewV4: %s", err)
 				return id, err
 			}
 			id = pid.String()
@@ -37,6 +39,6 @@ func getID(res http.ResponseWriter, req *http.Request) (string, error) {
 		http.SetCookie(res, cookie)
 	}
 	id = cookie.Value
-	log.Println("ID CAME FROM", origin)
+	log.Infof(ctx, "ID CAME FROM: %s", origin)
 	return id, nil
 }

@@ -4,8 +4,9 @@ import (
 	"crypto/sha1"
 	"encoding/base64"
 	"fmt"
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
 	"io"
-	"log"
 	"mime/multipart"
 	"net/http"
 	"os"
@@ -40,7 +41,8 @@ func addPhoto(fName string, c *http.Cookie, req *http.Request) *http.Cookie {
 	usrData := xs[1]
 	bs, err := base64.URLEncoding.DecodeString(usrData)
 	if err != nil {
-		log.Println("Error decoding base64", err)
+		ctx := appengine.NewContext(req)
+		log.Errorf(ctx, "Error decoding base64: %s", err)
 	}
 	m := unmarshalModel(bs)
 	m.Pictures = append(m.Pictures, fName)
