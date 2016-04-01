@@ -6,17 +6,19 @@ import (
 	"google.golang.org/cloud/storage"
 )
 
-func putFile(ctx context.Context, name string, rdr io.Reader) error {
+func putFile(ctx context.Context, name string, mpf io.Reader) error {
+
 	client, err := storage.NewClient(ctx)
 	if err != nil {
 		return err
 	}
 	defer client.Close()
+
 	writer := client.Bucket(gcsBucket).Object(name).NewWriter(ctx)
 	writer.ACL = []storage.ACLRule{
 		{storage.AllUsers, storage.RoleReader},
 	}
-	io.Copy(writer, rdr)
+	io.Copy(writer, mpf)
 	return writer.Close()
 }
 

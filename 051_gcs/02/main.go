@@ -2,6 +2,8 @@ package skyhdd
 
 import (
 	"net/http"
+"google.golang.org/appengine/log"
+	"google.golang.org/appengine"
 )
 
 const gcsBucket = "learning-1130.appspot.com"
@@ -11,6 +13,7 @@ func init() {
 }
 
 func handler(res http.ResponseWriter, req *http.Request) {
+	ctx := appengine.NewContext(req)
 
 	if req.URL.Path != "/" {
 		http.NotFound(res, req)
@@ -25,11 +28,30 @@ func handler(res http.ResponseWriter, req *http.Request) {
 	`
 
 	if req.Method == "POST" {
-		src, hdr, err := req.FormFile("dahui")
+
+		mpf, hdr, err := req.FormFile("dahui")
 		if err != nil {
-			log.Println("error uploading photo: ", err)
-			// TODO: create error page to show user
+			log.Errorf(ctx, "error uploading photo: ", err)
+			http.Error(res, "We were unable to upload your file\n", http.StatusInternalServerError)
 		}
+		defer mpf.Close()
+
+
+		fname, err := uploadFile(req, mpf, hdr)
+		if err != nil {
+			log.Errorf(ctx, "error uploading photo: ", err)
+			http.Error(res, "We were unable to accept your file\n" + err.Error(), http.StatusUnsupportedMediaType)
+		}
+
+		// TODO left off here
+		// test this
+		xs := []string{}
+
+		http.SetCookie(res, &http.Cookie{
+			Name:  "file-names",
+			Value: "some value",
+		})
+
 	}
 
 	res.Header().Set("Content-Type", "text/html; charset=utf-8")
