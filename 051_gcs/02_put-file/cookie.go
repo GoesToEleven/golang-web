@@ -9,8 +9,8 @@ import (
 	"encoding/base64"
 )
 
-func putCookie(res http.ResponseWriter, req *http.Request, fname string) ([]string, error) {
-	var mss map[string]string
+func putCookie(res http.ResponseWriter, req *http.Request, fname string) (map[string]bool, error) {
+	var mss map[string]bool
 	cookie, _ := req.Cookie("file-names")
 	if cookie != nil {
 		bs, err := base64.URLEncoding.DecodeString(cookie.Value)
@@ -23,18 +23,20 @@ func putCookie(res http.ResponseWriter, req *http.Request, fname string) ([]stri
 		}
 	}
 
-	xs = append(xs, fname)
-	bs, err := json.Marshal(xs)
+	mss[fname] = true
+	bs, err := json.Marshal(mss)
 	if err != nil {
-		return xs, fmt.Errorf("ERROR putCookie json.Marshal: ", err)
+		return mss, fmt.Errorf("ERROR putCookie json.Marshal: ", err)
 	}
+	b64 := base64.URLEncoding.EncodeToString(bs)
+
+	// FYI
 	ctx := appengine.NewContext(req)
 	log.Infof(ctx, "COOKIE JSON: %s", string(bs))
-	b64 := base64.URLEncoding.EncodeToString(bs)
 
 	http.SetCookie(res, &http.Cookie{
 		Name:  "file-names",
 		Value: b64,
 	})
-	return xs, nil
+	return mss, nil
 }

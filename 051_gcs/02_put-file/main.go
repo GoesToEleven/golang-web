@@ -5,7 +5,6 @@ import (
 	"google.golang.org/appengine/log"
 	"io"
 	"net/http"
-	"strconv"
 )
 
 const gcsBucket = "learning-1130.appspot.com"
@@ -54,8 +53,8 @@ func handler(res http.ResponseWriter, req *http.Request) {
 		}
 
 		html += `<h1>Files</h1>`
-		for i, v := range fnames {
-			html += `<h3>` + strconv.Itoa(i) + ` - ` + v + `</h3>`
+		for k, _ := range fnames {
+			html += `<h3>` + k + `</h3>`
 		}
 	}
 
