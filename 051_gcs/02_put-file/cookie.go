@@ -1,12 +1,12 @@
 package skyhdd
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"net/http"
-	"google.golang.org/appengine/log"
 	"google.golang.org/appengine"
-	"encoding/base64"
+	"google.golang.org/appengine/log"
+	"net/http"
 )
 
 func putCookie(res http.ResponseWriter, req *http.Request, fname string) (map[string]bool, error) {

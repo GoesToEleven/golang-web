@@ -13,12 +13,11 @@ import (
 
 func uploadFile(req *http.Request, mpf multipart.File, hdr *multipart.FileHeader) (string, error) {
 
-	var name string
 	ext, err := fileFilter(req, hdr)
 	if err != nil {
-		return name, err
+		return "", err
 	}
-	name = getSha(mpf) + `.` + ext
+	name := getSha(mpf) + `.` + ext
 	mpf.Seek(0, 0)
 
 	ctx := appengine.NewContext(req)

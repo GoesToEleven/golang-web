@@ -22,7 +22,9 @@ func putFile(ctx context.Context, name string, rdr io.Reader) error {
 	return writer.Close()
 }
 
-func getFileLink(ctx context.Context, name string) (string, error) {
+// getAttrs returns a *storage.ObjectAttrs - learn more about this Type here:
+// https://godoc.org/google.golang.org/cloud/storage#ObjectAttrs
+func getAttrs(ctx context.Context, name string) (*storage.ObjectAttrs, error) {
 	client, err := storage.NewClient(ctx)
 	if err != nil {
 		return "", err
@@ -33,5 +35,5 @@ func getFileLink(ctx context.Context, name string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return attrs.MediaLink, nil
+	return attrs, nil
 }

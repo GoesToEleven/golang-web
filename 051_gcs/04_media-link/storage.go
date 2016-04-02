@@ -22,18 +22,16 @@ func putFile(ctx context.Context, name string, rdr io.Reader) error {
 	return writer.Close()
 }
 
-func getAttrs(ctx context.Context, name string) (*storage.ObjectAttrs, error) {
-
-	var attributes *storage.ObjectAttrs
+func getFileLink(ctx context.Context, name string) (string, error) {
 	client, err := storage.NewClient(ctx)
 	if err != nil {
-		return attributes, err
+		return "", err
 	}
 	defer client.Close()
 
-	attributes, err = client.Bucket(gcsBucket).Object(name).Attrs(ctx)
+	attrs, err := client.Bucket(gcsBucket).Object(name).Attrs(ctx)
 	if err != nil {
-		return attributes, err
+		return "", err
 	}
-	return attributes, nil
+	return attrs.MediaLink, nil
 }

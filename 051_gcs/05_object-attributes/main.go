@@ -5,14 +5,12 @@ import (
 	"google.golang.org/appengine/log"
 	"io"
 	"net/http"
-	"strconv"
 )
 
 const gcsBucket = "learning-1130.appspot.com"
 
 func init() {
 	http.HandleFunc("/", handler)
-	http.HandleFunc("/golden", retriever)
 }
 
 func handler(res http.ResponseWriter, req *http.Request) {
@@ -56,24 +54,34 @@ func handler(res http.ResponseWriter, req *http.Request) {
 		}
 
 		html += `<h1>Files</h1>`
-		for i, v := range fnames {
-			html += `<h3><a href="/golden?object=` + v + `">` + strconv.Itoa(i) + ` - ` + v + `</a></h3>`
+		for k, _ := range fnames {
+			attrs, err := getAttrs(ctx, k)
+			if err != nil {
+				continue
+			}
+			html += `<h1>`+attrs.Name+`</h1>`+
+			`<h3>Bucket: `+attrs.Bucket+`</h3>`+
+			`<h3>ContentType: `+attrs.ContentType+`</h3>`+
+			`<h3>ContentLanguage: `+attrs.ContentLanguage+`</h3>`+
+			`<h3>CacheControl: `+attrs.CacheControl+`</h3>`+
+			`<h3>ACL: `+attrs.ACL+`</h3>`+
+			`<h3>`+attrs.Owner+`</h3>`+
+			`<h3>`+attrs.Size+`</h3>`+
+			`<h3>`+attrs.ContentEncoding+`</h3>`+
+			`<h3>`+attrs.ContentDisposition+`</h3>`+
+			`<h3>`+attrs.MD5+`</h3>`+
+			`<h3>`+attrs.CRC32C+`</h3>`+
+			`<h3>`+attrs.MediaLink+`</h3>`+
+			`<h3>`+attrs.Metadata+`</h3>`+
+			`<h3>`+attrs.Generation+`</h3>`+
+			`<h3>`+attrs.MetaGeneration+`</h3>`+
+			`<h3>`+attrs.StorageClass+`</h3>`+
+			`<h3>`+attrs.Created+`</h3>`+
+			`<h3>`+attrs.Deleted+`</h3>`+
+			`<h3>`+attrs.Updated`</h3>`
 		}
 	}
 
 	res.Header().Set("Content-Type", "text/html; charset=utf-8")
 	io.WriteString(res, html)
-}
-
-func retriever(res http.ResponseWriter, req *http.Request) {
-	ctx := appengine.NewContext(req)
-	objectName := req.FormValue("object")
-	rdr, err := getFile(ctx, objectName)
-	if err != nil {
-		log.Errorf(ctx, "ERROR golden getFile: ", err)
-		http.Error(res, "We were unable to get the file" + objectName+ "\n" + err.Error(), http.StatusUnsupportedMediaType)
-		return
-	}
-	defer rdr.Close()
-	io.Copy(res, rdr)
 }
