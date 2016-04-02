@@ -223,7 +223,7 @@ In the documentation, there are several `Close` methods attached to different ty
 
 Which `Close` method, attached to which type, do we want?
 
-## Code Sample - Storing An Object
+## Code Sample - Retrieving An Object
 
 In it's most basic form, our code for storing an object will look like this:
 

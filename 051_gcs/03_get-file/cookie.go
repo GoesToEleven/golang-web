@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"google.golang.org/appengine/log"
-	"google.golang.org/appengine"
 	"encoding/base64"
 )
 
@@ -28,8 +26,6 @@ func putCookie(res http.ResponseWriter, req *http.Request, fname string) ([]stri
 	if err != nil {
 		return xs, fmt.Errorf("ERROR putCookie json.Marshal: ", err)
 	}
-	ctx := appengine.NewContext(req)
-	log.Infof(ctx, "COOKIE JSON: %s", string(bs))
 	b64 := base64.URLEncoding.EncodeToString(bs)
 
 	http.SetCookie(res, &http.Cookie{

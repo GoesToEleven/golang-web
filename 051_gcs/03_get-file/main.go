@@ -74,5 +74,6 @@ func retriever(res http.ResponseWriter, req *http.Request) {
 		http.Error(res, "We were unable to get the file" + objectName+ "\n" + err.Error(), http.StatusUnsupportedMediaType)
 		return
 	}
+	defer rdr.Close()
 	io.Copy(res, rdr)
 }

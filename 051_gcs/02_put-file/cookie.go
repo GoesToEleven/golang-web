@@ -10,14 +10,14 @@ import (
 )
 
 func putCookie(res http.ResponseWriter, req *http.Request, fname string) ([]string, error) {
-	var xs []string
+	var mss map[string]string
 	cookie, _ := req.Cookie("file-names")
 	if cookie != nil {
 		bs, err := base64.URLEncoding.DecodeString(cookie.Value)
 		if err != nil {
 			return nil, fmt.Errorf("ERROR handler base64.URLEncoding.DecodeString: %s", err)
 		}
-		err = json.Unmarshal(bs, &xs)
+		err = json.Unmarshal(bs, &mss)
 		if err != nil {
 			return nil, fmt.Errorf("ERROR handler json.Unmarshal: %s", err)
 		}
