@@ -1,9 +1,9 @@
 package skyhdd
 
 import (
-	"io"
 	"golang.org/x/net/context"
 	"google.golang.org/cloud/storage"
+	"io"
 )
 
 func putFile(ctx context.Context, name string, rdr io.Reader) error {
@@ -22,26 +22,18 @@ func putFile(ctx context.Context, name string, rdr io.Reader) error {
 	return writer.Close()
 }
 
-func getFile(ctx context.Context, name string) (io.ReadCloser, error) {
+func getAttrs(ctx context.Context, name string) (*storage.ObjectAttrs, error) {
+
+	var attributes *storage.ObjectAttrs
 	client, err := storage.NewClient(ctx)
 	if err != nil {
-		return nil, err
+		return attributes, err
 	}
 	defer client.Close()
 
-	return client.Bucket(gcsBucket).Object(name).NewReader(ctx)
-}
-
-func getFileLink(ctx context.Context, name string) (string, error) {
-	client, err := storage.NewClient(ctx)
+	attributes, err = client.Bucket(gcsBucket).Object(name).Attrs(ctx)
 	if err != nil {
-		return "", err
+		return attributes, err
 	}
-	defer client.Close()
-
-	attrs, err := client.Bucket(gcsBucket).Object(name).Attrs(ctx)
-	if err != nil {
-		return "", err
-	}
-	return attrs.MediaLink, nil
+	return attributes, nil
 }

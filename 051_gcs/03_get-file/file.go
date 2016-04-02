@@ -1,32 +1,33 @@
 package skyhdd
 
 import (
-	"mime/multipart"
 	"crypto/sha1"
-	"io"
 	"fmt"
-	"strings"
-	"google.golang.org/appengine/log"
-	"net/http"
 	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
+	"io"
+	"mime/multipart"
+	"net/http"
+	"strings"
 )
 
 func uploadFile(req *http.Request, mpf multipart.File, hdr *multipart.FileHeader) (string, error) {
 
+	var name string
 	ext, err := fileFilter(req, hdr)
 	if err != nil {
-		return err
+		return name, err
 	}
-	name := getSha(mpf) + ext
+	name = getSha(mpf) + `.` + ext
 	mpf.Seek(0, 0)
 
 	ctx := appengine.NewContext(req)
 	return name, putFile(ctx, name, mpf)
 }
 
-func fileFilter(req, hdr *multipart.FileHeader) (string, error) {
+func fileFilter(req *http.Request, hdr *multipart.FileHeader) (string, error) {
 
-	ext := hdr[strings.LastIndex(hdr.Filename, ".")+1:]
+	ext := hdr.Filename[strings.LastIndex(hdr.Filename, ".")+1:]
 	ctx := appengine.NewContext(req)
 	log.Infof(ctx, "FILE EXTENSION: %s", ext)
 

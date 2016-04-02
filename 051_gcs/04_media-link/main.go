@@ -1,11 +1,11 @@
 package skyhdd
 
 import (
-	"net/http"
-"google.golang.org/appengine/log"
 	"google.golang.org/appengine"
-	"strconv"
+	"google.golang.org/appengine/log"
 	"io"
+	"net/http"
+	"strconv"
 )
 
 const gcsBucket = "learning-1130.appspot.com"
@@ -23,6 +23,7 @@ func handler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	html := `
+		<h1>UPLOAD</h1>
 	    <form method="POST" enctype="multipart/form-data">
 		<input type="file" name="dahui">
 		<input type="submit">
@@ -35,29 +36,34 @@ func handler(res http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			log.Errorf(ctx, "ERROR handler req.FormFile: ", err)
 			http.Error(res, "We were unable to upload your file\n", http.StatusInternalServerError)
+			return
 		}
 		defer mpf.Close()
-
 
 		fname, err := uploadFile(req, mpf, hdr)
 		if err != nil {
 			log.Errorf(ctx, "ERROR handler uploadFile: ", err)
-			http.Error(res, "We were unable to accept your file\n" + err.Error(), http.StatusUnsupportedMediaType)
+			http.Error(res, "We were unable to accept your file\n"+err.Error(), http.StatusUnsupportedMediaType)
+			return
 		}
 
 		fnames, err := putCookie(res, req, fname)
 		if err != nil {
 			log.Errorf(ctx, "ERROR handler putCookie: ", err)
-			http.Error(res, "We were unable to accept your file\n" + err.Error(), http.StatusUnsupportedMediaType)
+			http.Error(res, "We were unable to accept your file\n"+err.Error(), http.StatusUnsupportedMediaType)
+			return
 		}
 
 		html += `<h1>Files</h1>`
 		for i, v := range fnames {
-			html += `<h3>` + strconv.Itoa(i) + ` - ` + v + `</h3>`
+			str, err := getFileLink(ctx, v)
+			if err != nil {
+				continue
+			}
+			html += `<h3><a href="` + str + `">` + strconv.Itoa(i) + ` - ` + v + `</a></h3>`
 		}
 	}
 
 	res.Header().Set("Content-Type", "text/html; charset=utf-8")
 	io.WriteString(res, html)
 }
-

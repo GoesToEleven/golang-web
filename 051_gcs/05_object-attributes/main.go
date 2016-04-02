@@ -23,6 +23,7 @@ func handler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	html := `
+		<h1>UPLOAD</h1>
 	    <form method="POST" enctype="multipart/form-data">
 		<input type="file" name="dahui">
 		<input type="submit">
@@ -55,7 +56,14 @@ func handler(res http.ResponseWriter, req *http.Request) {
 
 		html += `<h1>Files</h1>`
 		for i, v := range fnames {
-			html += `<h3>` + strconv.Itoa(i) + ` - ` + v + `</h3>`
+			attrs, err := getAttrs(ctx, v)
+			if err != nil {
+				continue
+			}
+			html += `<h3>`+attrs.Name+`</h3>` +
+			// TODO: finish here
+			`<p>`+attrs.+`</p>`
+			//<a href="` + str + `">` + strconv.Itoa(i) + ` - ` + v + `</a></h3>`
 		}
 	}
 
