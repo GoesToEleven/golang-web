@@ -4,6 +4,8 @@ import (
 	"net/http"
 "google.golang.org/appengine/log"
 	"google.golang.org/appengine"
+	"strconv"
+	"io"
 )
 
 const gcsBucket = "learning-1130.appspot.com"
@@ -31,7 +33,7 @@ func handler(res http.ResponseWriter, req *http.Request) {
 
 		mpf, hdr, err := req.FormFile("dahui")
 		if err != nil {
-			log.Errorf(ctx, "error uploading photo: ", err)
+			log.Errorf(ctx, "ERROR handler req.FormFile: ", err)
 			http.Error(res, "We were unable to upload your file\n", http.StatusInternalServerError)
 		}
 		defer mpf.Close()
@@ -39,21 +41,23 @@ func handler(res http.ResponseWriter, req *http.Request) {
 
 		fname, err := uploadFile(req, mpf, hdr)
 		if err != nil {
-			log.Errorf(ctx, "error uploading photo: ", err)
+			log.Errorf(ctx, "ERROR handler uploadFile: ", err)
 			http.Error(res, "We were unable to accept your file\n" + err.Error(), http.StatusUnsupportedMediaType)
 		}
 
-		// TODO left off here
-		// test this
-		xs := []string{}
+		fnames, err := putCookie(res, req, fname)
+		if err != nil {
+			log.Errorf(ctx, "ERROR handler putCookie: ", err)
+			http.Error(res, "We were unable to accept your file\n" + err.Error(), http.StatusUnsupportedMediaType)
+		}
 
-		http.SetCookie(res, &http.Cookie{
-			Name:  "file-names",
-			Value: "some value",
-		})
-
+		html += `<h1>Files</h1>`
+		for i, v := range fnames {
+			html += `<h3>` + strconv.Itoa(i) + ` - ` + v + `</h3>`
+		}
 	}
 
 	res.Header().Set("Content-Type", "text/html; charset=utf-8")
+	io.WriteString(res, html)
 }
 

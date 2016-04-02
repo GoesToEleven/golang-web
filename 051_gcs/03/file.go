@@ -34,7 +34,7 @@ func fileFilter(req, hdr *multipart.FileHeader) (string, error) {
 	case "jpg", "jpeg", "txt", "md":
 		return ext, nil
 	}
-	return ext, fmt.Errorf("We do not allow files of type %s", ext)
+	return ext, fmt.Errorf("We do not allow files of type %s. We only allow jpg, jpeg, txt, md extensions.", ext)
 }
 
 func getSha(src multipart.File) string {
