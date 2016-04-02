@@ -5,6 +5,7 @@ import (
 	"google.golang.org/appengine/log"
 	"io"
 	"net/http"
+	"strconv"
 )
 
 const gcsBucket = "learning-1130.appspot.com"
@@ -55,8 +56,8 @@ func handler(res http.ResponseWriter, req *http.Request) {
 		}
 
 		html += `<h1>Files</h1>`
-		for k, _ := range fnames {
-			html += `<h3><a href="/golden?object=` + k + `">` + k + `</a></h3>`
+		for i, v := range fnames {
+			html += `<h3><a href="/golden?object=` + v + `">` + strconv.Itoa(i) + ` - ` + v + `</a></h3>`
 		}
 	}
 
@@ -70,7 +71,7 @@ func retriever(res http.ResponseWriter, req *http.Request) {
 	rdr, err := getFile(ctx, objectName)
 	if err != nil {
 		log.Errorf(ctx, "ERROR golden getFile: ", err)
-		http.Error(res, "We were unable to get the file"+objectName+"\n"+err.Error(), http.StatusUnsupportedMediaType)
+		http.Error(res, "We were unable to get the file" + objectName+ "\n" + err.Error(), http.StatusUnsupportedMediaType)
 		return
 	}
 	defer rdr.Close()

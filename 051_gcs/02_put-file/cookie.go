@@ -10,7 +10,7 @@ import (
 )
 
 func putCookie(res http.ResponseWriter, req *http.Request, fname string) (map[string]bool, error) {
-	mss := make(map[string]int)
+	mss := make(map[string]bool)
 	cookie, _ := req.Cookie("file-names")
 	if cookie != nil {
 		bs, err := base64.URLEncoding.DecodeString(cookie.Value)
