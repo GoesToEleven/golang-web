@@ -59,6 +59,7 @@ func handler(res http.ResponseWriter, req *http.Request) {
 			if err != nil {
 				continue
 			}
+			// TODO left off here
 			html += `<h1>`+attrs.Name+`</h1>`+
 			`<h3>Bucket: `+attrs.Bucket+`</h3>`+
 			`<h3>ContentType: `+attrs.ContentType+`</h3>`+

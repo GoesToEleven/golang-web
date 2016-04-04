@@ -35,7 +35,9 @@ A free 5GB Cloud Storage bucket for App Engine applications, doesn't require bil
 # Download These Packages
 
 go get -u golang.org/x/oauth2
+
 go get -u google.golang.org/cloud/storage
+
 go get -u google.golang.org/appengine/...
 
 # Configure Your App.yaml
