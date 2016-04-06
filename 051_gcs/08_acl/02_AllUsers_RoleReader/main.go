@@ -12,7 +12,6 @@ const gcsBucket = "learning-1130.appspot.com"
 
 func init() {
 	http.HandleFunc("/", handler)
-	http.HandleFunc("/golden", retriever)
 }
 
 func handler(res http.ResponseWriter, req *http.Request) {
@@ -76,17 +75,4 @@ func handler(res http.ResponseWriter, req *http.Request) {
 
 	res.Header().Set("Content-Type", "text/html; charset=utf-8")
 	io.WriteString(res, html)
-}
-
-func retriever(res http.ResponseWriter, req *http.Request) {
-	ctx := appengine.NewContext(req)
-	objectName := req.FormValue("object")
-	rdr, err := getFile(ctx, objectName)
-	if err != nil {
-		log.Errorf(ctx, "ERROR golden getFile: ", err)
-		http.Error(res, "We were unable to get the file"+objectName+"\n"+err.Error(), http.StatusUnsupportedMediaType)
-		return
-	}
-	defer rdr.Close()
-	io.Copy(res, rdr)
 }

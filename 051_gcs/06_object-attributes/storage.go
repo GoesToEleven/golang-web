@@ -22,16 +22,6 @@ func putFile(ctx context.Context, name string, rdr io.Reader) error {
 	return writer.Close()
 }
 
-func getFile(ctx context.Context, name string) (io.ReadCloser, error) {
-	client, err := storage.NewClient(ctx)
-	if err != nil {
-		return nil, err
-	}
-	defer client.Close()
-
-	return client.Bucket(gcsBucket).Object(name).NewReader(ctx)
-}
-
 func listFiles(ctx context.Context) ([]*storage.ObjectAttrs, error) {
 	client, err := storage.NewClient(ctx)
 	if err != nil {

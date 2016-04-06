@@ -5,7 +5,6 @@ import (
 	"google.golang.org/appengine/log"
 	"io"
 	"net/http"
-	"fmt"
 )
 
 const gcsBucket = "learning-1130.appspot.com"
