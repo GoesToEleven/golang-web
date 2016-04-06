@@ -12,7 +12,6 @@ const gcsBucket = "learning-1130.appspot.com"
 
 func init() {
 	http.HandleFunc("/", handler)
-	http.HandleFunc("/golden", retriever)
 }
 
 func handler(res http.ResponseWriter, req *http.Request) {
@@ -58,14 +57,14 @@ func handler(res http.ResponseWriter, req *http.Request) {
 
 	html += `<h1>Files</h1>`
 
-	xsAttrs, err := listFiles(ctx)
+	xAttrs, err := listFiles(ctx)
 	if err != nil {
 		log.Errorf(ctx, "ERROR handler listFiles: ", err)
 		http.Error(res, err.Error(), http.StatusUnsupportedMediaType)
 		return
 	}
 
-	for _, v := range xsAttrs {
+	for _, v := range xAttrs {
 		html += `<h3>` + v.Name + `</h3>`+
 		`<p><strong>Bucket:</strong><br> `+v.Bucket+`</p>` +
 		`<p><strong>ContentType:</strong><br> `+v.ContentType+`</p>`+

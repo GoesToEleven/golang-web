@@ -56,14 +56,14 @@ func handler(res http.ResponseWriter, req *http.Request) {
 
 	html += `<h1>Files</h1>`
 
-	xsAttrs, err := listFiles(ctx)
+	xAttrs, err := listFiles(ctx)
 	if err != nil {
 		log.Errorf(ctx, "ERROR handler listFiles: ", err)
 		http.Error(res, err.Error(), http.StatusUnsupportedMediaType)
 		return
 	}
 
-	for _, v := range xsAttrs {
+	for _, v := range xAttrs {
 		html += `<h3>` + v.Name + `</h3>`
 	}
 

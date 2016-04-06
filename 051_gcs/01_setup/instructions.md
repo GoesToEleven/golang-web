@@ -8,9 +8,7 @@ https://cloud.google.com/appengine/docs/go/
 
 # Setup for Google Cloud Storage
 
-You might need to install Google Cloud Storage SDK.
-
-I installed this a long time ago. One of my students recently needed to install it.
+You need to install Google Cloud Storage SDK.
 
 https://cloud.google.com/sdk/
 

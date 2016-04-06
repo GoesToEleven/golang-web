@@ -30,7 +30,6 @@ func listFiles(ctx context.Context) ([]*storage.ObjectAttrs, error) {
 	defer client.Close()
 
 	q := storage.Query{
-		Versions: false,
 		MaxResults: 2,
 	}
 
