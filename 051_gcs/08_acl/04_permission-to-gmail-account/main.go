@@ -48,30 +48,17 @@ func handler(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		_, err = putCookie(res, req, fname)
+		fnames, err := putCookie(res, req, fname)
 		if err != nil {
 			log.Errorf(ctx, "ERROR handler putCookie: ", err)
 			http.Error(res, "We were unable to accept your file\n"+err.Error(), http.StatusUnsupportedMediaType)
 			return
 		}
-	}
 
-	html += `<h1>Files</h1>`
-
-	xsAttrs, err := listFiles(ctx)
-	if err != nil {
-		log.Errorf(ctx, "ERROR handler listFiles: ", err)
-		http.Error(res, err.Error(), http.StatusUnsupportedMediaType)
-		return
-	}
-
-	for _, v := range xsAttrs {
-		html += `<h3>` + v.Name + `</h3>`+
-		`<p><strong>Bucket:</strong><br> `+v.Bucket+`</p>` +
-		`<p><strong>ContentType:</strong><br> `+v.ContentType+`</p>`+
-		`<p><strong>ACL:</strong><br> `+fmt.Sprintf("%v",v.ACL)+`</p>`+
-		`<p><strong>Owner:</strong><br>`+v.Owner+`</p>`+
-		`<p><strong>MediaLink:</strong><br><a href="`+v.MediaLink+`" target="_blank">`+v.MediaLink+`</a></p>`
+		html += `<h1>Files</h1>`
+		for k, _ := range fnames {
+			html += `<h3><a href="/golden?object=` + k + `">` + k + `</a></h3>`
+		}
 	}
 
 	res.Header().Set("Content-Type", "text/html; charset=utf-8")
