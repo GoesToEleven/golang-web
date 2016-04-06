@@ -22,18 +22,26 @@ func putFile(ctx context.Context, name string, rdr io.Reader) error {
 	return writer.Close()
 }
 
-// getAttrs returns a *storage.ObjectAttrs - learn more about this Type here:
-// https://godoc.org/google.golang.org/cloud/storage#ObjectAttrs
-func getAttrs(ctx context.Context, name string) (*storage.ObjectAttrs, error) {
+func getFile(ctx context.Context, name string) (io.ReadCloser, error) {
 	client, err := storage.NewClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 	defer client.Close()
 
-	attrs, err := client.Bucket(gcsBucket).Object(name).Attrs(ctx)
+	return client.Bucket(gcsBucket).Object(name).NewReader(ctx)
+}
+
+func listFiles(ctx context.Context) ([]*storage.ObjectAttrs, error) {
+	client, err := storage.NewClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return attrs, nil
+	defer client.Close()
+
+	ptr, err := client.Bucket(gcsBucket).List(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	return ptr.Results, nil
 }
