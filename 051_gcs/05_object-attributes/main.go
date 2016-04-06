@@ -59,26 +59,26 @@ func handler(res http.ResponseWriter, req *http.Request) {
 			if err != nil {
 				continue
 			}
-			html += `<h1>`+attrs.Name+`</h1>`+
-			`<p>Bucket: `+attrs.Bucket+`</p>`+
-			`<p>ContentType: `+attrs.ContentType+`</p>`+
-			`<p>ContentLanguage: `+attrs.ContentLanguage+`</p>`+
-			`<p>CacheControl: `+attrs.CacheControl+`</p>`+
-			//`<p>ACL: `+attrs.ACL+`</p>`+
-			`<p>Owner:`+attrs.Owner+`</p>`+
-			//`<p>Size:`+attrs.Size+`</p>`+
-			`<p>ContentEncoding:`+attrs.ContentEncoding+`</p>`+
-			`<p>ContentDisposition:`+attrs.ContentDisposition+`</p>`+
-			//`<p>MD5:`+attrs.MD5+`</p>`+
-			`<p>CRC32C:`+attrs.CRC32C+`</p>`+
-			`<p>MediaLink:`+attrs.MediaLink+`</p>`+
-			`<p>Metadata:`+attrs.Metadata+`</p>`+
-			`<p>Generation:`+attrs.Generation+`</p>`+
-			`<p>MetaGeneration:`+attrs.MetaGeneration+`</p>`+
-			`<p>StorageClass:`+attrs.StorageClass+`</p>`+
-			`<p>Created:`+attrs.Created+`</p>`+
-			`<p>Deleted:`+attrs.Deleted+`</p>`+
-			`<p>Updated:`+attrs.Updated+`</p>`
+			html += `<h1>`+attrs.Name+`</h1>`
+			//`<p>Bucket: `+attrs.Bucket+`</p>`+
+			//`<p>ContentType: `+attrs.ContentType+`</p>`+
+			//`<p>ContentLanguage: `+attrs.ContentLanguage+`</p>`+
+			//`<p>CacheControl: `+attrs.CacheControl+`</p>`+
+			////`<p>ACL: `+attrs.ACL+`</p>`+
+			//`<p>Owner:`+attrs.Owner+`</p>`+
+			////`<p>Size:`+attrs.Size+`</p>`+
+			//`<p>ContentEncoding:`+attrs.ContentEncoding+`</p>`+
+			//`<p>ContentDisposition:`+attrs.ContentDisposition+`</p>`+
+			////`<p>MD5:`+attrs.MD5+`</p>`+
+			//`<p>CRC32C:`+attrs.CRC32C+`</p>`+
+			//`<p>MediaLink:`+attrs.MediaLink+`</p>`+
+			//`<p>Metadata:`+attrs.Metadata+`</p>`+
+			//`<p>Generation:`+attrs.Generation+`</p>`+
+			//`<p>MetaGeneration:`+attrs.MetaGeneration+`</p>`+
+			//`<p>StorageClass:`+attrs.StorageClass+`</p>`+
+			//`<p>Created:`+attrs.Created+`</p>`+
+			//`<p>Deleted:`+attrs.Deleted+`</p>`+
+			//`<p>Updated:`+attrs.Updated+`</p>`
 		}
 	}
 
