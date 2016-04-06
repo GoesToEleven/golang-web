@@ -72,11 +72,28 @@ Project teams are identified by a Google Storage ID. The project editors group a
 
 **Google account email address**
 
-Every user who has a Google account must have a unique email address associated with that account. You can specify a scope by using any email address that is associated with a Google account, such as a gmail.com address.
+Every user who has **a Google account** must have a unique email address associated with that account. You can specify a scope by using any email address that is associated with a Google account, such as a gmail.com address.
+
 Google Cloud Storage remembers email addresses as they are provided in ACLs until the entries are removed or overwritten. If a user changes email addresses, you should update ACL entries to reflect these changes.
 
-****
-****
-****
-****
+**Google group email address**
+
+Every Google group has a unique email address that is associated with the group. For example, the Google Cloud Storage Announce has the following email address: gs-announce@googlegroups.com. You can find the email address that is associated with a Google group by clicking About on the homepage of every Google group. For more information about Google groups, see the Google groups homepage.
+
+Like Google account email addresses, Google Cloud Storage remembers group email addresses as they are provided in ACLs until the entries are removed or overwritten. You do not need to worry about updating Google Group email addresses because Google Group email addresses are permanent and unlikely to change.
+
+
+**Google Apps domain**
+
+[Google Apps](https://apps.google.com/) customers can associate their email accounts with an Internet domain name. When you do this, each email account takes the form username@yourdomain.com. You can specify a scope by using any Internet domain name that is associated with a Google Apps account.
+
+
+**Special identifier for all Google account holders**
+
+This special scope identifier represents anyone who is authenticated with a Google account. The special scope identifier for all Google account holders is `allAuthenticatedUsers`.
+
+**Special identifier for all users**
+
+This special scope identifier represents anyone who is on the Internet, with or without a Google account. The special scope identifier for all users is `allUsers`.
+
 ****

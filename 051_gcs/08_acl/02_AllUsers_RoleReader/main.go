@@ -69,23 +69,9 @@ func handler(res http.ResponseWriter, req *http.Request) {
 		html += `<h3>` + v.Name + `</h3>`+
 		`<p><strong>Bucket:</strong><br> `+v.Bucket+`</p>` +
 		`<p><strong>ContentType:</strong><br> `+v.ContentType+`</p>`+
-		`<p><strong>ContentLanguage:</strong><br> `+v.ContentLanguage+`</p>`+
-		`<p><strong>CacheControl:</strong><br> `+v.CacheControl+`</p>`+
 		`<p><strong>ACL:</strong><br> `+fmt.Sprintf("%v",v.ACL)+`</p>`+
 		`<p><strong>Owner:</strong><br>`+v.Owner+`</p>`+
-		`<p><strong>Size:</strong><br>`+fmt.Sprintf("%v",v.Size)+`</p>`+
-		`<p><strong>ContentEncoding:</strong><br>`+v.ContentEncoding+`</p>`+
-		`<p><strong>ContentDisposition:</strong><br>`+v.ContentDisposition+`</p>`+
-		`<p><strong>MD5:</strong><br>`+fmt.Sprintf("%v",v.MD5)+`</p>`+
-		`<p><strong>CRC32C:</strong><br>`+fmt.Sprintf("%v",v.CRC32C)+`</p>`+
-		`<p><strong>MediaLink:</strong><br><a href="`+v.MediaLink+`" target="_blank">`+v.MediaLink+`</a></p>`+
-		`<p><strong>Metadata:</strong><br>`+fmt.Sprintf("%v",v.Metadata)+`</p>`+
-		`<p><strong>Generation:</strong><br>`+fmt.Sprintf("%v",v.Generation)+`</p>`+
-		`<p><strong>MetaGeneration:</strong><br>`+fmt.Sprintf("%v",v.MetaGeneration)+`</p>`+
-		`<p><strong>StorageClass:</strong><br>`+v.StorageClass+`</p>`+
-		`<p><strong>Created:</strong><br>`+fmt.Sprintf("%v",v.Created)+`</p>`+
-		`<p><strong>Deleted:</strong><br>`+fmt.Sprintf("%v",v.Deleted)+`</p>`+
-		`<p><strong>Updated:</strong><br>`+fmt.Sprintf("%v",v.Updated)+`</p>`
+		`<p><strong>MediaLink:</strong><br><a href="`+v.MediaLink+`" target="_blank">`+v.MediaLink+`</a></p>`
 	}
 
 	res.Header().Set("Content-Type", "text/html; charset=utf-8")
