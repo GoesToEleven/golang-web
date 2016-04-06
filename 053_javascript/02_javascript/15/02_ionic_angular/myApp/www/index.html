@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <!-- Firebase -->
+    <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+    <!-- AngularFire -->
+    <script src="https://cdn.firebase.com/libs/angularfire/1.1.1/angularfire.min.js"></script>
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+</head>
+<body ng-app="starter">
+
+<ion-pane ng-controller="ListController">
+    <ion-header-bar class="bar-dark">
+        <h2 class="title">Artist List</h2>
+        <button
+                class="button button-icon ion-navicon"
+                ng-click="data.showReorder = !data.showReorder">
+        </button>
+    </ion-header-bar>
+    <div class="bar bar-subheader
+        item-input-inset bar-light">
+        <label class="item-input-wrapper">
+            <i class="icon ion-search placeholder-icon"></i>
+            <input type="search" ng-model="query" placeholder="Search">
+        </label>
+    </div>
+    <ion-content
+            class="has-subheader">
+        <ion-list show-reorder="data.showReorder">
+            <ion-item
+                    ng-repeat='item in artists | filter: query'
+                    class="item-thumbnail-left
+            item-text-wrap">
+                <img src="img/{{item.shortname}}_tn.jpg"
+                     alt="{{ item.name }} Photo">
+                <h2>{{item.name}}</h2>
+                <h3>{{item.reknown}}</h3>
+                <p>{{item.bio | limitTo: 100}}
+                    {{ item.bio.length > 150 ? '&hellip;' : '' }}</p>
+                <ion-reorder-button class="ion-navicon"
+                                    on-reorder="moveItem(item, $fromIndex, $toIndex)">
+                </ion-reorder-button>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-pane>
+</body>
+</html>

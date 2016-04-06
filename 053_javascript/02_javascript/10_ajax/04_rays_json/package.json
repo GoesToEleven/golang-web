@@ -1,0 +1,17 @@
+{
+  "name": "JavaScriptJSON",
+  "version": "0.0.1",
+  "description": "JavaScript and JSON Sample",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/planetoftheweb/json.git"
+  },
+  "author": "Ray Villalobos",
+  "devDependencies": {
+    "gulp": "^3.8.8",
+    "gulp-jshint": "^1.9.0",
+    "gulp-util": "^2.2.20",
+    "gulp-webserver": "^0.8.1",
+    "jshint-stylish": "^1.0.0"
+  }
+}

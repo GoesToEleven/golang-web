@@ -1,0 +1,58 @@
+@import url(http://fonts.googleapis.com/css?family=Merriweather|Open+Sans:400,800,700);
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+body {
+  background: #E76C5A;
+  font-family: 'Merriweather';
+}
+#speakers {
+  width: 50%;
+  min-width: 350;
+  max-width: 960px;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+#speakers h3,
+#speakers h4 {
+  color: #973C26;
+  font: 700 2em/.9em'Open Sans';
+  margin: 0;
+  padding: 0;
+  padding-bottom: .25em;
+}
+#speakers h4 {
+  font-size: 1.2em;
+  color: #E0E6AE;
+}
+#speakers img {
+  width: 50%;
+  max-width: 200px;
+  margin-left: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  float: right;
+}
+#speakers p {
+  color: #323232;
+  font-size: 1.1em;
+  line-height: 1.5em;
+  padding-bottom: 10px;
+}
+.slick-slide {
+  margin: 20px;
+}
+@media all and (max-width: 580px) {
+  #speakers {
+    width: 80%;
+  }
+  #speakers img {
+    width: 180px;
+    float: none;
+  }
+}

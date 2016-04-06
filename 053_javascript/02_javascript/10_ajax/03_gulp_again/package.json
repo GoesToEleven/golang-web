@@ -1,0 +1,17 @@
+{
+  "name": "gulptrial",
+  "version": "1.0.0",
+  "description": "this is for trying out gulp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jshint": "^1.11.0",
+    "gulp-sass": "^2.0.1",
+    "gulp-webserver": "^0.9.1"
+  }
+}

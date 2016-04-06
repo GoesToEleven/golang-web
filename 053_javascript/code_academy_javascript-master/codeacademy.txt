@@ -1,0 +1,2034 @@
+console.log(2 * 5)
+console.log("Hello")
+
+// Here is an example of using the greater than (>) operator.
+console.log(15 > 4); // 15 > 4 evaluates to true, so true is printed.
+
+// Fill in with >, <, === so that the following print out true:
+console.log("Xiao Hui".length < 122);
+console.log("Goody Donaldson".length > 8);
+console.log(8*2 === 16);
+
+------------------------------------------
+if( "myName".length >= 7 ) {
+    console.log("You have a long name!");
+}
+else {
+    console.log("You have a short name!");
+}
+
+------------------------------------------
+if (4 > 5)
+{
+    // if condition is true
+    // do this code
+    console.log("True");
+}
+else // "otherwise"
+{
+    // do this code instead
+    console.log("The condition is false");
+}
+
+------------------------------------------
+
+if (12 / 4 === "Ari".length) {
+    confirm("Will this run the first block?");
+} else {
+    confirm("Or the second block?");
+}
+
+------------------------------------------
+
+// Use console.log( ) to print out the substrings.
+// Here is an example of the 1st to 4th letter of "JavaScript":
+console.log("JavaScript".substring(0,4));
+console.log("January".substring(0,3));
+console.log("Melbourne is great".substring(0,12));
+console.log("Hamburgers".substring(3,10));
+
+------------------------------------------
+// To create a variable, we use only one equals sign
+// But to check if two values are equal, we use 3 equal signs.
+
+// declare your variable here:
+
+var myAge = 43;
+console.log(myAge);
+------------------------------------------
+var myCountry = "USA";
+// Use console.log to print out the length of the variable myCountry.
+console.log(myCountry.length);
+
+// Use console.log to print out the first three letters of myCountry.
+console.log(myCountry.substring(0,3));
+------------------------------------------
+// On line 2, declare a variable myName and give it your name.
+var myName = "Todd";
+// On line 4, use console.log to print out the myName variable.
+console.log(myName);
+// On line 7, change the value of myName to be just the first 2
+// letters of your name.
+myName = myName.substring(0,2);
+// On line 9, use console.log to print out the myName variable.
+console.log(myName);
+------------------------------------------
+var myColor = "red";
+console.log(myColor.length);
+------------------------------------------
+var myName = "Todd";
+if (myName === "Todd")
+{ console.log("I finished my first course!");
+    }
+else
+{ console.log("I did not finish my first course!");
+    }
+------------------------------------------
+var divideByThree = function (number) {
+    var val = number / 3;
+    console.log(val);
+};
+
+// On line 12, we call the function by name
+// Here, it is called 'dividebythree'
+// We tell the computer what the number input is (i.e. 6)
+// The computer then runs the code inside the function!
+divideByThree(70000000000000000000);
+------------------------------------------
+var greeting = function (name) {
+    console.log("Great to see you," + " " + name);
+};
+
+// On line 11, call the greeting function!
+greeting("Dean");
+------------------------------------------
+var foodDemand = function(food) {
+    console.log("I want to eat" + " " + food);
+};
+foodDemand("hotdogs");
+------------------------------------------
+// Nicely written function:
+var calculate = function (number) {
+    var val = number * 10;
+    console.log(val);
+};
+
+// Badly written function with syntax errors!
+
+var greeting = function (name) {
+    console.log(name);
+    };
+greeting("Todd");
+------------------------------------------
+var orangeCost = function (price) {
+    console.log(price*5);
+};
+orangeCost(2.95);
+------------------------------------------
+// Parameter is a number, and we do math with that parameter
+var timesTwo = function(number) {
+    return number * 2;
+};
+
+// Call timesTwo here!
+var newNumber = timesTwo(7);
+console.log(newNumber);
+------------------------------------------
+var quarter = function(number) {
+    return number / 4;
+    };
+
+
+
+
+if (quarter(12) % 3 === 0 ) {
+  console.log("The statement is true");
+} else {
+  console.log("The statement is false");
+}
+------------------------------------------
+var perimeterBox = function (length, width) {
+    return 2 * length + 2 * width;
+    };
+console.log(perimeterBox(1,3));
+------------------------------------------
+var my_number = 7; //this has global scope
+
+var timesTwo = function(number) {
+    var my_number = number * 2;
+    console.log("Inside the function my_number is: ");
+    console.log(my_number);
+};
+
+timesTwo(7);
+
+console.log("Outside the function my_number is: ")
+console.log(my_number);
+------------------------------------------
+var nameString = function (name) {
+    return "Hi, I am " + name;
+};
+
+console.log(nameString("todd"));
+------------------------------------------
+var sleepCheck = function (numHours) {
+    if (numHours >= 8) {
+        return "You're getting plenty of sleep! Maybe even too much!";
+    }
+    else {
+        return "Get some more shut eye!";
+        }
+    };
+console.log(sleepCheck(10));
+console.log(sleepCheck(8));
+console.log(sleepCheck(6));
+------------------------------------------
+var userChoice = prompt("Do you choose rock, paper or scissors?");
+var computerChoice = Math.random();
+console.log(computerChoice);
+------------------------------------------
+var userChoice = prompt("Do you choose rock, paper or scissors?");
+var computerChoice = Math.random();
+if (computerChoice <= .33) {
+    computerChoice = "rock";
+    }
+else if (computerChoice <= .66){
+    computerChoice = "paper";
+    }
+else {
+    computerChoice = "scissors";
+    };
+------------------------------------------
+var compare = function(choice1, choice2) {
+    if (choice1 === choice2) {
+        return "The result is a tie!";
+        }
+    };
+------------------------------------------
+var game = function () {
+console.log("************");
+// users choice
+var userChoice = Math.random();
+if (userChoice <= 0.33) {
+	userChoice = "rock";
+} else if(userChoice <= 0.66) {
+	userChoice = "paper";
+} else {
+	userChoice = "scissors";
+}
+// var userChoice = prompt("Do you choose rock, paper or scissors?");
+console.log("User: " + userChoice);
+
+// computers choice
+var computerChoice = Math.random();
+if (computerChoice <= 0.33) {
+	computerChoice = "rock";
+} else if(computerChoice <= 0.66) {
+	computerChoice = "paper";
+} else {
+	computerChoice = "scissors";
+}
+
+console.log("Computer: " + computerChoice);
+
+console.log(compare(userChoice,computerChoice));
+};
+
+var compare = function(choice1, choice2) {
+    if (choice1 === choice2) {
+        return "The result is a tie!";
+        }
+    else if (choice1 === "rock") {
+        if (choice2 === "scissors") {
+            return "rock wins";
+            }
+        else {
+            return "paper wins";
+            }
+        }
+    else if (choice1 === "paper") {
+        if (choice2 === "rock") {
+            return "paper wins";
+            }
+        else {
+            return "scissors wins";
+            }
+        }
+    else if (choice1 === "scissors") {
+        if (choice2 === "rock") {
+            return "rock wins";
+            }
+        else {
+            return "scissors wins";
+            }
+        }
+    };
+
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+game();
+
+------------------------------------------
+for (i = 1; i <= 10; i++) {
+    console.log(i);
+    };
+------------------------------------------
+for (var i = 5; i < 51; i+=5) {
+	console.log(i);
+}
+------------------------------------------
+for (var i = 10; i >= 0; i-=1) {
+	console.log(i);
+}
+------------------------------------------
+for (var i=100; i>0; i-=5){
+    console.log(i);
+    };
+------------------------------------------
+// You are now declaring an array.
+// Arrays are an awesome data structure!
+
+var junk = ["m",'b',1,5];
+------------------------------------------
+var junkData = ["Eddie Murphy", 49, "peanuts", 31];
+console.log(junkData[3]);
+------------------------------------------
+var cities = ["Melbourne", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC", "Amman", "Helsinki", "NYC","Melbourne", "Amman", "Helsinki", "NYC"];
+
+for (var i = 0; i < cities.length; i++) {
+    console.log("I would like to visit " + cities[i]);
+}
+------------------------------------------
+var names = ["Amman", "Helsinki", "NYC","Melbourne", "Amman"];
+
+for (i=0; i< names.length; i++) {
+    console.log("I know someone called " + names[i]);
+    }
+------------------------------------------
+/*jshint multistr:true */
+
+text = "Blah blah blah blah blah blah Eric \
+blah blah blah Eric blah blah Eric blah blah \
+blah blah blah blah blah Eric";
+
+var myName = "Eric";
+var hits = [];
+
+// Look for "E" in the text
+for(var i = 0; i < text.length; i++) {
+	if (text[i] === "E") {
+		// If we find it, add characters up to
+		// the length of my name to the array
+		for(var j = i; j < (myName.length + i); j++) {
+			hits.push(text[j]);
+		}
+	}
+}
+
+if (hits.length === 0) {
+	console.log("Your name wasn't found!");
+} else {
+	console.log(hits);
+}
+------------------------------------------
+var text = "Hey, how are you \
+doing? My name is Todd. Hey, how are you \
+doing? My name is Todd. Hey, how are you \
+doing? My name is Todd. Hey, how are you \
+doing? My name is Todd. Hey, how are you \
+doing? My name is Todd. Hey, how are you \
+doing? My name is Todd.";
+
+var myName = "Todd";
+var hits = [];
+
+for (i=0; i<text.length; i++) {
+    if (text[i] === "T") {
+        for (var j = i; j < (myName.length + i); j++) {
+            hits.push(text[j]);
+            }
+        }
+    }
+
+if (hits.length === 0) {
+    console.log("Name not found.");
+}
+else {
+    console.log(hits);
+    }
+------------------------------------------
+var coinFace = Math.floor(Math.random() * 2);
+
+while(coinFace === 0){
+    console.log("Heads! Flipping again...");
+    var coinFace = Math.floor(Math.random() * 2);
+}
+console.log("Tails! Done flipping.");
+
+------------------------------------------
+
+var i = 0;
+while(i < 100){
+    console.log("I'm learning while loops!");
+    i++;
+    }
+
+------------------------------------------
+
+understand = true;
+
+while(understand){
+    console.log("I'm learning while loops!");
+    //Change the value of 'understand' here!
+    understand = false;
+}
+
+------------------------------------------
+
+var bool = true;
+
+while(bool){
+    console.log("Less is more!");
+    bool = false;
+}
+
+------------------------------------------
+
+var i = 1;
+var loop = function(){
+    while(i <= 3){
+        //Your code goes here!
+        console.log("I'm looping!");
+        i++;
+    }
+};
+
+loop();
+
+
+------------------------------------------
+
+var flag = true;
+var soloLoop = function(){
+  //Your code goes here!
+  while (flag) {
+  console.log("Looped once!");
+  flag = false;
+  }
+};
+
+soloLoop();
+
+------------------------------------------
+
+var i = 0;
+var myArray = [];
+while (i <=10) {
+    for (j = 0; j <= 10; j++) {
+        myArray.push(i+"-"+j);
+        }
+    i++;
+    }
+
+for (k=0; k < myArray.length; k++) {
+    console.log(myArray[k]);
+    }
+
+------------------------------------------
+
+var loopCondition = false;
+
+do {
+    console.log("I'm gonna stop looping 'cause my condition is " + loopCondition + "!");
+} while (loopCondition);
+
+------------------------------------------
+
+var getToDaChoppa = function(){
+  // Write your do/while loop here!
+  var flag = false;
+  do {
+      console.log("stuff");
+      } while (flag);
+
+};
+
+getToDaChoppa();
+
+------------------------------------------
+
+// Write your code below!
+var flag = true;
+var n = 0;
+var counter = 0;
+var myArray = [];
+do
+{
+    for (i=0; i<=3; i++)
+    {
+        n = 0;
+        while (n<=3)
+        {
+            myArray.push(i+'-'+flag+'-'+n);
+            n++;
+        }
+    }
+    if (counter === 3)
+    {
+        flag = false;
+    }
+    counter++;
+} while (flag);
+
+for (k=0;k<myArray.length; k++)
+{
+    console.log(myArray[k]);
+}
+
+------------------------------------------
+
+var isEven = function(number) {
+    if (number % 2 === 0) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+------------------------------------------
+
+var isEven = function(number) {
+    if (number % 2 === 0) {
+        return true;
+    } else if (isNaN(number)) {
+        return "Not a number";
+    }
+    else {
+        return false;
+    }
+};
+isEven('forty');
+
+------------------------------------------
+
+// Write your loop below!
+var accumulator = 0;
+for(i = 1; i <= 1000; i++) {
+    accumulator += i;
+    }
+console.log(accumulator);
+
+
+------------------------------------------
+
+var lunch = prompt("What do you want for lunch?","Type your lunch choice here");
+
+switch(lunch){
+  case 'sandwich':
+    console.log("Sure thing! One sandwich, coming up.");
+    break;
+  case 'soup':
+    console.log("Got it! Tomato's my favorite.");
+    break;
+  case 'salad':
+    console.log("Sounds good! How about a caesar salad?");
+    break;
+  case 'pie':
+    console.log("Pie's not a meal!");
+    break;
+  default:
+    console.log("Huh! I'm not sure what " + lunch + " is. How does a sandwich sound?");
+}
+
+------------------------------------------
+
+var candy = prompt("What's your favorite candy?","Type your favorite candy here.");
+
+switch(candy) {
+  case 'licorice':
+    console.log("Gross!");
+    break;
+  case 'gum':
+    console.log("I like gum!");
+    break;
+  case 'beets':
+    console.log("...is that even a candy?");
+    break;
+  default:
+    console.log("whatttt");
+}
+
+------------------------------------------
+
+var answer = prompt("Favorite sport?");
+
+switch(answer) {
+  case 'surfing':
+    console.log("Nice");
+    break;
+  case 'soccer':
+      console.log("popular");
+      break;
+  case 'tv':
+      console.log("haha");
+      break;
+  default:
+    console.log("none?");
+  // Add your code here!
+}
+
+------------------------------------------
+
+// Write your code below!
+var answer = prompt("question what?");
+
+switch (answer) {
+    case 'authority':
+        console.log("very good though not original");
+        break;
+    case 'questions':
+        console.log("deep and philosophical");
+        break;
+    case 'hot dogs':
+        console.log("practical and warranted");
+        break;
+    default:
+        console.log("this");
+}
+
+------------------------------------------
+
+var iLoveJavaScript = true ;
+var iLoveLearning = true ;
+
+if(iLoveJavaScript && iLoveLearning) {
+  // if iLoveJavaScript AND iLoveLearning:
+  console.log("Awesome! Let's keep learning!");
+} else if(!(iLoveJavaScript || iLoveLearning)) {
+  // if NOT iLoveJavaScript OR iLoveLearning:
+  console.log("Let's see if we can change your mind.");
+} else {
+  console.log("You only like one but not the other? We'll work on it.");
+}
+
+------------------------------------------
+
+// Declare your variables here!
+var hungry = true;
+var foodHere = true;
+
+var eat = function() {
+    if (hungry && foodHere) {
+        return true;
+        }  else {
+            return false;
+        }
+};
+
+console.log(eat());
+
+------------------------------------------
+
+// Declare your variables here!
+var tired = false;
+var bored = true;
+
+var nap = function() {
+  // Add your if/else statement here!
+  if (tired || bored) {
+      return true;
+      } else {
+      return false;
+          }
+};
+
+nap();
+
+------------------------------------------
+
+// Declare your variables here!
+var programming = false;
+
+var happy = function() {
+  // Add your if/else statement here!
+  if (!programming) {
+      return true;
+      } else {
+          return false;
+    }
+};
+
+------------------------------------------
+
+var troll = prompt("You're walking through the forest, minding your own business, and you run into a troll! Do you FIGHT him, PAY him, or RUN?").toUpperCase();
+
+switch(troll) {
+  case 'FIGHT':
+    var strong = prompt("How courageous! Are you strong (YES or NO)?").toUpperCase();
+    var smart = prompt("Are you smart?").toUpperCase();
+    if(strong === 'YES' || smart === 'YES') {
+      console.log("You only need one of the two! You beat the troll--nice work!");
+    } else {
+      console.log("You're not strong OR smart? Well, if you were smarter, you probably wouldn't have tried to fight a troll. You lose!");
+    }
+    break;
+  case 'PAY':
+    var money = prompt("All right, we'll pay the troll. Do you have any money (YES or NO)?").toUpperCase();
+    var dollars = prompt("Is your money in Troll Dollars?").toUpperCase();
+    if(money === 'YES' && dollars === 'YES') {
+      console.log("Great! You pay the troll and continue on your merry way.");
+    } else {
+      console.log("Dang! This troll only takes Troll Dollars. You get whomped!");
+    }
+    break;
+  case 'RUN':
+    var fast = prompt("Let's book it! Are you fast (YES or NO)?").toUpperCase();
+    var headStart = prompt("Did you get a head start?").toUpperCase();
+    if(fast === 'YES' || headStart === 'YES') {
+      console.log("You got away--barely! You live to stroll through the forest another day.");
+    } else {
+      console.log("You're not fast and you didn't get a head start? You never had a chance! The troll eats you.");
+    }
+    break;
+  default:
+    console.log("I didn't understand your choice. Hit Run and try again, this time picking FIGHT, PAY, or RUN!");
+}
+
+------------------------------------------
+
+var user = prompt("question?").toLowerCase();
+var rand1 = Math.floor((Math.random() * 3) + 1);
+var rand2 = Math.floor((Math.random() * 3) + 1);
+console.log(rand1 + " " + rand2);
+
+switch(user) {
+    case 'hmm':
+        console.log("yes");
+        if (rand1 && rand2) {
+            console.log(rand1 + " " + rand2 + "TT");
+            } else {
+            console.log(rand1 + " " + rand2 + "false");
+                }
+        if (rand1 || rand2) {
+            console.log(rand1 + " " + rand2 + "true");
+            } else {
+            console.log(rand1 + " " + rand2 + "FF");
+                }
+        break;
+    case 'yakyakyak':
+        console.log("really");
+        break;
+    case 'yadayadayada':
+        break;
+    default:
+        console.log("what am I");
+    }
+
+
+------------------------------------------
+
+var user = prompt("question?").toLowerCase();
+var rand1 = Math.floor((Math.random() * 3) + 1);
+var rand2 = Math.floor((Math.random() * 3) + 1);
+console.log(rand1 + " " + rand2);
+
+switch(user) {
+    case 'hmm':
+        console.log("yes");
+        if (rand1 && rand2) {
+            console.log(rand1 + " " + rand2 + "TT");
+            } else {
+            console.log(rand1 + " " + rand2 + "false");
+                }
+        if (rand1 || rand2) {
+            console.log(rand1 + " " + rand2 + "true");
+            } else {
+            console.log(rand1 + " " + rand2 + "FF");
+                }
+        break;
+    case 'yakyakyak':
+        console.log("really");
+        break;
+    case 'yadayadayada':
+        break;
+    default:
+        console.log("what am I");
+    }
+
+------------------------------------------
+
+var list = [1,2,3]
+console.log(list[1])
+
+------------------------------------------
+var languages = ["HTML", "CSS", "JavaScript", "Python", "Ruby"];
+console.log(languages[2]);
+------------------------------------------
+var languages = ["HTML", "CSS", "JavaScript", "Python", "Ruby"];
+console.log(languages.length);
+
+------------------------------------------
+var languages = ["HTML", "CSS", "JavaScript", "Python", "Ruby"];
+for(i=0; i<languages.length; i++) {
+    console.log(languages[i]);
+    }
+
+------------------------------------------
+var newArray = [[1,2,3],[4,5,6],[7,8,9]];
+for(i=0;i<newArray.length;i++) {
+    for(j=0;j<newArray[i].length;j++) {
+    console.log(newArray[i][j]);
+    }
+    }
+------------------------------------------
+var jagged = [[1,2],[4,5,6],[9]];
+for(i=0;i<jagged.length;i++) {
+    for(j=0;j<jagged[i].length;j++) {
+    	console.log(jagged[i][j]);
+    }
+  }
+------------------------------------------
+var phonebookEntry = {};
+
+phonebookEntry.name = 'Oxnard Montalvo';
+phonebookEntry.number = '(555) 555-5555';
+phonebookEntry.phone = function() {
+  console.log('Calling ' + this.name + ' at ' + this.number + '...');
+};
+
+phonebookEntry.phone();
+------------------------------------------
+var phonebookEntry = {};
+
+phonebookEntry.name = 'Oxnard Montalvo';
+phonebookEntry.number = '(555) 555-5555';
+phonebookEntry.phone = function() {
+  console.log('Calling ' + this.name + ' at ' + this.number + '...');
+};
+
+phonebookEntry.phone();
+
+------------------------------------------
+
+var me = {};
+me.name = "Todd";
+me.age = 43;
+console.log(me.name + " " + me.age);
+
+------------------------------------------
+// object literal notation
+//   var myObject = {
+//      key: value,
+//      key: value,
+//      key: value
+//    };
+
+------------------------------------------
+// object constructor
+var me = new Object();
+me.name = "Todd";
+me.age = 43;
+console.log(me.name);
+
+// You can add keys to your object after you've created it in two ways:
+// myObj["name"] = "Charlie";
+// myObj.name = "Charlie";
+------------------------------------------
+var object1 = new Object();
+var object2 = new Object();
+var object3 = new Object();
+
+object1.name = "Jess";
+object2.name = "Oliver";
+object3.name = "Todd";
+------------------------------------------
+var obj1 = new Object();
+var myArray = [1,true,"todd", obj1];
+
+//Create an array, myArray. Its first element
+//should be a number, its second should be a boolean,
+//its third should be a string, and its fourth should be... an object!
+------------------------------------------
+var obj1 = new Object();
+var newArray =  [ [1, 4, 2], [7, obj1] ];
+------------------------------------------
+
+// Add a key called interests to myObject. Give this key an array value (the array can contain whatever you like).
+
+var myObject = {
+  name: 'Eduardo',
+  type: 'Most excellent',
+  // Add your code here!
+  interests: [1,2,3,'joke',true]
+};
+------------------------------------------
+var myOwnObject = new Object();
+myOwnObject.name = "Todd";
+myOwnObject.out = function (anyString) {
+    console.log(anyString);
+    }
+myOwnObject.out(myOwnObject.name);
+------------------------------------------
+var friends = {};
+friends.bill = {
+  firstName: "Bill",
+  lastName: "Gates",
+  number: "(206) 555-5555",
+  address: ['One Microsoft Way','Redmond','WA','98052']
+};
+friends.steve = {
+  firstName: "Steve",
+  lastName: "Jobs",
+  number: "(408) 555-5555",
+  address: ['1 Infinite Loop','Cupertino','CA','95014']
+};
+
+var list = function(obj) {
+  for(var prop in obj) {
+    console.log(prop);
+  }
+};
+
+var search = function(name) {
+  for(var prop in friends) {
+    if(friends[prop].firstName === name) {
+      console.log(friends[prop]);
+      return friends[prop];
+    }
+  }
+};
+
+list(friends);
+search("Steve");
+------------------------------------------
+
+var friends = new Object();
+
+
+------------------------------------------
+
+var friends = new Object();
+friends.bill = new Object();
+friends.steve = new Object();
+
+------------------------------------------
+var friends = {};
+
+friends.bill = {};
+friends.steve = {};
+
+friends.bill.firstName = "Billllllll";
+friends.bill.lastName = "Gatttttttttttes";
+friends.bill.number = "555-567-7777";
+
+friends.steve.firstName = "Stevvvvvvvvvve";
+friends.steve.lastName = "Jobbbbbbbbbbbbbs";
+friends.steve.number = "444-321-1111";
+
+
+------------------------------------------
+
+var friends = {};
+
+friends.bill = {};
+friends.steve = {};
+
+friends.bill.firstName = "Billllllll";
+friends.bill.lastName = "Gatttttttttttes";
+friends.bill.number = "555-567-7777";
+friends.bill.address = ["One Microsoft Way","Redmond","WA","98052"];
+
+friends.steve.firstName = "Stevvvvvvvvvve";
+friends.steve.lastName = "Jobbbbbbbbbbbbbs";
+friends.steve.number = "444-321-1111";
+friends.steve.address = ["1 Infinite Loop","Cupertino","CA","95014"];
+
+------------------------------------------
+
+var friends = {};
+
+friends.bill = {};
+friends.steve = {};
+
+friends.bill.firstName = "Billllllll";
+friends.bill.lastName = "Gatttttttttttes";
+friends.bill.number = "555-567-7777";
+friends.bill.address = ["One Microsoft Way","Redmond","WA","98052"];
+
+friends.steve.firstName = "Stevvvvvvvvvve";
+friends.steve.lastName = "Jobbbbbbbbbbbbbs";
+friends.steve.number = "444-321-1111";
+friends.steve.address = ["1 Infinite Loop","Cupertino","CA","95014"];
+
+//display item in object
+// eg, displays friend in friends
+var list = function(object) {
+for (var item in object) {
+    console.log(item);
+    }
+};
+
+list(friends);
+
+------------------------------------------
+
+var friends = {};
+
+friends.bill = {};
+friends.steve = {};
+
+friends.bill.firstName = "Bill";
+friends.bill.lastName = "Gatttttttttttes";
+friends.bill.number = "555-567-7777";
+friends.bill.address = ["One Microsoft Way","Redmond","WA","98052"];
+
+friends.steve.firstName = "Steve";
+friends.steve.lastName = "Jobbbbbbbbbbbbbs";
+friends.steve.number = "444-321-1111";
+friends.steve.address = ["1 Infinite Loop","Cupertino","CA","95014"];
+
+//display item in object
+// eg, displays friend in friends
+var list = function(object) {
+for (var item in object) {
+    console.log(item);
+    }
+};
+
+list(friends);
+
+//find friend
+
+var search = function(name) {
+  for(var friend in friends) {
+    if(friends[friend].firstName === name) {
+      console.log(friends[friend]);
+      return friends[friend];
+    }
+  }
+};
+
+search("Bill");
+
+------------------------------------------
+
+var answer = (((3 * 90) === 270) || !(false && (!false)) || "bex".toUpperCase() === "BEX");
+
+------------------------------------------
+
+// Here is an array of multiples of 8. But is it correct?
+var multiplesOfEight = [8,16,24,32,40,58];
+
+// Test to see if a number from the array is NOT a true
+// multiple of eight. Real multiples will return false.
+var answer = multiplesOfEight[5] % 8 !== 0;
+
+------------------------------------------
+
+for (i = 1; i <= 20; i++) {
+    if ((i % 3 === 0) && (i % 5 === 0)) {
+        console.log("FizzBuzz");
+        } else if (i % 3 === 0) {
+            console.log("Fizz");
+            } else if (i % 5 === 0) {
+            console.log("Buzz");
+                } else {
+                   console.log(i)
+                   }
+    }
+
+
+            ------ OR -------
+
+for (var i = 1; i <= 20; i++) {
+    var remainderDiv3 = i % 3;
+    var remainderDiv5 = i % 5;
+
+    if (!remainderDiv3 && !remainderDiv5)
+        console.log("FizzBuzz");
+    else if (!remainderDiv3)
+        console.log("Fizz");
+    else if (!remainderDiv5)
+        console.log("Buzz");
+    else
+        console.log(i);
+    }
+
+------------------------------------------
+
+var getReview = function (movie) {
+    switch (movie) {
+        case "Toy Story 2":
+            return "Great story. Mean prospector.";
+        case "Finding Nemo":
+            return "Cool animation, and funny turtles.";
+        case "The Lion King":
+            return "Great songs.";
+        default:
+            return "I don't know!";
+        }
+};
+
+
+------------------------------------------
+
+console.log("I'm ready for Objects!");
+
+------------------------------------------
+
+var bob = {};
+
+------------------------------------------
+
+var Spencer = {
+  age: 22,
+  country: "United States"
+};
+
+// make your own object here called me
+var me = {};
+me.age = 43;
+me.country = "USA";
+
+------------------------------------------
+
+var bob = {
+  name: "Bob Smith",
+  age: 30
+};
+var susan = {
+  name: "Susan Jordan",
+  age: 25
+};
+// here we save Bob's information
+var name1 = bob.name;
+var age1 = bob.age;
+// finish this code by saving Susan's information
+var name2 =susan.name;
+var age2 = susan.age;
+
+------------------------------------------
+
+// Take a look at our next example object, a dog
+var dog = {
+  species: "greyhound",
+  weight: 60,
+  age: 4
+};
+
+var species = dog["species"];
+// fill in the code to save the weight and age using bracket notation
+var weight = dog["weight"];
+var age = dog["age"];
+
+console.log(species);
+console.log(weight);
+console.log(age);
+// OR YOU COULD WRITE THIS
+
+var species = dog.species;
+// fill in the code to save the weight and age using bracket notation
+var weight = dog.weight;
+var age = dog.age;
+
+console.log(species);
+console.log(weight);
+console.log(age);
+
+
+------------------------------------------
+
+// Our bob object again, but made using a constructor this time
+var bob = new Object();
+bob.name = "Bob Smith";
+bob.age = 30;
+// Here is susan1, in literal notation
+var susan1 = {
+  name: "Susan Jordan",
+  age: 24
+};
+// Make a new susan2 object, using a constructor instead
+var susan2 = new Object();
+susan2.name = "Susan Jordan";
+susan2.age = 24;
+
+------------------------------------------
+
+// help us make snoopy using literal notation
+// Remember snoopy is a "beagle" and is 10 years old.
+var snoopy = {};
+snoopy.species = "beagle";
+snoopy.age = 10;
+
+// help make buddy using constructor notation
+// buddy is a "golden retriever" and is 5 years old
+var buddy = new Object();
+buddy.species = "golden retriever";
+buddy.age = 5;
+
+
+------------------------------------------
+
+var bicycle = {};
+bicycle.speed = 0;
+bicycle.gear = 1;
+bicycle.frame_material = "carbon fiber";
+
+------------------------------------------
+
+// Accepts a number x as input and returns its square
+var square = function (x) {
+  return x * x;
+};
+
+// Write the function multiply below
+// It should take two parameters and return the product
+var multiply = function(x,y) {
+    return x * y;
+};
+
+multiply(2,3);
+
+------------------------------------------
+
+// here is bob again, with his usual properties
+var bob = new Object();
+bob.name = "Bob Smith";
+bob.age = 30;
+// this time we have added a method, setAge
+bob.setAge = function (newAge){
+  bob.age = newAge;
+};
+// here we set bob's age to 40
+bob.setAge(40);
+// bob's feeling old.  Use our method to set bob's age to 20
+bob.setAge(20);
+console.log(bob.age);
+
+------------------------------------------
+
+var bob = new Object();
+bob.age = 17;
+// this time we have added a method, setAge
+bob.setAge = function (newAge){
+  bob.age = newAge;
+};
+
+bob.getYearOfBirth = function () {
+  return 2014 - bob.age;
+};
+console.log(bob.getYearOfBirth());
+
+------------------------------------------
+
+// here we define our method using "this", before we even introduce bob
+var setAge = function (newAge) {
+  this.age = newAge;
+};
+// now we make bob
+var bob = new Object();
+bob.age = 30;
+// and down here we just use the method we already made
+bob.setAge = setAge;
+
+// change bob's age to 50 here
+bob.setAge(50);
+console.log(bob.age);
+
+------------------------------------------
+
+// here we define our method using "this", before we even introduce bob
+var setAge = function (newAge) {
+  this.age = newAge;
+};
+// now we make bob
+var bob = new Object();
+bob.age = 30;
+bob.setAge = setAge;
+
+// make susan here, and first give her an age of 25
+var susan = {};
+susan.age = 25;
+susan.setAge = setAge;
+
+// here, update Susan's age to 35 using the method
+susan.setAge(35);
+console.log(susan.age);
+
+------------------------------------------
+
+var rectangle = new Object();
+rectangle.height = 3;
+rectangle.width = 4;
+// here is our method to set the height
+rectangle.setHeight = function (newHeight) {
+  this.height = newHeight;
+};
+// help by finishing this method
+rectangle.setWidth = function (newWidth) {
+    this.width = newWidth
+};
+
+// here change the width to 8 and height to 6 using our new methods
+rectangle.setHeight(6);
+rectangle.setWidth(8);
+
+console.log(rectangle.height);
+console.log(rectangle.width);
+
+------------------------------------------
+
+var calcPerimeter = function() {
+    return this.sideLength * 4;
+};
+
+var calcArea = function() {
+    return this.sideLength * this.sideLength;
+};
+
+var square = {};
+square.sideLength = 6;
+square.calcPerimeter = calcPerimeter;
+// help us define an calcArea method here
+square.calcArea = calcArea;
+
+var p = square.calcPerimeter();
+var a = square.calcArea();
+
+console.log(p);
+console.log(a);
+
+------------------------------------------
+
+// here we make bob using the Object constructor
+var bob = new Object();
+bob.name = "Bob Smith";
+// add bob's age here and set it equal to 20
+bob.age = 20;
+
+------------------------------------------
+
+function Person(name,age) {
+  this.name = name;
+  this.age = age;
+}
+
+// Let's make bob and susan again, using our constructor
+var bob = new Person("Bob Smith", 30);
+var susan = new Person("Susan Jordan", 25);
+// help us make george, whose name is "George Washington" and age is 275
+var george = new Person("George Washington", 275);
+
+------------------------------------------
+
+function Cat(age, color) {
+  this.age = age;
+  this.color = color;
+}
+
+// make a Dog constructor here
+function Dog(name, breed) {
+    this.name = name;
+    this.breed = breed;
+    }
+
+------------------------------------------
+
+function Person(name,age) {
+  this.name = name;
+  this.age = age;
+  this.species = "Homo Sapiens";
+}
+
+var sally = new Person("Sally Bowles", 39);
+var holden = new Person("Holden Caulfield", 16);
+console.log("sally's species is " + sally.species + " and she is " + sally.age);
+console.log("holden's species is " + holden.species + " and he is " + holden.age);
+
+------------------------------------------
+
+function Rectangle(height, width) {
+  this.height = height;
+  this.width = width;
+  this.calcArea = function() {
+      return this.height * this.width;
+  };
+  // put our perimeter function here!
+    this.calcPerimeter = function() {
+        return this.height * 2 + this.width * 2;
+        };
+}
+
+var rex = new Rectangle(7,3);
+var area = rex.calcArea();
+var perimeter = rex.calcPerimeter();
+
+console.log(perimeter);
+
+------------------------------------------
+
+function Rabbit(adjective) {
+    this.adjective = adjective;
+    this.describeMyself = function() {
+        console.log("I am a " + this.adjective + " rabbit");
+    };
+}
+
+// now we can easily make all of our rabbits
+var rabbit1 = new Rabbit("fluffy");
+var rabbit2 = new Rabbit("happy");
+var rabbit3 = new Rabbit("sleepy");
+rabbit1.describeMyself();
+rabbit2.describeMyself();
+rabbit3.describeMyself();
+
+------------------------------------------
+
+// Our person constructor
+function Person (name, age) {
+    this.name = name;
+    this.age = age;
+}
+
+// Now we can make an array of people
+var family = new Array();
+family[0] = new Person("alice", 40);
+family[1] = new Person("bob", 42);
+family[2] = new Person("michelle", 8);
+// add the last family member, "timmy", who is 6 years old
+family[3] = new Person("timmy", 6);
+
+
+------------------------------------------
+
+// Our Person constructor
+var Person = function(name, age) {
+    this.name = name;
+    this.age = age;
+};
+
+// Now we can make an array of people
+var family = new Array();
+family[0] = new Person("alice", 40);
+family[1] = new Person("bob", 42);
+family[2] = new Person("michelle", 8);
+family[3] = new Person("timmy", 6);
+
+// loop through our new array
+for (var i = 0; i < family.length; i++) {
+    console.log(family[i].name);
+    }
+
+------------------------------------------
+
+// Our person constructor
+function Person (name, age) {
+    this.name = name;
+    this.age = age;
+}
+
+// We can make a function which takes persons as arguments
+// This one computes the difference in ages between two people
+var ageDifference = function(person1, person2) {
+    return person1.age - person2.age;
+}
+
+var alice = new Person("Alice", 30);
+var billy = new Person("Billy", 25);
+
+// get the difference in age between alice and billy using our function
+var diff = ageDifference(alice, billy);
+console.log(diff);
+
+------------------------------------------
+
+// Our person constructor
+function Person (name, age) {
+    this.name = name;
+    this.age = age;
+}
+
+// We can make a function which takes persons as arguments
+// This one computes the difference in ages between two people
+var ageDifference = function(person1, person2) {
+    return person1.age - person2.age;
+};
+
+// Make a new function, olderAge, to return the age of
+// the older of two people
+var olderAge = function(person1, person2) {
+    if (person1.age > person2.age)
+        return person1.age;
+    else
+        return person2.age;
+};
+
+// Let's bring back alice and billy to test our new function
+var alice = new Person("Alice", 30);
+var billy = new Person("Billy", 25);
+
+console.log("The older person is " + olderAge(alice, billy));
+
+
+------------------------------------------
+
+var spencer = {
+  age: 22,
+  country: "United States"
+};
+
+// make spencer2 here with constructor notation
+var spencer2 = new Object();
+spencer2.age = 22;
+spencer2.country = "United States";
+
+------------------------------------------
+
+var snoopy = new Object();
+snoopy.species = "beagle";
+snoopy.age = 10;
+
+// save Snoopy's age and species into variables
+// use dot notation for snoopy's species
+var species = snoopy.species;
+
+// use bracket notation for snoopy's age
+var age = snoopy["age"];
+
+------------------------------------------
+
+// 3 lines required to make harry_potter
+var harry_potter = new Object();
+harry_potter.pages = 350;
+harry_potter.author = "J.K. Rowling";
+
+// A custom constructor for book
+function Book (pages, author) {
+    this.pages = pages;
+    this.author = author;
+}
+
+// Use our new constructor to make the_hobbit in one line
+var the_hobbit = new Book(320, "J.R.R. Tolkien");
+
+------------------------------------------
+
+function Circle (radius) {
+    this.radius = radius;
+    this.area = function () {
+        return Math.PI * this.radius * this.radius;
+
+    };
+    // define a perimeter method here
+    this.perimeter = function() {
+        return 2 * Math.PI * this.radius
+    };
+};
+
+------------------------------------------
+
+var bob = {
+    firstName: "Bob",
+    lastName: "Jones",
+    phoneNumber: "(650) 777-777",
+    email: "bob.jones@example.com"
+};
+
+console.log(bob.firstName);
+console.log(bob.lastName);
+console.log(bob.email);
+
+------------------------------------------
+
+var bob = {
+    firstName: "Bob",
+    lastName: "Jones",
+    phoneNumber: "(650) 777-7777",
+    email: "bob.jones@example.com"
+};
+
+var mary = {};
+mary.firstName = "Mary";
+mary.lastName = "Johnson";
+mary.phoneNumber = "(650) 888 - 8888";
+mary.email = "mary.johnson@example.com";
+
+var contacts = [bob, mary];
+console.log(contacts[1].phoneNumber);
+
+------------------------------------------
+
+var bob = {
+    firstName: "Bob",
+    lastName: "Jones",
+    phoneNumber: "(650) 777-7777",
+    email: "bob.jones@example.com"
+};
+
+var mary = {
+    firstName: "Mary",
+    lastName: "Johnson",
+    phoneNumber: "(650) 888-8888",
+    email: "mary.johnson@example.com"
+};
+
+var contacts = [bob, mary];
+
+// printPerson added here
+var printPerson = function(person) {
+    console.log(person.firstName + " " + person.lastName);
+};
+
+printPerson(contacts[0]);
+printPerson(contacts[1]);
+
+------------------------------------------
+
+var bob = {
+    firstName: "Bob",
+    lastName: "Jones",
+    phoneNumber: "(650) 777-7777",
+    email: "bob.jones@example.com"
+};
+
+var mary = {
+    firstName: "Mary",
+    lastName: "Johnson",
+    phoneNumber: "(650) 888-8888",
+    email: "mary.johnson@example.com"
+};
+
+var contacts = [bob, mary];
+
+function printPerson(person) {
+    console.log(person.firstName + " " + person.lastName);
+}
+
+var list = function() {
+for ( var i = 0; i < contacts.length; i++) {
+    printPerson(contacts[i]);
+    }
+};
+
+list();
+
+
+------------------------------------------
+
+var bob = {
+    firstName: "Bob",
+    lastName: "Jones",
+    phoneNumber: "(650) 777-7777",
+    email: "bob.jones@example.com"
+};
+
+var mary = {
+    firstName: "Mary",
+    lastName: "Johnson",
+    phoneNumber: "(650) 888-8888",
+    email: "mary.johnson@example.com"
+};
+
+var contacts = [bob, mary];
+
+function printPerson(person) {
+    console.log(person.firstName + " " + person.lastName);
+}
+
+function list() {
+    var contactsLength = contacts.length;
+    for (var i = 0; i < contactsLength; i++) {
+        printPerson(contacts[i]);
+    }
+}
+
+/*Create a search function
+ then call it passing "Jones"*/
+var search = function(lastName) {
+    for (var i = 0; i < contacts.length; i++) {
+        if(contacts[i].lastName === lastName){
+            printPerson(contacts[i]);
+        }
+    }
+};
+
+list();
+console.log("****************");
+search("Jones");
+
+
+------------------------------------------
+
+var bob = {
+    firstName: "Bob",
+    lastName: "Jones",
+    phoneNumber: "(650) 777-7777",
+    email: "bob.jones@example.com"
+};
+
+var mary = {
+    firstName: "Mary",
+    lastName: "Johnson",
+    phoneNumber: "(650) 888-8888",
+    email: "mary.johnson@example.com"
+};
+
+var contacts = [bob, mary];
+
+function printPerson(person) {
+    console.log(person.firstName + " " + person.lastName);
+}
+
+function list() {
+    var contactsLength = contacts.length;
+    for (var i = 0; i < contactsLength; i++) {
+        printPerson(contacts[i]);
+    }
+}
+
+/*Create a search function
+ then call it passing "Jones"*/
+var search = function(lastName) {
+    for (var i = 0; i < contacts.length; i++) {
+        if(contacts[i].lastName === lastName){
+            printPerson(contacts[i]);
+        }
+    }
+};
+
+var add = function(firstName, lastName, email, phoneNumber) {
+    contacts[contacts.length] = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phoneNumber: phoneNumber
+        };
+};
+
+add("Todd", "McLeod", "tm@fcc.edu", "555-555-5555");
+
+list();
+//console.log("****************");
+//search("Jones");
+
+
+------------------------------------------
+
+var james = {
+    // add properties to this object!
+    job: "programmer",
+    married: false
+};
+
+function Person(job, married) {
+    this.job = job;
+    this.married = married;
+}
+
+// create a "gabby" object using the Person constructor!
+var gabby = new Person("student", true);
+
+------------------------------------------
+
+function Person(job, married) {
+    this.job = job;
+    this.married = married;
+    // add a "speak" method to Person!
+    this.speak = function() {
+        console.log("Hello!");
+    };
+}
+
+var user = new Person("Codecademy Student",false);
+user.speak();
+
+------------------------------------------
+
+var james = {
+    job: "programmer",
+    married: false,
+    speak: function(phrase) {
+        console.log("Hello, I am feeling " + phrase);
+    }
+};
+
+james.speak("great");
+james.speak("just okay");
+
+------------------------------------------
+
+var james = {
+    job: "programmer",
+    married: false,
+    sayJob: function() {
+        // complete this method
+        console.log("Hi, I work as a " + this.job);
+    }
+};
+
+// james' first job
+james.sayJob();
+
+// change james' job to "super programmer" here
+james.job = "super programmer";
+
+// james' second job
+james.sayJob();
+
+
+------------------------------------------
+
+var james = {
+    job: "programmer",
+    married: false
+};
+
+// set to the first property name of "james"
+var aProperty = "job";
+
+// print the value of the first property of "james"
+// using the variable "aProperty"
+console.log(james[aProperty]);
+
+
+------------------------------------------
+
+// complete these definitions so that they will have
+// the appropriate types
+var anObj = { job: "I'm an object!" };
+var aNumber = 42;
+var aString = "I'm a string!";
+
+console.log(typeof anObj); // should print "object"
+console.log(typeof aNumber); // should print "number"
+console.log(typeof aString); // should print "string"
+
+------------------------------------------
+
+var myObj = {
+    // finish myObj
+    name: "Todd"
+};
+
+console.log( myObj.hasOwnProperty('name') ); // should print true
+console.log( myObj.hasOwnProperty('nickname') ); // should print false
+
+------------------------------------------
+
+var suitcase = {
+    shirt: "Hawaiian"
+};
+
+if (suitcase.hasOwnProperty("shorts"))
+    console.log(suitcase.shorts);
+else {
+    suitcase.shorts = "bermuda";
+    console.log(suitcase.shorts);
+}
+
+------------------------------------------
+
+var nyc = {
+    fullName: "New York City",
+    mayor: "Bill de Blasio",
+    population: 8000000,
+    boroughs: 5
+};
+
+for (var item in nyc){
+    console.log(item);
+    }
+
+------------------------------------------
+
+
+List ALL the Properties!
+
+We've just see how to print all of an object's property names
+with a for-in loop. But how do we print out all the values associated
+with every property? Surprise! The for-in loop will be our friend again!
+Let's get there slowly. Our dog object can help us.
+
+var dog = {
+species: "bulldog",
+age: 3,
+color: brown
+};
+
+First, remember that
+dog.species = dog["species"] = "bulldog";
+
+And if we say:
+var x = "species";
+then
+dog[x] = "bulldog";
+
+We see that by assigning the property name to a variable,
+we can then use the variable name in bracket notation to get the property's value.
+So to get all the values from the dog object, we would use the for-in loop and the
+bracket notation we just saw above.
+
+To print all the property values of the dog object, the code is:
+
+for(var x in dog) {
+console.log(dog[x]);
+}
+
+
+------------------------------------------
+
+var nyc = {
+    fullName: "New York City",
+    mayor: "Bill de Blasio",
+    population: 8000000,
+    boroughs: 5
+};
+
+// write a for-in loop to print the value of nyc's properties
+for (var item in nyc) {
+    console.log(nyc[item]);
+    }
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+

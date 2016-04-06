@@ -1,0 +1,19 @@
+{
+  "social": [
+    {
+      "name": "Todd",
+      "twitter": "twitter/todd",
+      "facebook": "facebook/todd"
+    },
+    {
+      "name": "Rio",
+      "twitter": "twitter/rio",
+      "facebook": "facebook/rio"
+    },
+    {
+      "name": "Ray",
+      "twitter": "twitter/ray",
+      "facebook": "facebook/ray"
+    }
+  ]
+}

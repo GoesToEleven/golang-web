@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<script>
+
+    function jsonFlickrFeed(data) {
+        console.log('this is MY code');
+        console.log(data);
+        console.log(data.items);
+        console.log(data.items[0]);
+        console.log(data.items[0].media);
+        console.log(data.items[0].media.m);
+        console.log(data.items.length);
+
+        for(var i = 0; i < data.items.length; i++) {
+            var myImg = document.createElement('img');
+            myImg.src = data.items[i].media.m;
+            document.querySelector('body').appendChild(myImg);
+        }
+    }
+
+//    var name = 'Todd';
+//    jsonFlickrFeed(name);
+
+</script>
+
+<script src="http://api.flickr.com/services/feeds/photos_public.gne?id=73845487@N00&format=json&tags=portfolio#"></script>
+
+</body>
+</html>

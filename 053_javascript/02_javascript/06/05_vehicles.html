@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+
+    // try one
+    console.log('------------ one way -----------')
+
+    function showInfo() {
+        for (var i = 0; i < this.properties.length; i++) {
+            console.log(this.name);
+            console.log(this.properties[i]);
+        }
+    }
+
+    var johnsVehicles = [
+        {
+            name: 'bmw',
+            properties: ['four wheels', 'four doors', 'gray'],
+            display: showInfo,
+        },
+        {
+            name: 'toyota',
+            properties: ['four wheels', 'two doors', 'yellow'],
+            display: showInfo,
+        },
+        {
+            name: 'porsche',
+            properties: ['four wheels', 'two doors', 'white'],
+            display: showInfo,
+        },
+    ];
+
+    for (var i = 0; i < johnsVehicles.length; i++) {
+        console.log(i);
+        console.log(johnsVehicles[i].name);
+        for (var j = 0; j < johnsVehicles[i].properties.length; j++) {
+            console.log(johnsVehicles[i].properties[j]);
+        }
+        console.log('/////////////////////////////////')
+        johnsVehicles[i].display();
+        console.log('/////////////////////////////////')
+    }
+
+    // from jagmeet
+    console.log('------------ jagmeet way -----------')
+
+    function vehicle(name, model, price) {
+        this.name = name;
+        this.model = model;
+        this.price = price;
+        this.fun = function () {
+            console.log(this.name, this.model, this.price, ' is my car');
+        };
+    }
+
+    var cars = [
+        new vehicle('bmw', '528i xDrive', 53000),
+        new vehicle('toyota', 'tacoma', 32000),
+        new vehicle('porsche', 'carerra', 93000),
+    ]
+
+    for (var i = 0; i < cars.length; i++) {
+        cars[i].fun();
+    }
+
+    console.log(cars[1].model);
+
+</script>
+</body>
+</html>

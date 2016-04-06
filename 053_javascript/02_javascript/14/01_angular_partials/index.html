@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <!-- AngularJS -->
+    <script src="lib/angular/angular.min.js"></script>
+    <!-- AngularJS Routing -->
+    <script src="lib/angular/angular-route.min.js"></script>
+    <!-- Firebase -->
+    <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+    <!-- AngularFire -->
+    <script src="https://cdn.firebase.com/libs/angularfire/1.1.1/angularfire.min.js"></script>
+    <!-- App -->
+    <script src="js/app.js"></script>
+    <!-- Controller -->
+    <script src="js/artist_controllers.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/reset.css">
+    <style>
+        body {
+            margin: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        li {
+            margin-bottom: 20px;
+        }
+
+        input {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div ng-view></div>
+
+</body>
+</html>

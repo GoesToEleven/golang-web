@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        p {
+            font-weight: 900;
+        }
+    </style>
+    <!-- this will reference the style.css file created from the sass files -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h1>PROCESS FOR SETTING UP A GULP PROJECT:</h1>
+<ol>
+    <li>check to see if you have nodejs installed</li>
+    <ul>
+        <li>at terminal: node --version</li>
+        <li>if you don't see a version:</li>
+        <ul>
+            <li><a href="https://nodejs.org/download/" target="_blank">install nodejs</a></li>
+        </ul>
+    </ul>    <li>check to see if you have gulp installed</li>
+    <ul>
+        <li>at terminal: gulp --version</li>
+        <li>if you don't see a version:</li>
+        <ul>
+            <li><a href="https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md" target="_blank">install gulp</a></li>
+            <li>at terminal: npm install --global gulp</li>
+        </ul>
+    </ul>
+    <li>create a new directory for a project</li>
+    <ul>
+        <li>at terminal: mkdir some-folder-name</li>
+        <li><em>your folder name needs to be lowercase</em></li>
+    </ul>
+    <li>add folders and files to your project directory</li>
+    <ul>
+        <li>folder: builds</li>
+        <li>folder: builds / development</li>
+        <li>folder: components</li>
+        <li>file: index.html</li>
+        <li>files: css, javascript</li>
+    </ul>
+    <li>initialize your root folder to work with node packages</li>
+    <ul>
+        <li>at terminal: npm init</li>
+        <li><em>initializes npm for this folder</em></li>
+        <li><em>this will create a "package.json" file in your root folder (some-folder-name)</em></li>
+    </ul>
+    <li>install gulp locally in your root folder (some-folder-name)</li>
+    <ul>
+        <li>at terminal: npm install --save-dev gulp</li>
+        <li><em>this is your first node package plugin</em></li>
+        <li><em>this will create a folder in your root: node_modules</em></li>
+    </ul>
+    <li>create a gulpfile.js</li>
+    <ul>
+        <li><a href="https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md" target="_blank">copy into the file the template code</a></li>
+    </ul>
+    <li>now run gulp</li>
+    <ul>
+        <li>at terminal: gulp</li>
+    </ul>
+    <li>start creating tasks / adding node package plugins</li>
+    <ul>
+        <li><a href="https://www.npmjs.com/package/gulp-webserver" target="_blank">gulp web server</a></li>
+    </ul>
+</ol>
+
+<h2>Good To Know</h2>
+<p>When configuring "gulpfile.js" - instead of having this:</p>
+<pre>
+    gulp.task('default', function() {
+    // place code for your default task here
+    });
+</pre>
+<p>You can have this:</p>
+<pre>
+    gulp.task('default', ['webserver']);
+</pre>
+<p>This is how my "gulpfile.js" looks after installing gulp web server:</p>
+<pre>
+
+    var gulp = require('gulp');
+    var webserver = require('gulp-webserver');
+
+    gulp.task('default', ['webserver']);
+
+    gulp.task('webserver', function() {
+        gulp.src('builds/development')
+            .pipe(webserver({
+                livereload: true,
+                directoryListing: false,
+                open: true
+            }));
+        });
+</pre>
+
+<h3>Find Node Packages</h3>
+<h4><a href="https://www.npmjs.com/" target="_blank">NPM</a></h4>
+<h4><a href="http://gulpjs.com/plugins/" target="_blank">Gulpjs</a></h4>
+
+<h1>Adding gulp-sass</h1>
+<ul>
+    <li><a href="https://www.npmjs.com/package/gulp-sass" target="_blank">gulp-sass</a></li>
+</ul>
+<h2>"gulpfile.js"</h2>
+<p>This is how my "gulpfile.js" looks after installing gulp web server:</p>
+<pre>
+    var gulp = require('gulp');
+    var sass = require('gulp-sass');
+    var webserver = require('gulp-webserver');
+
+    gulp.task('default', ['webserver', 'sass']);
+
+    gulp.task('webserver', function () {
+        gulp.src('builds/development')
+            .pipe(webserver({
+                livereload: true,
+                directoryListing: false,
+                open: true
+            }));
+    });
+
+    gulp.task('sass', function () {
+        gulp.src('./sass/**/*.scss')
+            .pipe(sass().on('error', sass.logError))
+            .pipe(gulp.dest('builds/development/css'));
+    });
+
+    gulp.task('sass:watch', function () {
+        gulp.watch('./sass/**/*.scss', ['sass']);
+    });
+
+</pre>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+    //    variables
+    var person = {
+        name: 'Todd',
+        rollover: function () {
+            console.log('roll over');
+        },
+        sayName: function() {
+            console.log(this.name);
+        },
+    };
+
+    //    functions
+    function speak() {
+        console.log('speak');
+    }
+    function sit() {
+        console.log('sit');
+    }
+    function jump() {
+        console.log('jump');
+    }
+
+    //    attach functions
+    person.speak = speak();
+    person.sit = sit();
+    person.jump = jump();
+
+    //    run
+    person.rollover();
+    person.sayName();
+    person.speak;
+    person.sit;
+    person.jump;
+
+    // self executing function
+    (function () {
+        var private = 'this is in the first private variable'; // namespacing: scoped to this module
+        console.log(private);
+    })();
+
+
+    var ray = (function () {
+        var private = 'this is in the second private variable'; // namespacing: scoped to this module
+        console.log(private);
+        return {
+            speak: function () {
+                console.log('hello');
+            },
+        };
+    })();
+
+
+    ray.speak();
+
+</script>
+</body>
+</html>

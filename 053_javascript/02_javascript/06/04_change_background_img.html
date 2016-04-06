@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+
+        html {
+            background: url('') no-repeat center center fixed;
+            background-size: cover;
+            transition: background-image 1s;
+        }
+
+        div {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            box-sizing: border-box;
+            align-items: center;
+        }
+
+        img {
+            margin: 20px;
+            /*border: 1px solid black;*/
+        }
+
+        img:hover {
+            opacity: .5;
+        }
+
+    </style>
+</head>
+<body>
+<div id="images">
+    <img src="../../images/01.jpeg" alt=""/>
+    <img src="../../images/02.jpeg" alt=""/>
+    <img src="../../images/03.jpeg" alt=""/>
+    <img src="../../images/04.jpeg" alt=""/>
+    <img src="../../images/05.jpeg" alt=""/>
+</div>
+<script>
+
+    function setBackground(e) {
+        var myHTML = document.querySelector('html');
+        myHTML.style.backgroundImage = "url('" + e.target.src + "')";
+    }
+
+    var myImgContainer = document.querySelector('#images');
+    console.log(myImgContainer);
+    myImgContainer.addEventListener('click', setBackground, false);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<header></header>
+<article></article>
+<section>
+    <ul>
+        <li><a href="01.html">learn something 01</a></li>
+        <li><a href="02.html">learn something 02</a></li>
+        <li><a href="03.html">learn something 03</a></li>
+        <li><a href="04.html">learn something 04</a></li>
+        <li><a href="05.html">learn something 05</a></li>
+        <li><a href="06.html">learn something 06</a></li>
+        <li><a href="07.html">learn something 07</a></li>
+        <li><a href="08.html">learn something 08</a></li>
+        <li><a href="09.html">learn something 09</a></li>
+        <li><a href="10.html">learn something 10</a></li>
+    </ul>
+</section>
+<section>
+    <ul>
+        <li><a href="01.html">learn something 01</a></li>
+        <li><a href="02.html">learn something 02</a></li>
+        <li><a href="03.html">learn something 03</a></li>
+        <li><a href="04.html">learn something 04</a></li>
+        <li><a href="05.html">learn something 05</a></li>
+        <li><a href="06.html">learn something 06</a></li>
+        <li><a href="07.html">learn something 07</a></li>
+        <li><a href="08.html">learn something 08</a></li>
+        <li><a href="09.html">learn something 09</a></li>
+        <li><a href="10.html">learn something 10</a></li>
+    </ul>
+</section>
+<section>
+    <ul>
+        <li><a href="01.html">learn something 01</a></li>
+        <li><a href="02.html">learn something 02</a></li>
+        <li><a href="03.html">learn something 03</a></li>
+        <li><a href="04.html">learn something 04</a></li>
+        <li><a href="05.html">learn something 05</a></li>
+        <li><a href="06.html">learn something 06</a></li>
+        <li><a href="07.html">learn something 07</a></li>
+        <li><a href="08.html">learn something 08</a></li>
+        <li><a href="09.html">learn something 09</a></li>
+        <li><a href="10.html">learn something 10</a></li>
+    </ul>
+</section>
+<footer id="item">THIS IS THE FOOTER</footer>
+
+<script>
+    // select all
+    var startNode = document.querySelector('html')
+    console.log('console log ', startNode);
+    console.log('console log nodeType ', startNode.nodeType);
+    console.log('console log nodeName ', startNode.nodeName);
+    console.log('console log hasChildNodes ', startNode.hasChildNodes());
+    console.log('console log childNodes ', startNode.childNodes);
+    console.log('console log startNode[0] ', startNode.childNodes[0]);
+    console.log('console log startNode[1] ', startNode.childNodes[0]);
+    console.log('console log startNode[2] ', startNode.childNodes[0]);
+    console.dir('console dir ', startNode);
+
+
+    function walkDOM(currentNode) {
+        console.log('nodeName: ' + currentNode.nodeName + ' - nodeType: ' + currentNode.nodeType);
+        console.log('nodeValue: ' + currentNode.nodeValue);
+        if (currentNode.hasChildNodes()) {
+            for (var i = 0; i < currentNode.childNodes.length; i++) {
+                var nextNode = currentNode.childNodes[i];
+                walkDOM(nextNode);
+            }
+        }
+    }
+    walkDOM(startNode);
+
+    var anotherNode = document.querySelector('#item');
+    anotherNode.addEventListener('click', function() {
+        alert(anotherNode.firstChild.nodeValue);
+    }, false);
+
+</script>
+</body>
+</html>

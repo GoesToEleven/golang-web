@@ -1,0 +1,33 @@
+<section>
+    <!--<div ng-model="data">-->
+    <h1>{{data[whichItem].name}}</h1>
+    <h3>{{data[whichItem].reknown}}</h3>
+    <img ng-src="../../general-images/artists/{{data[whichItem].shortname}}_tn.jpg" alt="Photo of {{data[whichItem].name}}">
+    <div class="bio">{{data[whichItem].bio}}</div>
+    <!--</div>-->
+    <a href="#/list">&laquo; Back to search</a>
+</section>
+
+<h1>UPDATE THIS ARTIST</h1>
+<form ng-submit="onUpdate()">
+
+    <div>
+        <label for="name">name</label>
+        <input id="name" ng-model="updateUser.name" type="text">
+    </div>
+    <div>
+        <label for="bio">bio</label>
+        <textarea rows="6" cols="100" id="bio">{{data[whichItem].bio}}</textarea>
+    </div>
+    <div>
+        <label for="reknown">reknown</label>
+        <input id="reknown" ng-model="data[whichItem].reknown" type="text">
+    </div>
+    <div>
+        <label for="shortname">shortname</label>
+        <input id="shortname" ng-model="data[whichItem].shortname" type="text">
+    </div>
+
+    <button>Submit</button>
+
+</form>

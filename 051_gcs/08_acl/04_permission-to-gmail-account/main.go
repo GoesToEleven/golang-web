@@ -5,6 +5,7 @@ import (
 	"google.golang.org/appengine/log"
 	"io"
 	"net/http"
+	"fmt"
 )
 
 const gcsBucket = "learning-1130.appspot.com"
@@ -47,17 +48,44 @@ func handler(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		fnames, err := putCookie(res, req, fname)
+		err = putCookie(res, req, fname)
 		if err != nil {
 			log.Errorf(ctx, "ERROR handler putCookie: ", err)
 			http.Error(res, "We were unable to accept your file\n"+err.Error(), http.StatusUnsupportedMediaType)
 			return
 		}
 
-		html += `<h1>Files</h1>`
+	}
+
+	fnames, err := getCookie(res, req)
+	if err != nil {
+		log.Infof(ctx, "INFO handler getCookie - no cookie yet: ", err)
+	}
+
+	html += `<h1>Files</h1>`
+
+	if len(fnames) != 0 {
 		for k, _ := range fnames {
 			html += `<h3><a href="/golden?object=` + k + `">` + k + `</a></h3>`
 		}
+	}
+
+	html += `<br>------------------------------<br>`
+
+	xsAttrs, err := listFiles(ctx)
+	if err != nil {
+		log.Errorf(ctx, "ERROR handler listFiles: ", err)
+		http.Error(res, err.Error(), http.StatusUnsupportedMediaType)
+		return
+	}
+
+	for _, v := range xsAttrs {
+		html += `<p><strong>Name:</strong><br> ` + v.Name + `</p>`+
+		`<p><strong>Bucket:</strong><br> `+v.Bucket+`</p>` +
+		`<p><strong>ContentType:</strong><br> `+v.ContentType+`</p>`+
+		`<p><strong>ACL:</strong><br> `+fmt.Sprintf("%v",v.ACL)+`</p>`+
+		`<p><strong>Owner:</strong><br>`+v.Owner+`</p>`+
+		`<p><strong>MediaLink:</strong><br><a href="`+v.MediaLink+`" target="_blank">`+v.MediaLink+`</a></p>`
 	}
 
 	res.Header().Set("Content-Type", "text/html; charset=utf-8")

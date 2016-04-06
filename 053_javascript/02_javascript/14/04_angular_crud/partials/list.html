@@ -1,0 +1,53 @@
+<div>
+    <label for="searchBox">Search:</label>
+    <input id="searchBox" ng-model="query" placeholder="search for artists" autofocus>
+    <p><a href="#/bio">see bios</a></p>
+    <ul>
+        <li ng-repeat="item in data | filter: {name:query}">
+            <img ng-src="../../general-images/artists/{{item.shortname}}_tn.jpg"
+                 alt="a picture of {{item.name}}"/>
+            <div>
+                <h2><a href="#/details/{{data.indexOf(item)}}">{{item.name}}</a></h2>
+                <h3>{{item.reknown}}</h3>
+                <h3>item.$id</h3>
+                <h3>{{item.$id}}</h3>
+                <!-- don't eval item.$id in the DOM -->
+                <!-- have item.$id evaluated in the function-->
+                <button ng-click="onDelete(item.$id)">delete</button>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<form ng-submit="onAdd()">
+
+    <div>
+        <label for="name">name</label>
+        <input id="name" ng-model="user.name" type="text">
+    </div>
+    <div>
+        <label for="bio">bio</label>
+        <input id="bio" ng-model="user.bio" type="text">
+    </div>
+    <div>
+        <label for="reknown">reknown</label>
+        <input id="reknown" ng-model="user.reknown" type="text">
+    </div>
+    <div>
+        <label for="shortname">shortname</label>
+        <input id="shortname" ng-model="user.shortname" type="text">
+    </div>
+
+    <button>Submit</button>
+
+    <br>
+    <br>
+    <br>
+    <p>{{user}}</p>
+    <p>{{user.name}}</p>
+    <p>{{user.bio}}</p>
+    <p>{{user.reknown}}</p>
+    <p>{{user.shortname}}</p>
+
+</form>
+

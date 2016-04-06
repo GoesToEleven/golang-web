@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <!-- AngularJS -->
+    <script src="../lib/angular/angular.min.js"></script>
+    <!-- Firebase -->
+    <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+    <!-- AngularFire -->
+    <script src="https://cdn.firebase.com/libs/angularfire/1.1.1/angularfire.min.js"></script>
+    <!-- Controller -->
+    <script src="js/controller.js"></script>
+    <link rel="stylesheet" href="css/reset.css">
+    <style>
+        body {
+            margin: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        h3 {
+            margin-bottom: 20px;
+        }
+
+        input {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div ng-controller="MyController">
+
+    <label for="searchBox">Search:</label>
+    <input id="searchBox" ng-model="query" placeholder="search for artists" autofocus>
+
+    <ul>
+        <li ng-repeat="item in data | filter: {name:query}">
+            <!-- below filters only by name -->
+        <!--<li ng-repeat="item in data | filter: {name:query}">-->
+            <img ng-src="../../../../general-images/artists/{{item.shortname}}_tn.jpg"
+                 alt="a picture of {{item.name}}"/>
+            <div>
+                <h2>{{item.name}}</h2>
+                <h3>{{item.reknown}}</h3>
+            </div>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>

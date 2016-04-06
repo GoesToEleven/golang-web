@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+    function printDay() {
+        var today = new Date();
+        var weekdays = [
+                'Sunday',
+                'Monday',
+                'Tuesday',
+                'Wednesday',
+                'Thursday',
+                'Friday',
+                'Saturday',
+        ];
+        console.log(weekdays[today.getDay()]);
+
+        var myBody = document.querySelector('body');
+        var myHeading = document.createElement('h1');
+        myHeading.innerHTML = weekdays[today.getDay()];
+        myBody.appendChild(myHeading);
+    }
+    for(var i = 0; i < 5; i++ ) {
+        var myParagraph = document.createElement('p');
+        var myBody = document.querySelector('body');
+        myParagraph.innerHTML = ''+ (1+i);
+        myBody.appendChild(myParagraph);
+        printDay();
+    }
+
+</script>
+</body>
+</html>

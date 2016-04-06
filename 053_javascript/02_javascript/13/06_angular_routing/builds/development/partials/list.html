@@ -1,0 +1,18 @@
+<div>
+
+    <label for="searchBox">Search:</label>
+    <input id="searchBox" ng-model="query" placeholder="search for artists" autofocus>
+
+    <ul>
+        <li ng-repeat="item in data | filter: {name:query}">
+            <!-- below filters only by name -->
+            <!--<li ng-repeat="item in data | filter: {name:query}">-->
+            <img ng-src="../../../../general-images/artists/{{item.shortname}}_tn.jpg"
+                 alt="a picture of {{item.name}}"/>
+            <div>
+                <h2>{{item.name}}</h2>
+                <h3>{{item.reknown}}</h3>
+            </div>
+        </li>
+    </ul>
+</div>

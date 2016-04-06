@@ -1,0 +1,47 @@
+install ionic globally
+ray puts on his desktop
+you already need to have:
+-nodejs installed
+-git
+-ruby if you're using sass
+here's the command at the terminal:
+sudo npm install -g cordova ionic
+
+now create a folder where you'd like to store your new project
+navigate into this folder
+then at the terminal:
+
+do this:
+ionic start myApp blank
+or this:
+ionic start myApp tabs
+or this:
+ionic start myApp link-to-github-repo-with-ionic-app
+
+the myApp folder will be created
+a bunch of folders will be created in the myApp folder
+
+now you can run these commands at the terminal from the myApp folder
+ionic serve
+ionic serve -l
+
+now you can open myApp/www/index.html and edit it
+
+in index.html
+play with adding stuff like this
+
+between these tags
+      <ion-content>
+      </ion-content>
+add a paragraph with lorem ipsum
+
+you can go to
+http://ionicframework.com/docs/components/
+and add in code from there between the ion-content tags
+
+see more ray's notes about adding things here
+http://planetoftheweb.com/presentations/fresno/W03D05.html#/2
+
+
+
+

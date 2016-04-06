@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            /*border: 1px solid white !important;*/
+            box-sizing: border-box;
+            border: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #000;
+            font-family: 'courier new', courier, sans-serif;
+        }
+
+        main {
+            display: flex;
+            justify-content: center;
+        }
+
+        #form-fields {
+            display: flex;
+            justify-content: center;
+            height: 40px;
+        }
+
+        input {
+            height: 100%;
+            width: 400px;
+            font-size: 16px;
+            padding-left: 10px;
+        }
+
+        button {
+            font-size: 16px;
+            color: #0007d2;
+            font-weight: 900;
+            padding: 10px;
+        }
+
+        #userQuestion {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            font-size: 5em;
+            color: #fff;
+            font-style: italic;
+            opacity: .2;
+            /*text-transform: lowercase;*/
+        }
+
+        #userQuestion:before, #userQuestion:after {
+            content: '"';
+        }
+
+        /*#userQuestion::first-letter {*/
+            /*text-transform: uppercase;*/
+        /*}*/
+
+        #main-image {
+            width: 675px;
+            height: 675px;
+            background-image: url('http://planetoftheweb.com/i/8ball/empty.png');
+            background-size: contain;
+            transition: 2s;
+        }
+
+    </style>
+</head>
+<body>
+
+<main>
+    <!--<img src="http://planetoftheweb.com/i/8ball/empty.png" alt="eight ball" width="675" height="675">-->
+    <div id="main-image"></div>
+</main>
+
+<section>
+    <div id="form-fields">
+        <input type="text" name="question" id="question" tabindex="1" placeholder="Enter Your Question ...">
+        <button>Know Your Future</button>
+    </div>
+    <div><p id="userQuestion">somETHing here</p></div>
+</section>
+
+<script>
+
+    var images = [];
+    if (images.length === 0) {
+        images = [
+            'http://planetoftheweb.com/i/8ball/19.png',
+            'http://planetoftheweb.com/i/8ball/18.png',
+            'http://planetoftheweb.com/i/8ball/17.png',
+            'http://planetoftheweb.com/i/8ball/16.png',
+            'http://planetoftheweb.com/i/8ball/15.png',
+            'http://planetoftheweb.com/i/8ball/14.png',
+            'http://planetoftheweb.com/i/8ball/13.png',
+            'http://planetoftheweb.com/i/8ball/12.png',
+            'http://planetoftheweb.com/i/8ball/11.png',
+            'http://planetoftheweb.com/i/8ball/10.png',
+            'http://planetoftheweb.com/i/8ball/9.png',
+            'http://planetoftheweb.com/i/8ball/8.png',
+            'http://planetoftheweb.com/i/8ball/7.png',
+            'http://planetoftheweb.com/i/8ball/6.png',
+            'http://planetoftheweb.com/i/8ball/5.png',
+            'http://planetoftheweb.com/i/8ball/4.png',
+            'http://planetoftheweb.com/i/8ball/3.png',
+            'http://planetoftheweb.com/i/8ball/2.png',
+            'http://planetoftheweb.com/i/8ball/1.png',
+            'http://planetoftheweb.com/i/8ball/0.png',
+        ]
+    }
+
+    // get references to html objects
+    var myInput = document.querySelector('input');
+    var myButton = document.querySelector('button');
+
+    // choose a message when a question is asked
+    function chooseMessage() {
+        var myImg = document.querySelector('#main-image');
+        var randomNumber = Math.floor((Math.random()) * (images.length))
+        console.log(images.length);
+        myImg.style.backgroundImage = 'url(' + images[randomNumber] + ')';
+        // remove displayed image from images
+        images.splice(randomNumber, 1);
+        // show question on page
+        var questionText = myInput.value;
+        var displayQuestion = document.querySelector('#userQuestion');
+        displayQuestion.innerHTML = questionText;
+    }
+    myButton.addEventListener('click', chooseMessage, false);
+
+    // clear the input field when user asks another question
+    function clearInput() {
+        myInput.value = '';
+    }
+    myInput.addEventListener('click', clearInput, false);
+
+/*
+    // get references to html objects
+    var myInput = document.querySelector('input');
+    var myButton = document.querySelector('button');
+
+    // choose a message when a question is asked
+    function chooseMessage() {
+        var myImg = document.querySelector('img');
+        var randomNumber = Math.floor((Math.random()) * (images.length))
+        console.log(images.length);
+        myImg.src = images[randomNumber];
+        // remove displayed image from images
+        images.splice(randomNumber, 1);
+        // show question on page
+        var questionText = myInput.value;
+        var displayQuestion = document.querySelector('#userQuestion');
+        displayQuestion.innerHTML = questionText;
+    }
+    myButton.addEventListener('click', chooseMessage, false);
+
+    // clear the input field when user asks another question
+    function clearInput() {
+        myInput.value = '';
+    }
+    myInput.addEventListener('click', clearInput, false);
+*/
+</script>
+
+</body>
+</html>
