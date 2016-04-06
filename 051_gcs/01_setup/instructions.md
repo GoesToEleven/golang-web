@@ -6,6 +6,14 @@ If you have not worked with App Engine yet, please see "Hello, World!" for Go on
 
 https://cloud.google.com/appengine/docs/go/
 
+# Setup for Google Cloud Storage
+
+You might need to install Google Cloud Storage SDK.
+
+I installed this a long time ago. One of my students recently needed to install it.
+
+https://cloud.google.com/sdk/
+
 # Create A Project on Google Cloud Platform (App Engine)
 
 If you have not already, make sure you have a project on Google Cloud Platform 

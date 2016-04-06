@@ -27,13 +27,13 @@ func putFile(ctx context.Context, name string, rdr io.Reader) error {
 func getAttrs(ctx context.Context, name string) (*storage.ObjectAttrs, error) {
 	client, err := storage.NewClient(ctx)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer client.Close()
 
 	attrs, err := client.Bucket(gcsBucket).Object(name).Attrs(ctx)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	return attrs, nil
 }

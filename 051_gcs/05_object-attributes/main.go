@@ -59,27 +59,26 @@ func handler(res http.ResponseWriter, req *http.Request) {
 			if err != nil {
 				continue
 			}
-			// TODO left off here
 			html += `<h1>`+attrs.Name+`</h1>`+
-			`<h3>Bucket: `+attrs.Bucket+`</h3>`+
-			`<h3>ContentType: `+attrs.ContentType+`</h3>`+
-			`<h3>ContentLanguage: `+attrs.ContentLanguage+`</h3>`+
-			`<h3>CacheControl: `+attrs.CacheControl+`</h3>`+
-			`<h3>ACL: `+attrs.ACL+`</h3>`+
-			`<h3>`+attrs.Owner+`</h3>`+
-			`<h3>`+attrs.Size+`</h3>`+
-			`<h3>`+attrs.ContentEncoding+`</h3>`+
-			`<h3>`+attrs.ContentDisposition+`</h3>`+
-			`<h3>`+attrs.MD5+`</h3>`+
-			`<h3>`+attrs.CRC32C+`</h3>`+
-			`<h3>`+attrs.MediaLink+`</h3>`+
-			`<h3>`+attrs.Metadata+`</h3>`+
-			`<h3>`+attrs.Generation+`</h3>`+
-			`<h3>`+attrs.MetaGeneration+`</h3>`+
-			`<h3>`+attrs.StorageClass+`</h3>`+
-			`<h3>`+attrs.Created+`</h3>`+
-			`<h3>`+attrs.Deleted+`</h3>`+
-			`<h3>`+attrs.Updated`</h3>`
+			`<p>Bucket: `+attrs.Bucket+`</p>`+
+			`<p>ContentType: `+attrs.ContentType+`</p>`+
+			`<p>ContentLanguage: `+attrs.ContentLanguage+`</p>`+
+			`<p>CacheControl: `+attrs.CacheControl+`</p>`+
+			//`<p>ACL: `+attrs.ACL+`</p>`+
+			`<p>Owner:`+attrs.Owner+`</p>`+
+			//`<p>Size:`+attrs.Size+`</p>`+
+			`<p>ContentEncoding:`+attrs.ContentEncoding+`</p>`+
+			`<p>ContentDisposition:`+attrs.ContentDisposition+`</p>`+
+			//`<p>MD5:`+attrs.MD5+`</p>`+
+			`<p>CRC32C:`+attrs.CRC32C+`</p>`+
+			`<p>MediaLink:`+attrs.MediaLink+`</p>`+
+			`<p>Metadata:`+attrs.Metadata+`</p>`+
+			`<p>Generation:`+attrs.Generation+`</p>`+
+			`<p>MetaGeneration:`+attrs.MetaGeneration+`</p>`+
+			`<p>StorageClass:`+attrs.StorageClass+`</p>`+
+			`<p>Created:`+attrs.Created+`</p>`+
+			`<p>Deleted:`+attrs.Deleted+`</p>`+
+			`<p>Updated:`+attrs.Updated+`</p>`
 		}
 	}
 
