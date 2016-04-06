@@ -21,38 +21,47 @@ If the ACL grants the user permission for the requested operation, the request i
 # Permissions - Object
 
 **Reader**
+
 Lets a user download an object's data.
 
 **Writer**
+
 You *cannot apply this* permission to objects.
 
 **Owner**
+
 Gives a user READER access. It also lets a user read and write object metadata, including ACLs.
 
 **Default**
+
 Objects have the predefined [project-private ACL](https://cloud.google.com/storage/docs/access-control#predefined-project-private) applied when they are uploaded. Objects are always owned by the original requester who uploaded the object.
 
 # Permissions - Bucket
 
 **Reader**
+
 Lets a user list a bucket's contents.
 
 The following bucket metadata properties are not returned with a bucket's resource without OWNER: acl, cors, defaultObjectAcl, lifecycle, logging, owner, and projectNumber. 
 
 **Writer**
+
 Lets a user list, create, overwrite, and delete objects in a bucket.
 
 The following bucket metadata properties cannot be changed: acl, cors, defaultObjectAcl, lifecycle, logging, versioning and website.
 
 **Owner**
+
 Gives a user READER and WRITER permissions on the bucket. It also lets a user read and write bucket metadata, including ACLs.
 
 **Default**
+
 Buckets have the predefined [project-private ACL](https://cloud.google.com/storage/docs/access-control#predefined-project-private) applied when they are created. Buckets are always owned by the project-owners group.
 
 # [Scopes](https://cloud.google.com/storage/docs/access-control#scopes)
 
 **Google Storage ID**
+
 A Google Storage ID is a string of 64 hexadecimal digits that identifies **a specific Google account** holder or a specific [Google group](https://groups.google.com/forum/#!overview). It is sometimes referred to as a canonical ID. The following is an example of a Google Storage ID:
 
 ```
@@ -62,6 +71,7 @@ A Google Storage ID is a string of 64 hexadecimal digits that identifies **a spe
 Project teams are identified by a Google Storage ID. The project editors group and project owners group are also identified using Google Cloud Storage IDs. These IDs are unique to a project.
 
 **Google account email address**
+
 Every user who has a Google account must have a unique email address associated with that account. You can specify a scope by using any email address that is associated with a Google account, such as a gmail.com address.
 Google Cloud Storage remembers email addresses as they are provided in ACLs until the entries are removed or overwritten. If a user changes email addresses, you should update ACL entries to reflect these changes.
 
