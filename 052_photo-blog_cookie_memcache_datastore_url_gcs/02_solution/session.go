@@ -18,7 +18,6 @@ type Session struct {
 	ID       string
 	Bucket   string
 	Pictures map[string]string
-	//req      *http.Request
 	res      http.ResponseWriter
 	ctx      context.Context
 }
@@ -60,7 +59,6 @@ func getSession(res http.ResponseWriter, req *http.Request) *Session {
 	s.ID = cookie.Value
 	s.ctx = ctx
 	s.res = res
-	s.req = req
 
 	// store in memcache
 	s.putSession()

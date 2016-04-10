@@ -9,13 +9,13 @@ import (
 	"strings"
 )
 
-func (s *Session) uploadPhoto() {
+func (s *Session) uploadPhoto(req *http.Request) {
 
 	// retrieve the submitted file
-	mpf, hdr, err := s.req.FormFile("data")
+	mpf, hdr, err := req.FormFile("data")
 	if err != nil {
 		log.Errorf(s.ctx, "ERROR uploadPhoto req.FormFile: %s", err)
-		http.Redirect(s.res, s.req, `/?id=`+s.ID, http.StatusSeeOther)
+		http.Redirect(s.res, req, `/?id=`+s.ID, http.StatusSeeOther)
 		return
 	}
 	defer mpf.Close()
@@ -25,7 +25,7 @@ func (s *Session) uploadPhoto() {
 	log.Infof(s.ctx, "FILE EXTENSION: %s", ext)
 	if ext != "jpg" || ext != "jpeg" {
 		log.Errorf(s.ctx, "We do not allow files of type %s. We only allow jpg, jpeg extensions.", ext)
-		http.Redirect(s.res, s.req, `/?id=`+s.ID, http.StatusSeeOther)
+		http.Redirect(s.res, req, `/?id=`+s.ID, http.StatusSeeOther)
 		return
 	}
 
@@ -39,7 +39,7 @@ func (s *Session) uploadPhoto() {
 	client, err := storage.NewClient(s.ctx)
 	if err != nil {
 		log.Errorf(s.ctx, "ERROR uploadPhoto storage.NewClient: %s", err)
-		http.Redirect(s.res, s.req, `/?id=`+s.ID, http.StatusSeeOther)
+		http.Redirect(s.res, req, `/?id=`+s.ID, http.StatusSeeOther)
 		return
 	}
 	defer client.Close()
@@ -51,7 +51,7 @@ func (s *Session) uploadPhoto() {
 	err = writer.Close()
 	if err != nil {
 		log.Errorf(s.ctx, "ERROR uploadPhoto writer.Close: %s", err)
-		http.Redirect(s.res, s.req, `/?id=`+s.ID, http.StatusSeeOther)
+		http.Redirect(s.res, req, `/?id=`+s.ID, http.StatusSeeOther)
 		return
 	}
 
