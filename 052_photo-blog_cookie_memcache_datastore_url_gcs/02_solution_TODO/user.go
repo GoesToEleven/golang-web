@@ -26,9 +26,6 @@ func initialModel(id string) model {
 	m := model{
 		Name:  "",
 		State: false,
-		Pictures: []string{
-			"one.jpg",
-		},
 		ID: id,
 	}
 	return m

@@ -7,6 +7,8 @@ import (
 	"net/http"
 )
 
+const gcsBucket = "learning-1130.appspot.com"
+
 var tpl *template.Template
 
 func init() {
@@ -32,14 +34,14 @@ func index(res http.ResponseWriter, req *http.Request) {
 	}
 
 	if req.Method == "POST" {
-		src, _, err := req.FormFile("data")
+		mpf, _, err := req.FormFile("data")
 		if err != nil {
 			log.Errorf(ctx, "ERROR index req.FormFile: %s", err)
 			// TODO: create error page to show user
 			http.Redirect(res, req, `/?id=`+id, http.StatusSeeOther)
 			return
 		}
-		err = uploadPhoto(src, id, req)
+		err = uploadPhoto(mpf, id, req)
 		if err != nil {
 			log.Errorf(ctx, "ERROR index uploadPhoto: %s", err)
 			// expired cookie may exist on client
@@ -55,6 +57,13 @@ func index(res http.ResponseWriter, req *http.Request) {
 		http.Redirect(res, req, "/logout", http.StatusSeeOther)
 		return
 	}
+
+	// add photo paths
+	xAttrs, err := listFiles(id, ctx)
+	for _, v := range xAttrs {
+		m.Pictures = append(m.Pictures, v.MediaLink)
+	}
+
 	tpl.ExecuteTemplate(res, "index.html", m)
 }
 

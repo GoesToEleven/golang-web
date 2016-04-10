@@ -69,7 +69,7 @@ func retriever(res http.ResponseWriter, req *http.Request) {
 	objectName := req.FormValue("object")
 	rdr, err := getFile(ctx, objectName)
 	if err != nil {
-		log.Errorf(ctx, "ERROR golden getFile: ", err)
+		log.Errorf(ctx, "ERROR retriever getFile: ", err)
 		http.Error(res, "We were unable to get the file"+objectName+"\n"+err.Error(), http.StatusUnsupportedMediaType)
 		return
 	}

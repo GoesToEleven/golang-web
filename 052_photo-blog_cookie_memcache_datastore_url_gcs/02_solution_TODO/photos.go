@@ -4,52 +4,59 @@ import (
 	"crypto/sha1"
 	"fmt"
 	"google.golang.org/appengine"
-	"google.golang.org/appengine/log"
 	"io"
 	"mime/multipart"
 	"net/http"
+"google.golang.org/cloud/storage"
+"golang.org/x/net/context"
 )
 
-func uploadPhoto(src multipart.File, id string, req *http.Request) error {
-	defer src.Close()
-	fName := getSha(src) + ".jpg"
-	return addPhoto(fName, id, req)
+func uploadPhoto(mpf multipart.File, id string, req *http.Request) error {
+	defer mpf.Close()
+	fname := id + `/` + getSha(mpf) + `.jpg`
+	return addPhoto(fname, id, req, mpf)
 }
 
-func addPhoto(fName string, id string, req *http.Request) error {
+func addPhoto(fname string, id string, req *http.Request, rdr multipart.File) error {
+	// all of the code below was added in this refactor
+	// and previous "func addPhoto" code was deleted
 	ctx := appengine.NewContext(req)
 
-	// DATASTORE
-	md, err := retrieveDstore(id, req)
+	client, err := storage.NewClient(ctx)
 	if err != nil {
 		return err
 	}
-	md.Pictures = append(md.Pictures, fName)
-	err = storeDstore(md, req)
-	if err != nil {
-		log.Errorf(ctx, "ERROR addPhoto storeDstore: %s", err)
-		return err
-	}
+	defer client.Close()
 
-	// MEMCACHE
-	var mc model
-	mc, err = retrieveMemc(id, req)
-	if err != nil {
-		log.Errorf(ctx, "ERROR addPhoto retrieveMemc: %s", err)
-		return err
+	writer := client.Bucket(gcsBucket).Object(fname).NewWriter(ctx)
+	writer.ACL = []storage.ACLRule{
+		{storage.AllUsers, storage.RoleReader},
 	}
-	mc.Pictures = append(mc.Pictures, fName)
-	err = storeMemc(mc, req)
-	if err != nil {
-		log.Errorf(ctx, "ERROR addPhoto storeMemc: %s", err)
-		return err
-	}
-
-	return nil
+	writer.ContentType = "image/jpeg"
+	io.Copy(writer, rdr)
+	return writer.Close()
 }
 
-func getSha(src multipart.File) string {
+func getSha(mpf multipart.File) string {
 	h := sha1.New()
-	io.Copy(h, src)
+	io.Copy(h, mpf)
 	return fmt.Sprintf("%x", h.Sum(nil))
+}
+
+func listFiles(id string, ctx context.Context) ([]*storage.ObjectAttrs, error) {
+	client, err := storage.NewClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer client.Close()
+
+	q := storage.Query{
+		Prefix: id,
+	}
+
+	ptr, err := client.Bucket(gcsBucket).List(ctx, &q)
+	if err != nil {
+		return nil, err
+	}
+	return ptr.Results, nil
 }
