@@ -107,7 +107,7 @@ func (d *demo) listFiles() {
 
 func (d *demo) createFiles() {
 	io.WriteString(d.res, "\nCreating more files for listbucket...\n")
-	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/"} {
+	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/", "bar/nonce/1", "bar/nonce/2", "bar/nonce/compadre/1", "bar/nonce/compadre/2"} {
 		d.createFile(n)
 	}
 }
