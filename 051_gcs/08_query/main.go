@@ -11,7 +11,9 @@ import (
 	"strings"
 )
 
-const gcsBucket = "learning-1130.appspot.com"
+func init() {
+	http.HandleFunc("/", handler)
+}
 
 type demo struct {
 	ctx    context.Context
@@ -20,9 +22,7 @@ type demo struct {
 	client *storage.Client
 }
 
-func init() {
-	http.HandleFunc("/", handler)
-}
+const gcsBucket = "learning-1130.appspot.com"
 
 func handler(res http.ResponseWriter, req *http.Request) {
 
@@ -47,9 +47,67 @@ func handler(res http.ResponseWriter, req *http.Request) {
 		bucket: client.Bucket(gcsBucket),
 	}
 
-	d.createFiles()
+	d.createListFiles()
 	d.listFiles()
+	d.statFiles()
+}
 
+func (d *demo) statFiles() {
+	io.WriteString(d.res, "\nRETRIEVING FILE STATS\n")
+
+	client, err := storage.NewClient(d.ctx)
+	if err != nil {
+		log.Errorf(d.ctx, "%v", err)
+		return
+	}
+	defer client.Close()
+
+	// create a query
+	q := storage.Query{
+		MaxResults: 2,
+	}
+
+	// instead of nil
+	// now passing in a *storage.Query
+	objs, err := client.Bucket(gcsBucket).List(d.ctx, &q)
+	if err != nil {
+		log.Errorf(d.ctx, "%v", err)
+		return
+	}
+
+	for _, v := range objs.Results {
+		d.statFile(v.Name)
+	}
+}
+
+func (d *demo) statFile(fileName string) {
+	io.WriteString(d.res, "\nFILE STAT:\n")
+
+	obj, err := d.bucket.Object(fileName).Attrs(d.ctx)
+	if err != nil {
+		log.Errorf(d.ctx, "statFile: unable to stat file from bucket %q, file %q: %v", gcsBucket, fileName, err)
+		return
+	}
+
+	d.dumpStats(obj)
+}
+
+func (d *demo) dumpStats(obj *storage.ObjectAttrs) {
+	fmt.Fprintf(d.res, "filename: /%v/%v, \n", obj.Bucket, obj.Name)
+	fmt.Fprintf(d.res, "ContentType: %q, \n", obj.ContentType)
+	fmt.Fprintf(d.res, "ACL: %#v, \n", obj.ACL)
+	fmt.Fprintf(d.res, "Owner: %v, \n", obj.Owner)
+	fmt.Fprintf(d.res, "ContentEncoding: %q, \n", obj.ContentEncoding)
+	fmt.Fprintf(d.res, "Size: %v, \n", obj.Size)
+	fmt.Fprintf(d.res, "MD5: %q, \n", obj.MD5)
+	fmt.Fprintf(d.res, "CRC32C: %q, \n", obj.CRC32C)
+	fmt.Fprintf(d.res, "Metadata: %#v, \n", obj.Metadata)
+	fmt.Fprintf(d.res, "MediaLink: %q, \n", obj.MediaLink)
+	fmt.Fprintf(d.res, "StorageClass: %q, \n", obj.StorageClass)
+	if !obj.Deleted.IsZero() {
+		fmt.Fprintf(d.res, "Deleted: %v, \n", obj.Deleted)
+	}
+	fmt.Fprintf(d.res, "Updated: %v)\n", obj.Updated)
 }
 
 func (d *demo) listFiles() {
@@ -73,7 +131,7 @@ func (d *demo) listFiles() {
 	}
 }
 
-func (d *demo) createFiles() {
+func (d *demo) createListFiles() {
 	io.WriteString(d.res, "\nCreating more files for listbucket...\n")
 	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/"} {
 		d.createFile(n)

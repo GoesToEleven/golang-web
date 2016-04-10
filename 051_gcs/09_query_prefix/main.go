@@ -15,14 +15,14 @@ func init() {
 	http.HandleFunc("/", handler)
 }
 
+const gcsBucket = "learning-1130.appspot.com"
+
 type demo struct {
 	ctx    context.Context
 	res    http.ResponseWriter
 	bucket *storage.BucketHandle
 	client *storage.Client
 }
-
-const gcsBucket = "learning-1130.appspot.com"
 
 func handler(res http.ResponseWriter, req *http.Request) {
 
@@ -49,40 +49,30 @@ func handler(res http.ResponseWriter, req *http.Request) {
 
 	d.createListFiles()
 	d.listFiles()
-	d.statFiles()
+	d.listBucket()
 }
 
-func (d *demo) statFiles() {
-	io.WriteString(d.res, "\nRETRIEVING FILE STATS\n")
+func (d *demo) listBucket() {
+	io.WriteString(d.res, "\nLISTBUCKET RESULT:\n")
 
-	client, err := storage.NewClient(d.ctx)
-	if err != nil {
-		log.Errorf(d.ctx, "%v", err)
-		return
-	}
-	defer client.Close()
-
-	objs, err := client.Bucket(gcsBucket).List(d.ctx, nil)
-	if err != nil {
-		log.Errorf(d.ctx, "%v", err)
-		return
+	// get any object with the prefix "foo" in its name
+	query := &storage.Query{
+		Prefix: "foo",
 	}
 
-	for _, v := range objs.Results {
-		d.statFile(v.Name)
+	for query != nil {
+		objs, err := d.bucket.List(d.ctx, query)
+		if err != nil {
+			log.Errorf(d.ctx, "listBucket: unable to list bucket %q: %v", gcsBucket, err)
+			return
+		}
+		query = objs.Next
+
+		for _, obj := range objs.Results {
+			fmt.Fprintf(d.res, "\n%v\n", obj.Name)
+			d.dumpStats(obj)
+		}
 	}
-}
-
-func (d *demo) statFile(fileName string) {
-	io.WriteString(d.res, "\nFILE STAT:\n")
-
-	obj, err := d.bucket.Object(fileName).Attrs(d.ctx)
-	if err != nil {
-		log.Errorf(d.ctx, "statFile: unable to stat file from bucket %q, file %q: %v", gcsBucket, fileName, err)
-		return
-	}
-
-	d.dumpStats(obj)
 }
 
 func (d *demo) dumpStats(obj *storage.ObjectAttrs) {
