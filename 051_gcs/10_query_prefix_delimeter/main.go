@@ -58,8 +58,6 @@ func handler(res http.ResponseWriter, req *http.Request) {
 
 func (d *demo) listDir(name, delim, indent string) {
 
-
-
 	query := &storage.Query{
 		Prefix:    name,
 		Delimiter: delim,

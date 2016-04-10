@@ -140,7 +140,6 @@ func (d *demo) createFile(fileName string) {
 		{storage.AllUsers, storage.RoleReader},
 	}
 
-
 	if _, err := wc.Write([]byte("abcde\n")); err != nil {
 		log.Errorf(d.ctx, "createFile: unable to write data to bucket %q, file %q: %v", gcsBucket, fileName, err)
 		return

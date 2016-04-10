@@ -66,7 +66,7 @@ func (s *Session) listBucket() {
 
 	client, err := storage.NewClient(s.ctx)
 	if err != nil {
-		log.Errorf(s.ctx, "ERROR listBucket: %v", err)
+		log.Errorf(s.ctx, "ERROR listBucket storage.NewClient: %v", err)
 		return
 	}
 	defer client.Close()
@@ -77,7 +77,7 @@ func (s *Session) listBucket() {
 
 	objs, err := client.Bucket(gcsBucket).List(s.ctx, q)
 	if err != nil {
-		log.Errorf(s.ctx, "ERROR listBucket: %v", err)
+		log.Errorf(s.ctx, "ERROR listBucket client.Bucket: %v", err)
 		return
 	}
 
