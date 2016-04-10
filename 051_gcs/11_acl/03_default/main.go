@@ -68,8 +68,8 @@ func (d *demo) statFiles() {
 		return
 	}
 
-	for _, v := range objs.Results {
-		d.statFile(v.Name)
+	for _, obj := range objs.Results {
+		d.statFile(obj.Name)
 	}
 }
 

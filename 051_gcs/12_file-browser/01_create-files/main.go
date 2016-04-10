@@ -15,14 +15,14 @@ func init() {
 	http.HandleFunc("/", handler)
 }
 
-const gcsBucket = "learning-1130.appspot.com"
-
 type demo struct {
 	ctx    context.Context
 	res    http.ResponseWriter
 	bucket *storage.BucketHandle
 	client *storage.Client
 }
+
+const gcsBucket = "learning-1130.appspot.com"
 
 func handler(res http.ResponseWriter, req *http.Request) {
 
@@ -49,39 +49,6 @@ func handler(res http.ResponseWriter, req *http.Request) {
 
 	d.createFiles()
 	d.listFiles()
-	io.WriteString(d.res, "\nRESULTS FROM LISTDIR - WITH DELIMITER\n")
-	d.listDir("bar", "/", "  ")
-	io.WriteString(d.res, "\nRESULTS FROM LISTDIR - *WITHOUT* DELIMITER\n")
-	d.listDir("bar", "", "  ")
-
-}
-
-func (d *demo) listDir(name, delim, indent string) {
-
-
-
-	query := &storage.Query{
-		Prefix:    name,
-		Delimiter: delim,
-	}
-
-	for query != nil {
-		objs, err := d.bucket.List(d.ctx, query)
-		if err != nil {
-			log.Errorf(d.ctx, "listBucketDirMode: unable to list bucket %q: %v", gcsBucket, err)
-			return
-		}
-		query = objs.Next
-
-		for _, obj := range objs.Results {
-			fmt.Fprintf(d.res, "%v%v\n", indent, obj.Name)
-		}
-
-		for _, dir := range objs.Prefixes {
-			log.Infof(d.ctx, "DIR: %v", dir)
-			d.listDir(dir, delim, indent+"  ")
-		}
-	}
 }
 
 func (d *demo) listFiles() {
@@ -106,8 +73,8 @@ func (d *demo) listFiles() {
 }
 
 func (d *demo) createFiles() {
-	io.WriteString(d.res, "\nCreating more files for listbucket...\n")
-	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/"} {
+	io.WriteString(d.res, "\nCreating files...\n")
+	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/", "bar/nonce/1", "bar/nonce/2", "bar/nonce/compadre/1", "bar/nonce/compadre/2"} {
 		d.createFile(n)
 	}
 }

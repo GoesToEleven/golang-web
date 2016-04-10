@@ -126,8 +126,8 @@ func (d *demo) listFiles() {
 		return
 	}
 
-	for _, v := range objs.Results {
-		io.WriteString(d.res, v.Name+"\n")
+	for _, obj := range objs.Results {
+		io.WriteString(d.res, obj.Name+"\n")
 	}
 }
 
