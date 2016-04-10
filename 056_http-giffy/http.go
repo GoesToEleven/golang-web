@@ -10,18 +10,25 @@ import (
 )
 
 func init() {
-	http.HandleFunc("/getgif", handleGetGif)
+	http.HandleFunc("/", index)
 }
 
-func handleGetGif(res http.ResponseWriter, req *http.Request) {
+func index(res http.ResponseWriter, req *http.Request) {
 	ctx := appengine.NewContext(req)
+
+	q := req.FormValue("q")
+	if q == "" {
+		q = "funny+cat"
+	}
+
 	client := urlfetch.Client(ctx)
-	result, err := client.Get("http://api.giphy.com/v1/gifs/search?q=funny+cat&api_key=dc6zaTOxFJmzC")
+	result, err := client.Get("http://api.giphy.com/v1/gifs/search?q=` + q + `&api_key=dc6zaTOxFJmzC")
 	if err != nil {
 		http.Error(res, err.Error(), 500)
 		return
 	}
 	defer result.Body.Close()
+
 	var obj struct {
 		Data []struct {
 			URL    string `json:"url"`
@@ -37,6 +44,7 @@ func handleGetGif(res http.ResponseWriter, req *http.Request) {
 		http.Error(res, err.Error(), 500)
 		return
 	}
+
 	for _, img := range obj.Data {
 		fmt.Fprintf(res, `<a href="%v">%v</a><img src="%v"><br>`, img.URL, img.URL, img.Images.Original.URL)
 	}

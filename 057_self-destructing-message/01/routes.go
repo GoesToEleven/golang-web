@@ -12,12 +12,12 @@ import (
 )
 
 func init() {
-	http.HandleFunc("/", handleIndex)
-	http.HandleFunc("/msg/", handleMessage)
+	http.HandleFunc("/", index)
+	http.HandleFunc("/msg/", mi)
 }
 
 // create a message
-func handleIndex(res http.ResponseWriter, req *http.Request) {
+func index(res http.ResponseWriter, req *http.Request) {
 	ctx := appengine.NewContext(req)
 
 	// form submit
@@ -66,7 +66,7 @@ func handleIndex(res http.ResponseWriter, req *http.Request) {
 }
 
 // return a message based on its id
-func handleMessage(res http.ResponseWriter, req *http.Request) {
+func mi(res http.ResponseWriter, req *http.Request) {
 	ctx := appengine.NewContext(req)
 	// get key from URL
 	key := strings.SplitN(req.URL.Path, "/", 3)[2]

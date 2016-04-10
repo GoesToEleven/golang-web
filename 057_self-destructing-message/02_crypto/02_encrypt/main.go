@@ -20,9 +20,4 @@ func main() {
 	fmt.Println(decrypted)
 	fmt.Println("-----ENCRYPTED-----")
 	fmt.Println("encrypted", encrypted)
-	fmt.Println("len", len(encrypted))
-	fmt.Println("string", string(encrypted))
-	fmt.Println("nonce", nonce)
-	fmt.Println("nonce", nonce[:])
-	fmt.Printf("%x:%x \n", nonce[:], encrypted)
 }
