@@ -17,8 +17,8 @@ import (
 )
 
 func init() {
-	http.HandleFunc("/", handleIndex)
-	http.HandleFunc("/msg/", handleMessage)
+	http.HandleFunc("/", index)
+	http.HandleFunc("/retrieve/", mi)
 }
 
 func encrypt(decrypted string, password [32]byte) string {
@@ -57,20 +57,20 @@ func generatePassword() [32]byte {
 }
 
 // create a message
-func handleIndex(res http.ResponseWriter, req *http.Request) {
+func index(res http.ResponseWriter, req *http.Request) {
 	ctx := appengine.NewContext(req)
 
 	// form submit
 	if req.Method == "POST" {
 		msg := req.FormValue("message")
-		secretKey := generatePassword()
-		encryptedMessage := encrypt(msg, secretKey)
+		pwd := generatePassword()
+		encrypted := encrypt(msg, pwd)
 
-		messageKey, _ := uuid.NewV4()
+		key, _ := uuid.NewV4()
 		// store the message in memcache
 		item := &memcache.Item{
-			Key:   messageKey.String(),
-			Value: []byte(encryptedMessage),
+			Key:   key.String(),
+			Value: []byte(encrypted),
 		}
 		err := memcache.Add(ctx, item)
 		if err != nil {
@@ -84,10 +84,10 @@ func handleIndex(res http.ResponseWriter, req *http.Request) {
   </head>
   <body>
     Here is your self-destructing secret message ID:
-    <a href="/msg/`+messageKey.String()+`?secret=`+fmt.Sprintf("%x", secretKey)+`">`+messageKey.String()+`</a>
+    <a href="/retrieve/`+key.String()+`?pwd=`+fmt.Sprintf("%x", pwd)+`">`+key.String()+`</a>
     Send it to Peter Graves.
     <p>The encrypted message:</p>
-    <p>`+encryptedMessage+`</p>
+    <p>`+encrypted+`</p>
   </body>
 </html>`)
 	} else {
@@ -112,7 +112,7 @@ func handleIndex(res http.ResponseWriter, req *http.Request) {
 }
 
 // return a message based on its id
-func handleMessage(res http.ResponseWriter, req *http.Request) {
+func mi(res http.ResponseWriter, req *http.Request) {
 	ctx := appengine.NewContext(req)
 	// get key from URL
 	key := strings.SplitN(req.URL.Path, "/", 3)[2]
@@ -123,15 +123,15 @@ func handleMessage(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var secretKey [32]byte
-	bs, err := hex.DecodeString(req.FormValue("secret"))
+	var pwd [32]byte
+	bs, err := hex.DecodeString(req.FormValue("pwd"))
 	if err != nil || len(bs) != 32 {
 		http.NotFound(res, req)
 		return
 	}
-	copy(secretKey[:], bs)
+	copy(pwd[:], bs)
 
-	msg, err := decrypt(string(item.Value), secretKey)
+	msg, err := decrypt(string(item.Value), pwd)
 	if err != nil {
 		http.NotFound(res, req)
 		return
