@@ -18,7 +18,7 @@ type Session struct {
 	ID       string
 	Bucket   string
 	Pictures map[string]string
-	req      *http.Request
+	//req      *http.Request
 	res      http.ResponseWriter
 	ctx      context.Context
 }
