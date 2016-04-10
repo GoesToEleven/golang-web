@@ -11,9 +11,7 @@ import (
 	"strings"
 )
 
-func init() {
-	http.HandleFunc("/", handler)
-}
+const gcsBucket = "learning-1130.appspot.com"
 
 type demo struct {
 	ctx    context.Context
@@ -22,7 +20,9 @@ type demo struct {
 	client *storage.Client
 }
 
-const gcsBucket = "learning-1130.appspot.com"
+func init() {
+	http.HandleFunc("/", handler)
+}
 
 func handler(res http.ResponseWriter, req *http.Request) {
 
@@ -47,8 +47,9 @@ func handler(res http.ResponseWriter, req *http.Request) {
 		bucket: client.Bucket(gcsBucket),
 	}
 
-	d.createListFiles()
+	d.createFiles()
 	d.listFiles()
+
 }
 
 func (d *demo) listFiles() {
@@ -72,7 +73,7 @@ func (d *demo) listFiles() {
 	}
 }
 
-func (d *demo) createListFiles() {
+func (d *demo) createFiles() {
 	io.WriteString(d.res, "\nCreating more files for listbucket...\n")
 	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/"} {
 		d.createFile(n)

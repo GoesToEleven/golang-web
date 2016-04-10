@@ -1,92 +1,156 @@
 package skyhdd
 
 import (
+	"fmt"
+	"golang.org/x/net/context"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/log"
+	"google.golang.org/cloud/storage"
 	"io"
 	"net/http"
-	"fmt"
+	"strings"
 )
-
-const gcsBucket = "learning-1130.appspot.com"
 
 func init() {
 	http.HandleFunc("/", handler)
 }
 
+type demo struct {
+	ctx    context.Context
+	res    http.ResponseWriter
+	bucket *storage.BucketHandle
+	client *storage.Client
+}
+
+const gcsBucket = "learning-1130.appspot.com"
+
 func handler(res http.ResponseWriter, req *http.Request) {
-	ctx := appengine.NewContext(req)
 
 	if req.URL.Path != "/" {
 		http.NotFound(res, req)
 		return
 	}
 
-	html := `
-		<h1>UPLOAD</h1>
-	    <form method="POST" enctype="multipart/form-data">
-		<input type="file" name="dahui">
-		<input type="submit">
-	    </form>
-	`
+	ctx := appengine.NewContext(req)
 
-	if req.Method == "POST" {
+	client, err := storage.NewClient(ctx)
+	if err != nil {
+		log.Errorf(ctx, "ERROR handler NewClient: ", err)
+		return
+	}
+	defer client.Close()
 
-		mpf, hdr, err := req.FormFile("dahui")
-		if err != nil {
-			log.Errorf(ctx, "ERROR handler req.FormFile: ", err)
-			http.Error(res, "We were unable to upload your file\n", http.StatusInternalServerError)
-			return
-		}
-		defer mpf.Close()
-
-		fname, err := uploadFile(req, mpf, hdr)
-		if err != nil {
-			log.Errorf(ctx, "ERROR handler uploadFile: ", err)
-			http.Error(res, "We were unable to accept your file\n"+err.Error(), http.StatusUnsupportedMediaType)
-			return
-		}
-
-		_, err = putCookie(res, req, fname)
-		if err != nil {
-			log.Errorf(ctx, "ERROR handler putCookie: ", err)
-			http.Error(res, "We were unable to accept your file\n"+err.Error(), http.StatusUnsupportedMediaType)
-			return
-		}
+	d := &demo{
+		ctx:    ctx,
+		res:    res,
+		client: client,
+		bucket: client.Bucket(gcsBucket),
 	}
 
-	html += `<h1>Files</h1>`
+	d.createListFiles()
+	d.listFiles()
+	d.statFiles()
+}
 
-	xAttrs, err := listFiles(ctx)
+func (d *demo) statFiles() {
+	io.WriteString(d.res, "\nRETRIEVING FILE STATS\n")
+
+	client, err := storage.NewClient(d.ctx)
 	if err != nil {
-		log.Errorf(ctx, "ERROR handler listFiles: ", err)
-		http.Error(res, err.Error(), http.StatusUnsupportedMediaType)
+		log.Errorf(d.ctx, "%v", err)
+		return
+	}
+	defer client.Close()
+
+	objs, err := client.Bucket(gcsBucket).List(d.ctx, nil)
+	if err != nil {
+		log.Errorf(d.ctx, "%v", err)
 		return
 	}
 
-	for _, v := range xAttrs {
-		html += `<h3>` + v.Name + `</h3>`+
-		`<p><strong>Bucket:</strong><br> `+v.Bucket+`</p>` +
-		`<p><strong>ContentType:</strong><br> `+v.ContentType+`</p>`+
-		`<p><strong>ContentLanguage:</strong><br> `+v.ContentLanguage+`</p>`+
-		`<p><strong>CacheControl:</strong><br> `+v.CacheControl+`</p>`+
-		`<p><strong>ACL:</strong><br> `+fmt.Sprintf("%v",v.ACL)+`</p>`+
-		`<p><strong>Owner:</strong><br>`+v.Owner+`</p>`+
-		`<p><strong>Size:</strong><br>`+fmt.Sprintf("%v",v.Size)+`</p>`+
-		`<p><strong>ContentEncoding:</strong><br>`+v.ContentEncoding+`</p>`+
-		`<p><strong>ContentDisposition:</strong><br>`+v.ContentDisposition+`</p>`+
-		`<p><strong>MD5:</strong><br>`+fmt.Sprintf("%v",v.MD5)+`</p>`+
-		`<p><strong>CRC32C:</strong><br>`+fmt.Sprintf("%v",v.CRC32C)+`</p>`+
-		`<p><strong>MediaLink:</strong><br><a href="`+v.MediaLink+`" target="_blank">`+v.MediaLink+`</a></p>`+
-		`<p><strong>Metadata:</strong><br>`+fmt.Sprintf("%v",v.Metadata)+`</p>`+
-		`<p><strong>Generation:</strong><br>`+fmt.Sprintf("%v",v.Generation)+`</p>`+
-		`<p><strong>MetaGeneration:</strong><br>`+fmt.Sprintf("%v",v.MetaGeneration)+`</p>`+
-		`<p><strong>StorageClass:</strong><br>`+v.StorageClass+`</p>`+
-		`<p><strong>Created:</strong><br>`+fmt.Sprintf("%v",v.Created)+`</p>`+
-		`<p><strong>Deleted:</strong><br>`+fmt.Sprintf("%v",v.Deleted)+`</p>`+
-		`<p><strong>Updated:</strong><br>`+fmt.Sprintf("%v",v.Updated)+`</p>`
+	for _, v := range objs.Results {
+		d.statFile(v.Name)
+	}
+}
+
+func (d *demo) statFile(fileName string) {
+	io.WriteString(d.res, "\nFILE STAT:\n")
+
+	obj, err := d.bucket.Object(fileName).Attrs(d.ctx)
+	if err != nil {
+		log.Errorf(d.ctx, "statFile: unable to stat file from bucket %q, file %q: %v", gcsBucket, fileName, err)
+		return
 	}
 
-	res.Header().Set("Content-Type", "text/html; charset=utf-8")
-	io.WriteString(res, html)
+	d.dumpStats(obj)
+}
+
+func (d *demo) dumpStats(obj *storage.ObjectAttrs) {
+	fmt.Fprintf(d.res, "(filename: /%v/%v, ", obj.Bucket, obj.Name)
+	fmt.Fprintf(d.res, "ContentType: %q, ", obj.ContentType)
+	fmt.Fprintf(d.res, "ACL: %#v, ", obj.ACL)
+	fmt.Fprintf(d.res, "Owner: %v, ", obj.Owner)
+	fmt.Fprintf(d.res, "ContentEncoding: %q, ", obj.ContentEncoding)
+	fmt.Fprintf(d.res, "Size: %v, ", obj.Size)
+	fmt.Fprintf(d.res, "MD5: %q, ", obj.MD5)
+	fmt.Fprintf(d.res, "CRC32C: %q, ", obj.CRC32C)
+	fmt.Fprintf(d.res, "Metadata: %#v, ", obj.Metadata)
+	fmt.Fprintf(d.res, "MediaLink: %q, ", obj.MediaLink)
+	fmt.Fprintf(d.res, "StorageClass: %q, ", obj.StorageClass)
+	if !obj.Deleted.IsZero() {
+		fmt.Fprintf(d.res, "Deleted: %v, ", obj.Deleted)
+	}
+	fmt.Fprintf(d.res, "Updated: %v)\n", obj.Updated)
+}
+
+func (d *demo) listFiles() {
+	io.WriteString(d.res, "\nRETRIEVING FILE NAMES\n")
+
+	client, err := storage.NewClient(d.ctx)
+	if err != nil {
+		log.Errorf(d.ctx, "%v", err)
+		return
+	}
+	defer client.Close()
+
+	objs, err := client.Bucket(gcsBucket).List(d.ctx, nil)
+	if err != nil {
+		log.Errorf(d.ctx, "%v", err)
+		return
+	}
+
+	for _, v := range objs.Results {
+		io.WriteString(d.res, v.Name+"\n")
+	}
+}
+
+func (d *demo) createListFiles() {
+	io.WriteString(d.res, "\nCreating more files for listbucket...\n")
+	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/"} {
+		d.createFile(n)
+	}
+}
+
+func (d *demo) createFile(fileName string) {
+	fmt.Fprintf(d.res, "Creating file /%v/%v\n", gcsBucket, fileName)
+
+	wc := d.bucket.Object(fileName).NewWriter(d.ctx)
+	wc.ContentType = "text/plain"
+	wc.Metadata = map[string]string{
+		"x-goog-meta-foo": "foo",
+		"x-goog-meta-bar": "bar",
+	}
+
+	if _, err := wc.Write([]byte("abcde\n")); err != nil {
+		log.Errorf(d.ctx, "createFile: unable to write data to bucket %q, file %q: %v", gcsBucket, fileName, err)
+		return
+	}
+	if _, err := wc.Write([]byte(strings.Repeat("f", 1024*4) + "\n")); err != nil {
+		log.Errorf(d.ctx, "createFile: unable to write data to bucket %q, file %q: %v", gcsBucket, fileName, err)
+		return
+	}
+	if err := wc.Close(); err != nil {
+		log.Errorf(d.ctx, "createFile: unable to close bucket %q, file %q: %v", gcsBucket, fileName, err)
+		return
+	}
 }
