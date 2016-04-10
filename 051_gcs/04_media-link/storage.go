@@ -19,6 +19,7 @@ func putFile(ctx context.Context, name string, rdr io.Reader) error {
 	writer.ACL = []storage.ACLRule{
 		{storage.AllUsers, storage.RoleReader},
 	}
+	writer.ContentType = "image/jpeg"
 	io.Copy(writer, rdr)
 	return writer.Close()
 }

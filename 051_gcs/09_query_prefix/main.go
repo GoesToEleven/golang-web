@@ -47,7 +47,7 @@ func handler(res http.ResponseWriter, req *http.Request) {
 		bucket: client.Bucket(gcsBucket),
 	}
 
-	d.createListFiles()
+	d.createFiles()
 	d.listFiles()
 	d.listBucket()
 }
@@ -114,7 +114,7 @@ func (d *demo) listFiles() {
 	}
 }
 
-func (d *demo) createListFiles() {
+func (d *demo) createFiles() {
 	io.WriteString(d.res, "\nCreating more files for listbucket...\n")
 	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/"} {
 		d.createFile(n)
@@ -126,10 +126,6 @@ func (d *demo) createFile(fileName string) {
 
 	wc := d.bucket.Object(fileName).NewWriter(d.ctx)
 	wc.ContentType = "text/plain"
-	wc.Metadata = map[string]string{
-		"x-goog-meta-foo": "foo",
-		"x-goog-meta-bar": "bar",
-	}
 
 	if _, err := wc.Write([]byte("abcde\n")); err != nil {
 		log.Errorf(d.ctx, "createFile: unable to write data to bucket %q, file %q: %v", gcsBucket, fileName, err)
