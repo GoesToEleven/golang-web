@@ -18,8 +18,6 @@ func init() {
 	http.HandleFunc("/login", login)
 	http.HandleFunc("/logout", logout)
 	http.Handle("/favicon.ico", http.NotFoundHandler())
-	fs := http.FileServer(http.Dir("assets"))
-	http.Handle("/imgs/", fs)
 	http.ListenAndServe(":8080", nil)
 }
 

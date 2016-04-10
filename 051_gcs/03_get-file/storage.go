@@ -15,9 +15,7 @@ func putFile(ctx context.Context, name string, rdr io.Reader) error {
 	defer client.Close()
 
 	writer := client.Bucket(gcsBucket).Object(name).NewWriter(ctx)
-	writer.ACL = []storage.ACLRule{
-		{storage.AllUsers, storage.RoleReader},
-	}
+
 	io.Copy(writer, rdr)
 	return writer.Close()
 }

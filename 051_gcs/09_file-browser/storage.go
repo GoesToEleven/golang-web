@@ -19,7 +19,7 @@ func listBucket(ctx context.Context, bucketName, folder string) ([]string, []str
 		Delimiter: "/",
 		Prefix:    folder,
 	}
-	// objs is *storage.Objects
+	// objs is *storage.ObjectList
 	objs, err := client.Bucket(bucketName).List(ctx, query)
 	if err != nil {
 		return nil, nil, err

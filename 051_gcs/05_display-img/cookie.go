@@ -10,23 +10,23 @@ import (
 )
 
 func putCookie(res http.ResponseWriter, req *http.Request, fname string) (map[string]bool, error) {
-	msb := make(map[string]bool)
+	mss := make(map[string]bool)
 	cookie, _ := req.Cookie("file-names")
 	if cookie != nil {
 		bs, err := base64.URLEncoding.DecodeString(cookie.Value)
 		if err != nil {
 			return nil, fmt.Errorf("ERROR handler base64.URLEncoding.DecodeString: %s", err)
 		}
-		err = json.Unmarshal(bs, &msb)
+		err = json.Unmarshal(bs, &mss)
 		if err != nil {
 			return nil, fmt.Errorf("ERROR handler json.Unmarshal: %s", err)
 		}
 	}
 
-	msb[fname] = true
-	bs, err := json.Marshal(msb)
+	mss[fname] = true
+	bs, err := json.Marshal(mss)
 	if err != nil {
-		return msb, fmt.Errorf("ERROR putCookie json.Marshal: ", err)
+		return mss, fmt.Errorf("ERROR putCookie json.Marshal: ", err)
 	}
 	b64 := base64.URLEncoding.EncodeToString(bs)
 
@@ -38,5 +38,5 @@ func putCookie(res http.ResponseWriter, req *http.Request, fname string) (map[st
 		Name:  "file-names",
 		Value: b64,
 	})
-	return msb, nil
+	return mss, nil
 }
