@@ -75,25 +75,13 @@ func (d *demo) statFiles() {
 		return
 	}
 
-	for _, v := range objs.Results {
-		d.statFile(v.Name)
+	for _, obj := range objs.Results {
+		d.dumpStats(obj)
 	}
-}
-
-func (d *demo) statFile(fileName string) {
-	io.WriteString(d.res, "\nFILE STAT:\n")
-
-	obj, err := d.bucket.Object(fileName).Attrs(d.ctx)
-	if err != nil {
-		log.Errorf(d.ctx, "statFile: unable to stat file from bucket %q, file %q: %v", gcsBucket, fileName, err)
-		return
-	}
-
-	d.dumpStats(obj)
 }
 
 func (d *demo) dumpStats(obj *storage.ObjectAttrs) {
-	fmt.Fprintf(d.res, "filename: /%v/%v, \n", obj.Bucket, obj.Name)
+	fmt.Fprintf(d.res, "\nfilename: /%v/%v, \n", obj.Bucket, obj.Name)
 	fmt.Fprintf(d.res, "ContentType: %q, \n", obj.ContentType)
 	fmt.Fprintf(d.res, "ACL: %#v, \n", obj.ACL)
 	fmt.Fprintf(d.res, "Owner: %v, \n", obj.Owner)

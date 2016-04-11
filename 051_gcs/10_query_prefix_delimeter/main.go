@@ -75,9 +75,11 @@ func (d *demo) listDir(name, delim, indent string) {
 			fmt.Fprintf(d.res, "%v%v\n", indent, obj.Name)
 		}
 
-		for _, dir := range objs.Prefixes {
-			log.Infof(d.ctx, "DIR: %v", dir)
-			d.listDir(dir, delim, indent+"  ")
+		fmt.Fprintf(d.res, "%v\n", objs.Prefixes)
+
+		for _, pfix := range objs.Prefixes {
+			log.Infof(d.ctx, "DIR: %v", pfix)
+			d.listDir(pfix, delim, indent+"  ")
 		}
 	}
 }

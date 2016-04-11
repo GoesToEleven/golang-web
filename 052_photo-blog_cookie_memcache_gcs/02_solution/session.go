@@ -33,6 +33,7 @@ func getSession(res http.ResponseWriter, req *http.Request) *Session {
 	// new
 	// https://play.golang.org/p/DKIulO1nOo
 	// make
+	// http://play.golang.org/p/sjxr-B7wbA
 	// https://play.golang.org/p/CsoLHJAPLb
 	// https://play.golang.org/p/iUv84nfthy
 
@@ -53,7 +54,7 @@ func getSession(res http.ResponseWriter, req *http.Request) *Session {
 		s.listBucket()
 
 		// create memcache.Item
-		bs, err := json.Marshal(*s)
+		bs, err := json.Marshal(s)
 		if err != nil {
 			log.Errorf(ctx, "ERROR memcache.Get json.Marshal: %s", err)
 		}

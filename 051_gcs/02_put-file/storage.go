@@ -17,5 +17,6 @@ func putFile(ctx context.Context, name string, rdr io.Reader) error {
 	writer := client.Bucket(gcsBucket).Object(name).NewWriter(ctx)
 
 	io.Copy(writer, rdr)
+	// check for errors on io.Copy in production code!
 	return writer.Close()
 }
