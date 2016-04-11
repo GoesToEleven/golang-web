@@ -75,7 +75,7 @@ func getSession(res http.ResponseWriter, req *http.Request) *Session {
 // method sets
 // https://goo.gl/BzkqZ7
 func (s *Session) putSession() {
-	bs, err := json.Marshal(*s)
+	bs, err := json.Marshal(s)
 	if err != nil {
 		return
 	}
