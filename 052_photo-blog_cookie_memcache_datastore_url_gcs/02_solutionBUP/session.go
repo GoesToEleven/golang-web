@@ -18,20 +18,14 @@ type Session struct {
 	ID       string
 	Bucket   string
 	Pictures map[string]string
-	req      *http.Request
 	res      http.ResponseWriter
 	ctx      context.Context
 }
 
 func getSession(res http.ResponseWriter, req *http.Request) *Session {
 
-	ctx := appengine.NewContext(req)
-
 	s := new(Session)
-	s.req = req
-	s.res = res
-	s.ctx = ctx
-	s.Pictures = make(map[string]string)
+	ctx := appengine.NewContext(req)
 
 	cookie, err := req.Cookie("sessionid")
 	if err != nil || cookie.Value == "" {
@@ -47,10 +41,11 @@ func getSession(res http.ResponseWriter, req *http.Request) *Session {
 
 		// put file names from gcs in s.Pictures
 		s.ID = cookie.Value
+		s.ctx = ctx
 		s.listBucket()
 
 		// create memcache.Item
-		bs, err := json.Marshal(*s)
+		bs, err := json.Marshal(s)
 		if err != nil {
 			log.Errorf(ctx, "ERROR memcache.Get json.Marshal: %s", err)
 		}
@@ -60,8 +55,10 @@ func getSession(res http.ResponseWriter, req *http.Request) *Session {
 		}
 	}
 
-	json.Unmarshal(item.Value, s)
+	json.Unmarshal(item.Value, &s)
 	s.ID = cookie.Value
+	s.ctx = ctx
+	s.res = res
 
 	// store in memcache
 	s.putSession()
@@ -70,7 +67,7 @@ func getSession(res http.ResponseWriter, req *http.Request) *Session {
 }
 
 func (s *Session) putSession() {
-	bs, err := json.Marshal(*s)
+	bs, err := json.Marshal(s)
 	if err != nil {
 		return
 	}

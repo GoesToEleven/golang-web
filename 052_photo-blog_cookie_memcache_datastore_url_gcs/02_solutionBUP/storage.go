@@ -7,16 +7,15 @@ import (
 	"io"
 	"net/http"
 	"strings"
-	"fmt"
 )
 
 func (s *Session) uploadPhoto(req *http.Request) {
 
 	// retrieve the submitted file
-	mpf, hdr, err := s.req.FormFile("data")
+	mpf, hdr, err := req.FormFile("data")
 	if err != nil {
-		log.Errorf(s.ctx, "ERROR uploadPhoto s.req.FormFile: %s", err)
-		http.Redirect(s.res, s.req, `/?id=`+s.ID, http.StatusSeeOther)
+		log.Errorf(s.ctx, "ERROR uploadPhoto req.FormFile: %s", err)
+		http.Redirect(s.res, req, `/?id=`+s.ID, http.StatusSeeOther)
 		return
 	}
 	defer mpf.Close()
@@ -24,27 +23,23 @@ func (s *Session) uploadPhoto(req *http.Request) {
 	// only allow jpeg or jpg
 	ext := hdr.Filename[strings.LastIndex(hdr.Filename, ".")+1:]
 	log.Infof(s.ctx, "FILE EXTENSION: %s", ext)
-	switch ext {
-	case "jpg", "jpeg":
-		log.Infof(s.ctx, "GOOD FILE EXTENSION: %s", ext)
-	default:
+	if ext != "jpg" || ext != "jpeg" {
 		log.Errorf(s.ctx, "We do not allow files of type %s. We only allow jpg, jpeg extensions.", ext)
-		http.Redirect(s.res, s.req, `/?id=`+s.ID, http.StatusSeeOther)
+		http.Redirect(s.res, req, `/?id=`+s.ID, http.StatusSeeOther)
 		return
 	}
 
 	// make a file name
 	h := sha1.New()
 	io.Copy(h, mpf)
-	name := fmt.Sprintf("%x", h.Sum(nil)) + `.` + ext
-	log.Infof(s.ctx, "FILE NAME: %s", name)
+	name := string(h.Sum(nil)) + ext
 	mpf.Seek(0, 0)
 
 	// put file
 	client, err := storage.NewClient(s.ctx)
 	if err != nil {
 		log.Errorf(s.ctx, "ERROR uploadPhoto storage.NewClient: %s", err)
-		http.Redirect(s.res, s.req, `/?id=`+s.ID, http.StatusSeeOther)
+		http.Redirect(s.res, req, `/?id=`+s.ID, http.StatusSeeOther)
 		return
 	}
 	defer client.Close()
@@ -56,7 +51,7 @@ func (s *Session) uploadPhoto(req *http.Request) {
 	err = writer.Close()
 	if err != nil {
 		log.Errorf(s.ctx, "ERROR uploadPhoto writer.Close: %s", err)
-		http.Redirect(s.res, s.req, `/?id=`+s.ID, http.StatusSeeOther)
+		http.Redirect(s.res, req, `/?id=`+s.ID, http.StatusSeeOther)
 		return
 	}
 

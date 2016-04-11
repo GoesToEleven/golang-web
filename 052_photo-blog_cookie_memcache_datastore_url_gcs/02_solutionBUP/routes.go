@@ -30,7 +30,7 @@ func index(res http.ResponseWriter, req *http.Request) {
 		s.uploadPhoto(req)
 	}
 
-	err := tpls.ExecuteTemplate(res, "index.html", *s)
+	err := tpls.ExecuteTemplate(res, "index.html", s)
 	if err != nil {
 		http.Error(res, err.Error(), 500)
 	}
