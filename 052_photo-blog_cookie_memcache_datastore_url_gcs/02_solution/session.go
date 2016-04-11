@@ -16,7 +16,6 @@ import (
 // Session holds the user's data
 type Session struct {
 	ID       string
-	Bucket   string
 	Pictures map[string]string
 	req      *http.Request
 	res      http.ResponseWriter

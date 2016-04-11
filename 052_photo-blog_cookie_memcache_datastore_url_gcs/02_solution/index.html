@@ -27,14 +27,11 @@
         {{.ID}}
     </p>
 
-    <p>Bucket:
-        <br>
-        {{.Bucket}}
-    </p>
-
     <p>Pictures:
         <br>
-        {{.Pictures}}
+        {{range .Pictures}}
+        {{.}}
+        {{end}}
     </p>
 
 </body>

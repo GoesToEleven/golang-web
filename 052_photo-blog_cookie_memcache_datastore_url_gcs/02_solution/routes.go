@@ -10,7 +10,7 @@ var tpls *template.Template
 const gcsBucket = "learning-1130.appspot.com"
 
 func init() {
-	tpls = template.Must(template.ParseGlob("templates/*.html"))
+	tpls = template.Must(template.ParseFiles("index.html"))
 	http.HandleFunc("/", index)
 	http.Handle("/favicon.ico", http.NotFoundHandler())
 }
