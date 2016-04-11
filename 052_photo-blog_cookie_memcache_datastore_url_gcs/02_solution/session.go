@@ -4,13 +4,12 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"google.golang.org/appengine/memcache"
-
 	"github.com/nu7hatch/gouuid"
 
 	"golang.org/x/net/context"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/log"
+	"google.golang.org/appengine/memcache"
 )
 
 // Session holds the user's data
@@ -31,6 +30,11 @@ func getSession(res http.ResponseWriter, req *http.Request) *Session {
 	s.res = res
 	s.ctx = ctx
 	s.Pictures = make(map[string]string)
+	// new
+	// https://play.golang.org/p/DKIulO1nOo
+	// make
+	// https://play.golang.org/p/CsoLHJAPLb
+	// https://play.golang.org/p/iUv84nfthy
 
 	cookie, err := req.Cookie("sessionid")
 	if err != nil || cookie.Value == "" {
@@ -68,6 +72,8 @@ func getSession(res http.ResponseWriter, req *http.Request) *Session {
 	return s
 }
 
+// method sets
+// https://goo.gl/BzkqZ7
 func (s *Session) putSession() {
 	bs, err := json.Marshal(*s)
 	if err != nil {
