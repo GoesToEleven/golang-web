@@ -91,10 +91,7 @@
 </main>
 
 <script>
-    // items: [
-    // { ID: 123456, Email: "test@example.com", Text: "wash car", },
-    // { ID: 234567, Email: "test@example.com", Text: "eat chocolate", },
-    // ]
+    // items: [{ Text: "blah", ID: 123456 }]
     var CurrentItems = [];
     var items = document.querySelector("#items");
     var newItem = document.querySelector('#new-item');
@@ -103,16 +100,12 @@
     // get items from server, then render them
     function getItems() {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/todos");
-        xhr.send();
+        xhr.open("GET", "/todo");
+        xhr.send(null);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
-                if (httpRequest.status === 200) {
-                    CurrentItems = JSON.parse(xhr.responseText);
-                    renderItems();
-                } else {
-                    alert('There was a problem with the request.');
-                }
+                CurrentItems = JSON.parse(xhr.responseText);
+                renderItems();
             }
         }
     }
@@ -151,20 +144,16 @@
         }
         if ((e.target.id === 'new') && (text !== 'add item')) {
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/todos");
+            xhr.open("POST", "/todo");
             var json = JSON.stringify({
                 Text: text
             });
             xhr.send(json);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
-                    if (httpRequest.status === 200) {
-                        var items = JSON.parse(xhr.responseText);
-                        CurrentItems.push(items);
-                        renderItems();
-                    } else {
-                        alert('There was a problem with the request.');
-                    }
+                    var item = JSON.parse(xhr.responseText);
+                    CurrentItems.push(item);
+                    renderItems();
                 }
             };
         }
@@ -175,15 +164,11 @@
         items.addEventListener("click", function (evt) {
             var id = evt.target.id;
             var xhr = new XMLHttpRequest();
-            xhr.open("DELETE", "/todos?id=" + id);
-            xhr.send();
+            xhr.open("DELETE", "/todo?id=" + id);
+            xhr.send(null);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
-                    if (httpRequest.status === 200) {
-                        setTimeout(getItems, 100);
-                    } else {
-                        alert('There was a problem with the request.');
-                    }
+                    setTimeout(getItems, 100);
                 }
             };
         }, false);

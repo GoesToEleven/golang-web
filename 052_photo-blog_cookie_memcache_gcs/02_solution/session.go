@@ -26,10 +26,10 @@ func getSession(res http.ResponseWriter, req *http.Request) *Session {
 	ctx := appengine.NewContext(req)
 
 	s := new(Session)
+	s.Pictures = make(map[string]string)
 	s.req = req
 	s.res = res
 	s.ctx = ctx
-	s.Pictures = make(map[string]string)
 	// new
 	// https://play.golang.org/p/DKIulO1nOo
 	// make
