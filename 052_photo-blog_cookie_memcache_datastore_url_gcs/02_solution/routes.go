@@ -27,7 +27,7 @@ func index(res http.ResponseWriter, req *http.Request) {
 
 	// upload photo
 	if req.Method == "POST" {
-		s.uploadPhoto(req)
+		s.uploadPhoto()
 	}
 
 	err := tpls.ExecuteTemplate(res, "index.html", *s)

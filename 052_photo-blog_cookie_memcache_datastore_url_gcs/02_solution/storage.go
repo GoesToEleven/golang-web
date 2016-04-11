@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-func (s *Session) uploadPhoto(req *http.Request) {
+func (s *Session) uploadPhoto() {
 
 	// retrieve the submitted file
 	mpf, hdr, err := s.req.FormFile("data")
@@ -67,8 +67,6 @@ func (s *Session) uploadPhoto(req *http.Request) {
 
 func (s *Session) listBucket() {
 
-	folder := s.ID
-
 	client, err := storage.NewClient(s.ctx)
 	if err != nil {
 		log.Errorf(s.ctx, "ERROR listBucket storage.NewClient: %v", err)
@@ -77,7 +75,7 @@ func (s *Session) listBucket() {
 	defer client.Close()
 
 	q := &storage.Query{
-		Prefix: folder,
+		Prefix: s.ID,
 	}
 
 	objs, err := client.Bucket(gcsBucket).List(s.ctx, q)
