@@ -264,11 +264,37 @@ So the type which we just got, `storage.Reader`, implements the reader interface
 func Copy(dst Writer, src Reader) (written int64, err error)
 ```
 
-**fmt.Fscan**
+**bufio.NewReader**
 ```go
-func Fscan(r io.Reader, a ...interface{}) (n int, err error)
-func Fscanf(r io.Reader, format string, a ...interface{}) (n int, err error)
-func Fscanln(r io.Reader, a ...interface{}) (n int, err error)
+type Reader
+func NewReader(rd io.Reader) *Reader
+func NewReaderSize(rd io.Reader, size int) *Reader
+func (b *Reader) Buffered() int
+func (b *Reader) Discard(n int) (discarded int, err error)
+func (b *Reader) Peek(n int) ([]byte, error)
+func (b *Reader) Read(p []byte) (n int, err error)
+func (b *Reader) ReadByte() (c byte, err error)
+func (b *Reader) ReadBytes(delim byte) (line []byte, err error)
+func (b *Reader) ReadLine() (line []byte, isPrefix bool, err error)
+func (b *Reader) ReadRune() (r rune, size int, err error)
+func (b *Reader) ReadSlice(delim byte) (line []byte, err error)
+func (b *Reader) ReadString(delim byte) (line string, err error)
+func (b *Reader) Reset(r io.Reader)
+func (b *Reader) UnreadByte() error
+func (b *Reader) UnreadRune() error
+func (b *Reader) WriteTo(w io.Writer) (n int64, err error)
+```
+
+**bufio.NewScanner**
+```go
+type Scanner
+func NewScanner(r io.Reader) *Scanner
+func (s *Scanner) Buffer(buf []byte, max int)
+func (s *Scanner) Bytes() []byte
+func (s *Scanner) Err() error
+func (s *Scanner) Scan() bool
+func (s *Scanner) Split(split SplitFunc)
+func (s *Scanner) Text() string
 ```
 
 **util.ReadAll**
@@ -294,3 +320,9 @@ func (dec *Decoder) Token() (Token, error)
 func (dec *Decoder) UseNumber()
 ```
 
+**fmt.Fscan**
+```go
+func Fscan(r io.Reader, a ...interface{}) (n int, err error)
+func Fscanf(r io.Reader, format string, a ...interface{}) (n int, err error)
+func Fscanln(r io.Reader, a ...interface{}) (n int, err error)
+```
