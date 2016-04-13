@@ -16,6 +16,10 @@ func putFile(ctx context.Context, name string, rdr io.Reader) error {
 
 	writer := client.Bucket(gcsBucket).Object(name).NewWriter(ctx)
 
+	writer.ACL = []storage.ACLRule{
+		{storage.AllUsers, storage.RoleReader},
+	}
+	
 	io.Copy(writer, rdr)
 	// check for errors on io.Copy in production code!
 	return writer.Close()
