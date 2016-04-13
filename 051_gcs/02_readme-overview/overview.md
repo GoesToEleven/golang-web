@@ -153,4 +153,51 @@ You can see that, for an **object** (and not the bucket), we can set the **ACL**
 
 We can also **Update** the attributes ( `ObjectAttrs` ) of an object. Please note that you *cannot* alter the actual binary of the object - there is no prepending or appending something to a video file, there is no adding binary to a picture, none of that. If you want to *change* the actual object, you need to *replace* the object with a new version. However, if you only want to *update* the *attributes* of an object, well then, you can use the **Update** method.
   
-  
+Regarding the last method, **WithConditions**, don't worry about this one right now. You can learn about it if, and when, you need it.
+
+So to **put** an object, we're going to call **NewWriter** because, what we want to do, is write to this one particular object in this one particular bucket in Google Cloud Storage. We can see this from our initial code samply up above:
+
+```go
+writer := client.Bucket(gcsBucket).Object(name).NewWriter(ctx)
+```
+
+Now that we have a writer, we can use `io.Copy` to copy from something that implements the reader interface into our new object on GCS:
+
+```go
+	io.Copy(writer, rdr)
+	// check for errors on io.Copy in production code!
+	return writer.Close()
+```
+
+And, as you can see above, we should close our writer. We know this because, when we call `NewWriter` we are returned a pointer to a google cloud storage writer:
+
+```go
+func (o *ObjectHandle) NewWriter(ctx context.Context) *Writer
+```
+
+And with a `*storage.Writer`, we have these methods:
+ 
+ ```go
+  func (w *Writer) Attrs() *ObjectAttrs
+  func (w *Writer) Close() error
+  func (w *Writer) CloseWithError(err error) error
+  func (w *Writer) Write(p []byte) (n int, err error)
+ ```
+
+You can see in the above methods that the type `storage.Writer` implements the `io.Writer` interface. Here is that interface from package `io`:
+
+```go
+type Writer interface {
+    Write(p []byte) (n int, err error)
+}
+```
+
+Since a `*storage.Writer` has a method with a signature `Write(p []byte) (n int, err error)` that matches the required method to implement the `io.Writer` interface, then the type `storage.Writer` implicitly impelements the writer interface.
+
+Ok. So that is a little bit about how you put an object in GCS, and a lot about reading documentation and understanding Go code.
+
+Now onto how we get an object.
+
+# Get
+
+
