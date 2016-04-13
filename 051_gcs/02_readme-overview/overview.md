@@ -51,23 +51,23 @@ With a `*storage.BucketHandle`, we can see in the `storage` package documentatio
  func (b *BucketHandle) Object(name string) *ObjectHandle
  ```
  
- ## ACL
+## ACL
  
- This will let us control our **Access Control List**. Basically these are settings which we can set on our **bucket** to control who can access the **bucket** and what they can do. This is known as *scope* and *permissions*.
+This will let us control our **Access Control List**. Basically these are settings which we can set on our **bucket** to control who can access the **bucket** and what they can do. This is known as *scope* and *permissions*.
   
-   **Scope** defines who the permission applies to (for example, a specific user or group of users). Scopes are sometimes referred to as *grantees.* 
+**Scope** defines who the permission applies to (for example, a specific user or group of users). Scopes are sometimes referred to as *grantees.* 
 
-  **Permissions** define the actions that can be performed against a bucket (for example, read or write).
+**Permissions** define the actions that can be performed against a bucket (for example, read or write).
    
-  We will also, later, be able to set ACL's for objects (files) which we store in Google Cloud Storage (GCS).
+We will also, later, be able to set ACL's for objects (files) which we store in Google Cloud Storage (GCS).
   
-  More on this later.
+More on this later.
  
- ## Attrs
+## Attrs
  
- This will give us the attributes for a **bucket**. You can see the many different attributes at this link: [https://godoc.org/google.golang.org/cloud/storage#BucketAttrs](https://godoc.org/google.golang.org/cloud/storage#BucketAttrs) For convenience, I'm also listing them here:
+This will give us the attributes for a **bucket**. You can see the many different attributes at this link: [https://godoc.org/google.golang.org/cloud/storage#BucketAttrs](https://godoc.org/google.golang.org/cloud/storage#BucketAttrs) For convenience, I'm also listing them here:
  
- ```go
+```go
  type BucketAttrs struct {
      // Name is the name of the bucket.
      Name string
@@ -96,6 +96,48 @@ With a `*storage.BucketHandle`, we can see in the `storage` package documentatio
  }
  ```
  
-  We will also, later, be able to see Attrs for objects (files) which we store in Google Cloud Storage (GCS).
+We will also, later, be able to see Attrs for objects (files) which we store in Google Cloud Storage (GCS).
   
-  More on this later.
+More on this later.
+  
+## DefaultObjectACL
+  
+This let's you set a default ACL which will be applied to newly created objects in this bucket that do not have a defined ACL.
+
+## List
+
+List lists objects from the bucket. You can specify a query to filter the results. If q is nil, no filtering is applied.
+
+This is what we will use to query a bucket and have results returned.
+
+```go
+func (b *BucketHandle) List(ctx context.Context, q *Query) (*ObjectList, error)
+```
+
+## Object
+
+This is perhaps the most commonly used method when working with a bucket.
+
+Remember what we've done so far: We (1) got a Google Cloud Storage client, and then we (2) said that we wanted to work with a specific bucket, and now (3) we are going to say that we want to work with a specific object.
+
+The code to do all of that is in our initial code sample up above. The excerpt of code to which I'm referring looks like this:
+
+
+```go
+ client.Bucket(gcsBucket).Object(name)
+```
+
+As we are learning how to **put** an object here, we will follow this thread of logic.
+
+The `Object` method returns a pointer to an ObjectHandle `*storage.ObjectHandle`. You can see the func's signature here again:
+
+```go
+func (b *BucketHandle) Object(name string) *ObjectHandle
+```
+
+With a `*ObjectHandle` we once again have several methods available to us:
+ 
+ ```go
+ 
+ ```
+
