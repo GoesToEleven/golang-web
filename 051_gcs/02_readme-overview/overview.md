@@ -138,6 +138,19 @@ func (b *BucketHandle) Object(name string) *ObjectHandle
 With a `*ObjectHandle` we once again have several methods available to us:
  
  ```go
- 
+ func (o *ObjectHandle) ACL() *ACLHandle
+ func (o *ObjectHandle) Attrs(ctx context.Context) (*ObjectAttrs, error)
+ func (o *ObjectHandle) CopyTo(ctx context.Context, dst *ObjectHandle, attrs *ObjectAttrs) (*ObjectAttrs, error)
+ func (o *ObjectHandle) Delete(ctx context.Context) error
+ func (o *ObjectHandle) NewRangeReader(ctx context.Context, offset, length int64) (*Reader, error)
+ func (o *ObjectHandle) NewReader(ctx context.Context) (*Reader, error)
+ func (o *ObjectHandle) NewWriter(ctx context.Context) *Writer
+ func (o *ObjectHandle) Update(ctx context.Context, attrs ObjectAttrs) (*ObjectAttrs, error)
+ func (o *ObjectHandle) WithConditions(conds ...Condition) *ObjectHandle
  ```
 
+You can see that, for an **object** (and not the bucket), we can set the **ACL** (Access Control List) for an **object**, we can also see the **Attrs** for an object, we can use **CopyTo** to copy one object to another object, we can **Delete** an object, we can read an object with **NewReader** and we can write to an object with **NewWriter**.
+
+We can also **Update** the attributes ( `ObjectAttrs` ) of an object. Please note that you *cannot* alter the actual binary of the object - there is no prepending or appending something to a video file, there is no adding binary to a picture, none of that. If you want to *change* the actual object, you need to *replace* the object with a new version. However, if you only want to *update* the *attributes* of an object, well then, you can use the **Update** method.
+  
+  
