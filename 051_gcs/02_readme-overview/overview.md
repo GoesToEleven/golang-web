@@ -194,10 +194,103 @@ type Writer interface {
 
 Since a `*storage.Writer` has a method with a signature `Write(p []byte) (n int, err error)` that matches the required method to implement the `io.Writer` interface, then the type `storage.Writer` implicitly impelements the writer interface.
 
+That means we can use a `sotrage.Writer` in any func or method which asks for a `Writer`.
+
+You can see this with `io.Copy`:
+
+```go
+func Copy(dst Writer, src Reader) (written int64, err error)
+```
+
+`io.Copy` is asking for a `Writer` so, since `storage.Writer` implements the writer interface, we can pass `io.Copy` a `storage.Writer`.
+
 Ok. So that is a little bit about how you put an object in GCS, and a lot about reading documentation and understanding Go code.
 
 Now onto how we get an object.
 
 # Get
 
+This is the code to get a file from Google Cloud Storage:
+
+```go
+func getFile(ctx context.Context, name string) (io.ReadCloser, error) {
+	client, err := storage.NewClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer client.Close()
+
+	return client.Bucket(gcsBucket).Object(name).NewReader(ctx)
+}
+```
+
+The process is very similar to how we *put* an object.
+
+We get a storage **client**, and then we specify which **bucket** we want to access, and then we specify which **object** (file) we want to access, and then we call the method `NewReader` which gives us back a pointer to type Reader from package storage `*storage.Reader` and with a `*storage.Reader` we then have all of these methods available to us:
+
+```go
+func (r *Reader) Close() error
+func (r *Reader) ContentType() string
+func (r *Reader) Read(p []byte) (int, error)
+func (r *Reader) Remain() int64
+func (r *Reader) Size() int64
+```
+
+So you can see we are going to need to *close* our reader. Why? Well, just imagine what would happen to your computer if you just kept opening files after files after files to read them yourself *and you never closed any of those files*. Eventually, obviously, your computer is going to freak out which is another way of saying that it will run out of resources, like memory, and then just crash and die a painful death. So, to avoid all of that, close your files if you open them.
+
+You will also notice that there is this method:
+
+```go
+func (r *Reader) Read(p []byte) (int, error)
+```
+
+What that tells us is that the type `storage.Reader` (and please notice that I keep prefixing the type with the package from which it comes - this is something that a lot of people need to be shown, the notation is `package.Type`, you see, just like here, `storage.Reader` we're talking about the type `Reader` from the `storage` package, ok). Ok. Back to what I was saying. What that tells us is that the type `storage.Reader` implements the reader interface from package io:
+
+```go
+type Reader interface {
+    Read(p []byte) (n int, err error)
+}
+```
+
+You see, package `io` has a type `Reader` which is an interface. To implement that interface you have to have this method `Read(p []byte) (n int, err error)`. If there is a type that has that method, then it implements the `Reader` interface. And any func or method which asks for a value of type `Reader` as an argument can now take **any** type which implements the `Reader` interface.
+ 
+Again, all interfaces are implicitly implemented in Go. No need to explicitly say that something implements an interface. It automatically happens implicitly.
+
+So the type which we just got, `storage.Reader`, implements the reader interface. That means we can now use things like:
+
+**io.Copy**
+
+```go
+func Copy(dst Writer, src Reader) (written int64, err error)
+```
+
+**fmt.Fscan**
+```go
+func Fscan(r io.Reader, a ...interface{}) (n int, err error)
+func Fscanf(r io.Reader, format string, a ...interface{}) (n int, err error)
+func Fscanln(r io.Reader, a ...interface{}) (n int, err error)
+```
+
+**util.ReadAll**
+```go
+func ReadAll(r io.Reader) ([]byte, error)
+```
+
+**csv.NewReader**
+```go
+func NewReader(r io.Reader) *Reader
+func (r *Reader) Read() (record []string, err error)
+func (r *Reader) ReadAll() (records [][]string, err error)
+```
+
+**json.NewDecoder**
+```go
+type Decoder
+func NewDecoder(r io.Reader) *Decoder
+func (dec *Decoder) Buffered() io.Reader
+func (dec *Decoder) Decode(v interface{}) error
+func (dec *Decoder) More() bool
+func (dec *Decoder) Token() (Token, error)
+func (dec *Decoder) UseNumber()
+```
 
