@@ -326,3 +326,137 @@ func Fscan(r io.Reader, a ...interface{}) (n int, err error)
 func Fscanf(r io.Reader, format string, a ...interface{}) (n int, err error)
 func Fscanln(r io.Reader, a ...interface{}) (n int, err error)
 ```
+
+# Attrs.MediaLink
+
+The next thing we'll look at is a media-link.
+
+Please notice that the sequence of this document matches the sequence of the code samples in the folders which follow.
+
+A mediaLink gives us a link which, when clicked, will allow an object (file) *to be downloaded*. You can read more about it [here](https://cloud.google.com/storage/docs/json_api/v1/objects)
+
+Using this link could allow for some cost savings - your user's download something straight from GCS instead of going through you servers. If they went through your serves, that would require additional processing on the part of your application, for which you would get billed.
+
+Ok. So to get a medialink, we use this code:
+
+```go
+func getFileLink(ctx context.Context, name string) (string, error) {
+	client, err := storage.NewClient(ctx)
+	if err != nil {
+		return "", err
+	}
+	defer client.Close()
+
+	attrs, err := client.Bucket(gcsBucket).Object(name).Attrs(ctx)
+	if err != nil {
+		return "", err
+	}
+	return attrs.MediaLink, nil
+
+```
+
+My read through of the code would go like this:
+
+We call `storage.NewClient` which returns to use a `*storage.Client` (a pointer to a storage client). 
+
+With a `*storage.Client`, we can then call the `Bucket` method which is attached to a `*storage.Client`. 
+
+That will return a `*storage.BucketHandle` (a pointer to a storage `BucketHandle`) to us.  
+
+With a `*storage.BucketHandle`, we can then call the `Object` method which is attached to a `*storage.BucketHandle`.
+
+That will return a `*storage.ObjectHandle` (a pointer to a storage `ObjectHandle`) to us.  
+
+With a `*storage.ObjectHandle`, we can then call the `Attrs` method which is attached to a `*storage.ObjectHandle`.
+
+That will return a `*storage.ObjectAttrs` (a pointer to a storage `ObjectAttrs`) to us.  
+
+A `*storage.ObjectAttrs` is a memory address referencing a value which is a struct having these fields:
+
+```go
+type ObjectAttrs struct {
+    // Bucket is the name of the bucket containing this GCS object.
+    // This field is read-only.
+    Bucket string
+
+    // Name is the name of the object within the bucket.
+    // This field is read-only.
+    Name string
+
+    // ContentType is the MIME type of the object's content.
+    ContentType string
+
+    // ContentLanguage is the content language of the object's content.
+    ContentLanguage string
+
+    // CacheControl is the Cache-Control header to be sent in the response
+    // headers when serving the object data.
+    CacheControl string
+
+    // ACL is the list of access control rules for the object.
+    ACL []ACLRule
+
+    // Owner is the owner of the object. This field is read-only.
+    //
+    // If non-zero, it is in the form of "user-<userId>".
+    Owner string
+
+    // Size is the length of the object's content. This field is read-only.
+    Size int64
+
+    // ContentEncoding is the encoding of the object's content.
+    ContentEncoding string
+
+    // ContentDisposition is the optional Content-Disposition header of the object
+    // sent in the response headers.
+    ContentDisposition string
+
+    // MD5 is the MD5 hash of the object's content. This field is read-only.
+    MD5 []byte
+
+    // CRC32C is the CRC32 checksum of the object's content using
+    // the Castagnoli93 polynomial. This field is read-only.
+    CRC32C uint32
+
+    // MediaLink is an URL to the object's content. This field is read-only.
+    MediaLink string
+
+    // Metadata represents user-provided metadata, in key/value pairs.
+    // It can be nil if no metadata is provided.
+    Metadata map[string]string
+
+    // Generation is the generation number of the object's content.
+    // This field is read-only.
+    Generation int64
+
+    // MetaGeneration is the version of the metadata for this
+    // object at this generation. This field is used for preconditions
+    // and for detecting changes in metadata. A metageneration number
+    // is only meaningful in the context of a particular generation
+    // of a particular object. This field is read-only.
+    MetaGeneration int64
+
+    // StorageClass is the storage class of the bucket.
+    // This value defines how objects in the bucket are stored and
+    // determines the SLA and the cost of storage. Typical values are
+    // "STANDARD" and "DURABLE_REDUCED_AVAILABILITY".
+    // It defaults to "STANDARD". This field is read-only.
+    StorageClass string
+
+    // Created is the time the object was created. This field is read-only.
+    Created time.Time
+
+    // Deleted is the time the object was deleted.
+    // If not deleted, it is the zero value. This field is read-only.
+    Deleted time.Time
+
+    // Updated is the creation or modification time of the object.
+    // For buckets with versioning enabled, changing an object's
+    // metadata does not change this property. This field is read-only.
+    Updated time.Time
+}
+```
+
+One of those fields is a `MediaLink` which is of type string and is what we return in our code sample at the beginning of this section on getting a medialink.
+
+
