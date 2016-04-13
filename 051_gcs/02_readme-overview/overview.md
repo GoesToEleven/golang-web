@@ -546,4 +546,13 @@ type ObjectList struct {
 
 We have **one** pointer to an `ObjectList` returned. *This is a list of objects.* It is **one** list. It is not many objects. We are not returned many objects. We are returned **one** list.
 
-This ObjectList has three fields. The `Results` field is a slice which, like all slices, contains zero-to-many values. The values in this slice are of type `*storage.ObjectAttrs`. We've already looked at both [`storage.ObjectAttrs`](https://godoc.org/google.golang.org/cloud/storage#ObjectAttrs) and [`storage.BucketAttrs`](https://godoc.org/google.golang.org/cloud/storage#BucketAttrs). 
+This ObjectList has three fields. The `Results` field is a slice which, like all slices, contains zero-to-many values. The values in this slice are of type `*storage.ObjectAttrs`. We've already looked at both [`storage.ObjectAttrs`](https://godoc.org/google.golang.org/cloud/storage#ObjectAttrs) and [`storage.BucketAttrs`](https://godoc.org/google.golang.org/cloud/storage#BucketAttrs). Remember that both of these types are structs which contain fields which are attributes of either an object or a bucket, respectively.
+
+So with the `List` method, we now have access to all of the attributes of all of the objects in a specific bucket.
+
+This means we can now get things like the `Name` of every object in a bucket, or the `MediaLink` for every object in a bucket, or any other variety of Attrs for each object in a bucket.
+
+In the first example `list-files` we print out the name of each object.
+
+In the second example `object-attributes` we print out a lot of the other attributes of each object. We do this using the custom function (we wrote it, it wasn't part of the standard library or the `"google.golang.org/cloud/storage"` package) ... we do this using the custom function `statFiles`.
+
