@@ -562,6 +562,8 @@ To only get **SOME** of the objects in a bucket, we will need to use a `storage.
 
 # Using A Query For Specific Results
 
+## MaxResults
+
 You will notice that when we used `List` previously, we passed in `nil` as one of the arguments. Here is the definition of the `list` method:
 
 "List lists objects from the bucket. You can specify a query to filter the results. If q is nil, no filtering is applied."
@@ -605,6 +607,9 @@ func (d *demo) statFiles() {
 ```
 
 When we run this code, we will only get two results back.
+
+
+## Next
 
 In our next example `query-maxresults_next` we use the `Next` field from the `*storage.ObjectList` struct (the type which was returned when we ran `List`).
 
