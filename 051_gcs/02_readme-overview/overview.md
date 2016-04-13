@@ -556,3 +556,96 @@ In the first example `list-files` we print out the name of each object.
 
 In the second example `object-attributes` we print out a lot of the other attributes of each object. We do this using the custom function (we wrote it, it wasn't part of the standard library or the `"google.golang.org/cloud/storage"` package) ... we do this using the custom function `statFiles`.
 
+Of course, we are getting **ALL** of the objects in a bucket.
+
+To only get **SOME** of the objects in a bucket, we will need to use a `storage.Query`.
+
+# Using A Query For Specific Results
+
+You will notice that when we used `List` previously, we passed in `nil` as one of the arguments. Here is the definition of the `list` method:
+
+"List lists objects from the bucket. You can specify a query to filter the results. If q is nil, no filtering is applied."
+
+```go
+func (b *BucketHandle) List(ctx context.Context, q *Query) (*ObjectList, error)
+```
+
+So when we call `List` we can pass in a `*storage.Query`.
+
+We do this in our `query-maxresults` file:
+
+```go
+func (d *demo) statFiles() {
+	io.WriteString(d.res, "\nRETRIEVING FILE STATS\n")
+
+	client, err := storage.NewClient(d.ctx)
+	if err != nil {
+		log.Errorf(d.ctx, "%v", err)
+		return
+	}
+	defer client.Close()
+
+	// create a query
+	q := storage.Query{
+		MaxResults: 2,
+	}
+
+	// instead of nil
+	// now passing in a *storage.Query
+	objs, err := client.Bucket(gcsBucket).List(d.ctx, &q)
+	if err != nil {
+		log.Errorf(d.ctx, "%v", err)
+		return
+	}
+
+	for _, obj := range objs.Results {
+		d.dumpStats(obj)
+	}
+}
+```
+
+When we run this code, we will only get two results back.
+
+In our next example `query-maxresults_next` we use the `Next` field from the `*storage.ObjectList` struct (the type which was returned when we ran `List`).
+
+This allows us to *"page"* through our results, seeing two results at a time. You can see this in action in the `query-maxresults_next` example.
+
+We can learn more about the type `storage.Query` by [looking at it in the docs](https://godoc.org/google.golang.org/cloud/storage#Query):
+
+```go
+type Query struct {
+    // Delimiter returns results in a directory-like fashion.
+    // Results will contain only objects whose names, aside from the
+    // prefix, do not contain delimiter. Objects whose names,
+    // aside from the prefix, contain delimiter will have their name,
+    // truncated after the delimiter, returned in prefixes.
+    // Duplicate prefixes are omitted.
+    // Optional.
+    Delimiter string
+
+    // Prefix is the prefix filter to query objects
+    // whose names begin with this prefix.
+    // Optional.
+    Prefix string
+
+    // Versions indicates whether multiple versions of the same
+    // object will be included in the results.
+    Versions bool
+
+    // Cursor is a previously-returned page token
+    // representing part of the larger set of results to view.
+    // Optional.
+    Cursor string
+
+    // MaxResults is the maximum number of items plus prefixes
+    // to return. As duplicate prefixes are omitted,
+    // fewer total results may be returned than requested.
+    // The default page limit is used if it is negative or zero.
+    MaxResults int
+}
+
+```
+
+So in addition to `MaxResults` there are also some other fields which we can use.
+
+
