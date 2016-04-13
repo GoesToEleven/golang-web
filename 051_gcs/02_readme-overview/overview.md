@@ -51,5 +51,51 @@ With a `*storage.BucketHandle`, we can see in the `storage` package documentatio
  func (b *BucketHandle) Object(name string) *ObjectHandle
  ```
  
+ ## ACL
  
+ This will let us control our **Access Control List**. Basically these are settings which we can set on our **bucket** to control who can access the **bucket** and what they can do. This is known as *scope* and *permissions*.
+  
+   **Scope** defines who the permission applies to (for example, a specific user or group of users). Scopes are sometimes referred to as *grantees.* 
 
+  **Permissions** define the actions that can be performed against a bucket (for example, read or write).
+   
+  We will also, later, be able to set ACL's for objects (files) which we store in Google Cloud Storage (GCS).
+  
+  More on this later.
+ 
+ ## Attrs
+ 
+ This will give us the attributes for a **bucket**. You can see the many different attributes at this link: [https://godoc.org/google.golang.org/cloud/storage#BucketAttrs](https://godoc.org/google.golang.org/cloud/storage#BucketAttrs) For convenience, I'm also listing them here:
+ 
+ ```go
+ type BucketAttrs struct {
+     // Name is the name of the bucket.
+     Name string
+ 
+     // ACL is the list of access control rules on the bucket.
+     ACL []ACLRule
+ 
+     // DefaultObjectACL is the list of access controls to
+     // apply to new objects when no object ACL is provided.
+     DefaultObjectACL []ACLRule
+ 
+     // Location is the location of the bucket. It defaults to "US".
+     Location string
+ 
+     // MetaGeneration is the metadata generation of the bucket.
+     MetaGeneration int64
+ 
+     // StorageClass is the storage class of the bucket. This defines
+     // how objects in the bucket are stored and determines the SLA
+     // and the cost of storage. Typical values are "STANDARD" and
+     // "DURABLE_REDUCED_AVAILABILITY". Defaults to "STANDARD".
+     StorageClass string
+ 
+     // Created is the creation time of the bucket.
+     Created time.Time
+ }
+ ```
+ 
+  We will also, later, be able to see Attrs for objects (files) which we store in Google Cloud Storage (GCS).
+  
+  More on this later.
