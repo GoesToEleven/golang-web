@@ -245,3 +245,8 @@ In it's most basic form, our code for storing an object will look like this:
 	return client.Bucket(gcsBucket).Object(name).NewReader(ctx)
 ```
 
+# Troubleshooting
+
+If any of the examples don't work, try clearing cookies and then running the example again. To keep code samples specific and short, I kept logic to a minimum.
+
+

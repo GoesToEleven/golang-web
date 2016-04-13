@@ -478,3 +478,72 @@ https://storage.googleapis.com/learning-1130.appspot.com/3d79b3c8f88125cdc1fa1e0
 This URL works for any image.
 
 Add this prefix `https://storage.googleapis.com/learning-1130.appspot.com/` to the name of any object, and then you have a public link for that object.
+
+# List Files
+
+With the *list-files* example, the code we are using was originally from the [Google GCS Example](https://cloud.google.com/appengine/docs/go/googlecloudstorageclient/using-cloud-storage) and on [GitHub](https://github.com/GoogleCloudPlatform/gcloud-golang/tree/master/examples/storage/appengine). 
+
+I have modified this code to focus upon one aspect of GCS at a time.
+
+A nice aspect of this code is that a custom struct called `demo` is created, and then methods are attached to that struct.
+
+```go
+type demo struct {
+	ctx    context.Context
+	res    http.ResponseWriter
+	bucket *storage.BucketHandle
+	client *storage.Client
+}
+```
+
+And here is an example of a method attached to `demo`:
+ 
+```go
+func (d *demo) listFiles() {
+	io.WriteString(d.res, "\nRETRIEVING FILE NAMES\n")
+
+	client, err := storage.NewClient(d.ctx)
+	if err != nil {
+		log.Errorf(d.ctx, "%v", err)
+		return
+	}
+	defer client.Close()
+
+	objs, err := client.Bucket(gcsBucket).List(d.ctx, nil)
+	if err != nil {
+		log.Errorf(d.ctx, "%v", err)
+		return
+	}
+
+	for _, obj := range objs.Results {
+		io.WriteString(d.res, obj.Name+"\n")
+	}
+}
+```
+
+You can see that the procedure here is very similar to what we saw before: Get a client, get a bucket.
+
+Instead of getting an object, however, we're calling the `List` method which returns a `*storage.ObjectList`.
+
+This is an `ObjectList`:
+
+```go
+type ObjectList struct {
+    // Results represent a list of object results.
+    Results []*ObjectAttrs
+
+    // Next is the continuation query to retrieve more
+    // results with the same filtering criteria. If there
+    // are no more results to retrieve, it is nil.
+    Next *Query
+
+    // Prefixes represents prefixes of objects
+    // matching-but-not-listed up to and including
+    // the requested delimiter.
+    Prefixes []string
+}
+```
+
+We have **one** pointer to an `ObjectList` returned. *This is a list of objects.* It is **one** list. It is not many objects. We are not returned many objects. We are returned **one** list.
+
+This ObjectList has three fields. The `Results` field is a slice which, like all slices, contains zero-to-many values. The values in this slice are of type `*storage.ObjectAttrs`. We've already looked at both [`storage.ObjectAttrs`](https://godoc.org/google.golang.org/cloud/storage#ObjectAttrs) and [`storage.BucketAttrs`](https://godoc.org/google.golang.org/cloud/storage#BucketAttrs). 
