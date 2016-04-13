@@ -459,4 +459,22 @@ type ObjectAttrs struct {
 
 One of those fields is a `MediaLink` which is of type string and is what we return in our code sample at the beginning of this section on getting a medialink.
 
+# Displaying An Image
 
+The next thing which was interesting to me about GCS was getting an object which is an image from GCS and then displaying it on a webpage.
+
+We saw how to download an object in the previous example.
+
+Now let's take a look at how to get an object which is an image and then show it on a webpage.
+
+The easiest way to understand this is to (1) upload an image to GCS, (2) go to your [google cloud console](), (3) navigate to your project, then to *storage* (at the time of this writing, use the top left "hamburger" menu), then to the bucket with your image, and then (4) click **public link** to allow the object to be shared publicly.
+
+Once you have clicked **public link** you will be taken to a URL like this:
+
+```html
+https://storage.googleapis.com/learning-1130.appspot.com/3d79b3c8f88125cdc1fa1e0b82953460508f79e5.jpeg
+```
+
+This URL works for any image.
+
+Add this prefix `https://storage.googleapis.com/learning-1130.appspot.com/` to the name of any object, and then you have a public link for that object.
