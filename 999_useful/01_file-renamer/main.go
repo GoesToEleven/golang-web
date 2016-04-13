@@ -15,8 +15,8 @@ func main() {
 	for i, f := range files {
 		fmt.Println(f.Name())
 		oldfile := (dir + f.Name())
-		newfile := (dir + strconv.Itoa(i) + ".jpg")
-		fmt.Println(oldfile, "to", newfile, "\n")
+		newfile := (dir + strconv.Itoa(i) + ".jpeg")
+		fmt.Println(oldfile, "named it to", newfile, "\n")
 
 		err := os.Rename(oldfile, newfile)
 		if err != nil {

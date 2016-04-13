@@ -72,6 +72,9 @@ func (d *demo) listBucket() {
 		for _, obj := range objs.Results {
 			fmt.Fprintf(d.res, "%v\n", obj.Name)
 		}
+		// Next is the continuation query to retrieve more
+		// results with the same filtering criteria. If there
+		// are no more results to retrieve, it is nil.
 		query = objs.Next
 	}
 }
