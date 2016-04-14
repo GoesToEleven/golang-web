@@ -562,7 +562,7 @@ To only get **SOME** of the objects in a bucket, we will need to use a `storage.
 
 # Using A Query For Specific Results
 
-## MaxResults
+## MaxResults ( storage.Query )
 
 You will notice that when we used `List` previously, we passed in `nil` as one of the arguments. Here is the definition of the `list` method:
 
@@ -609,11 +609,31 @@ func (d *demo) statFiles() {
 When we run this code, we will only get two results back.
 
 
-## Next
+## Next ( storage.ObjectList )
 
 In our next example `query-maxresults_next` we use the `Next` field from the `*storage.ObjectList` struct (the type which was returned when we ran `List`).
 
 This allows us to *"page"* through our results, seeing two results at a time. You can see this in action in the `query-maxresults_next` example.
+
+The description of `Next` is this:
+
+```go
+	// Next is the continuation query to retrieve more
+    // results with the same filtering criteria. If there
+    // are no more results to retrieve, it is nil.
+```
+
+I think it's interesting to look at the relationships of the `List` method, the `*storage.Query` struct, and the `*storage.ObjectList`.
+
+The `List` method takes a `*storage.Query`.
+
+The `List` method returns a `*storage.ObjectList`.
+
+A `*storage.ObjectList` has a field `Next` which is of type `*storage.Query`.
+
+We can then take the value `Next` from our `*storage.ObjectList`, call `List` again, and use the value `Next` as the query argument to provide to `List`.
+
+Pretty cool.
 
 We can learn more about the type `storage.Query` by [looking at it in the docs](https://godoc.org/google.golang.org/cloud/storage#Query):
 
@@ -651,6 +671,38 @@ type Query struct {
 
 ```
 
-So in addition to `MaxResults` there are also some other fields which we can use.
+So in addition to `MaxResults` there are also some other fields which we can use. 
+
+Let's look at `Prefix` next.
+
+## Prefix ( storage.Query)
+
+Adding the `Prefix` field to your `*storage.Query` allows you to select **only the files that have this prefix.**
+
+For example, if we had these files in our bucket on GCS:
+
+```
+bar
+bar/1
+bar/2
+boo/
+foo/boo/foo1
+foo1
+foo2
+```
+
+And we ran a query with the prefix `foo`, then we would only get these files back from `List`:
+
+```
+foo/boo/foo1
+foo1
+foo2
+```
+
+Please notice that we have not used the `Delimiter` field from the query. Because we have not specified a `Delimiter`, our query treats the entire string of the object's name as the object's name. It pays no attention to any delimiters such as the forward slash. That forward slash could just be another letter. The forward slash makes no difference in the object's name when we run a query unless was specify a `Delimiter` in the query, which is what we're going to do next.
+ 
+## Delimiter ( storage.Query )
+ 
+
 
 
