@@ -53,7 +53,7 @@ func handler(res http.ResponseWriter, req *http.Request) {
 }
 
 func (d *demo) listBucket() {
-	io.WriteString(d.res, "\nLISTBUCKET RESULT:\n")
+	io.WriteString(d.res, `\nFILE NAMES BEGINNING WITH PREFIX "foo":\n`)
 
 	// get any object with the prefix "foo" in its name
 	query := &storage.Query{
@@ -70,31 +70,12 @@ func (d *demo) listBucket() {
 
 		for _, obj := range objs.Results {
 			fmt.Fprintf(d.res, "\n%v\n", obj.Name)
-			d.dumpStats(obj)
 		}
 	}
 }
 
-func (d *demo) dumpStats(obj *storage.ObjectAttrs) {
-	fmt.Fprintf(d.res, "filename: /%v/%v, \n", obj.Bucket, obj.Name)
-	fmt.Fprintf(d.res, "ContentType: %q, \n", obj.ContentType)
-	fmt.Fprintf(d.res, "ACL: %#v, \n", obj.ACL)
-	fmt.Fprintf(d.res, "Owner: %v, \n", obj.Owner)
-	fmt.Fprintf(d.res, "ContentEncoding: %q, \n", obj.ContentEncoding)
-	fmt.Fprintf(d.res, "Size: %v, \n", obj.Size)
-	fmt.Fprintf(d.res, "MD5: %q, \n", obj.MD5)
-	fmt.Fprintf(d.res, "CRC32C: %q, \n", obj.CRC32C)
-	fmt.Fprintf(d.res, "Metadata: %#v, \n", obj.Metadata)
-	fmt.Fprintf(d.res, "MediaLink: %q, \n", obj.MediaLink)
-	fmt.Fprintf(d.res, "StorageClass: %q, \n", obj.StorageClass)
-	if !obj.Deleted.IsZero() {
-		fmt.Fprintf(d.res, "Deleted: %v, \n", obj.Deleted)
-	}
-	fmt.Fprintf(d.res, "Updated: %v)\n", obj.Updated)
-}
-
 func (d *demo) listFiles() {
-	io.WriteString(d.res, "\nRETRIEVING FILE NAMES\n")
+	io.WriteString(d.res, "\nALL FILE NAMES\n")
 
 	client, err := storage.NewClient(d.ctx)
 	if err != nil {
@@ -116,7 +97,7 @@ func (d *demo) listFiles() {
 
 func (d *demo) createFiles() {
 	io.WriteString(d.res, "\nCreating more files for listbucket...\n")
-	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/", "foo/boo/foo1"} {
+	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/", "foo/boo/foo3", "foo/boo/foo/4", "boo/yah5", "compadre/amigo/diaz6", "compadre/luego/hasta7", "bar/nonce/8", "bar/nonce/9", "bar/nonce/compadre/10", "bar/nonce/compadre/11"} {
 		d.createFile(n)
 	}
 }
