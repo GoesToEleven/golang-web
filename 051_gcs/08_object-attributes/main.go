@@ -8,7 +8,6 @@ import (
 	"google.golang.org/cloud/storage"
 	"io"
 	"net/http"
-	"strings"
 )
 
 func init() {
@@ -46,6 +45,8 @@ func handler(res http.ResponseWriter, req *http.Request) {
 		client: client,
 		bucket: client.Bucket(gcsBucket),
 	}
+
+	res.Header().Set("Content-Language", "en")
 
 	d.createFiles()
 	d.listFiles()
@@ -113,14 +114,12 @@ func (d *demo) listFiles() {
 }
 
 func (d *demo) createFiles() {
-	io.WriteString(d.res, "\nCreating more files for listbucket...\n")
 	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/"} {
 		d.createFile(n)
 	}
 }
 
 func (d *demo) createFile(fileName string) {
-	fmt.Fprintf(d.res, "Creating file /%v/%v\n", gcsBucket, fileName)
 
 	wc := d.bucket.Object(fileName).NewWriter(d.ctx)
 	wc.ContentType = "text/plain"
@@ -129,10 +128,7 @@ func (d *demo) createFile(fileName string) {
 		log.Errorf(d.ctx, "createFile: unable to write data to bucket %q, file %q: %v", gcsBucket, fileName, err)
 		return
 	}
-	if _, err := wc.Write([]byte(strings.Repeat("f", 1024*4) + "\n")); err != nil {
-		log.Errorf(d.ctx, "createFile: unable to write data to bucket %q, file %q: %v", gcsBucket, fileName, err)
-		return
-	}
+
 	if err := wc.Close(); err != nil {
 		log.Errorf(d.ctx, "createFile: unable to close bucket %q, file %q: %v", gcsBucket, fileName, err)
 		return
