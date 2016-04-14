@@ -8,7 +8,6 @@ import (
 	"google.golang.org/cloud/storage"
 	"io"
 	"net/http"
-	"strings"
 )
 
 func init() {
@@ -53,7 +52,7 @@ func handler(res http.ResponseWriter, req *http.Request) {
 }
 
 func (d *demo) listBucket() {
-	io.WriteString(d.res, `\nFILE NAMES BEGINNING WITH PREFIX "foo":\n`)
+	io.WriteString(d.res, "\nFILE NAMES BEGINNING WITH PREFIX foo:\n")
 
 	// get any object with the prefix "foo" in its name
 	query := &storage.Query{
@@ -69,13 +68,13 @@ func (d *demo) listBucket() {
 		query = objs.Next
 
 		for _, obj := range objs.Results {
-			fmt.Fprintf(d.res, "\n%v\n", obj.Name)
+			fmt.Fprintf(d.res, "%v\n", obj.Name)
 		}
 	}
 }
 
 func (d *demo) listFiles() {
-	io.WriteString(d.res, "\nALL FILE NAMES\n")
+	io.WriteString(d.res, "ALL FILE NAMES\n")
 
 	client, err := storage.NewClient(d.ctx)
 	if err != nil {
@@ -96,23 +95,17 @@ func (d *demo) listFiles() {
 }
 
 func (d *demo) createFiles() {
-	io.WriteString(d.res, "\nCreating more files for listbucket...\n")
 	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/", "foo/boo/foo3", "foo/boo/foo/4", "boo/yah5", "compadre/amigo/diaz6", "compadre/luego/hasta7", "bar/nonce/8", "bar/nonce/9", "bar/nonce/compadre/10", "bar/nonce/compadre/11"} {
 		d.createFile(n)
 	}
 }
 
 func (d *demo) createFile(fileName string) {
-	fmt.Fprintf(d.res, "Creating file /%v/%v\n", gcsBucket, fileName)
 
 	wc := d.bucket.Object(fileName).NewWriter(d.ctx)
 	wc.ContentType = "text/plain"
 
 	if _, err := wc.Write([]byte("abcde\n")); err != nil {
-		log.Errorf(d.ctx, "createFile: unable to write data to bucket %q, file %q: %v", gcsBucket, fileName, err)
-		return
-	}
-	if _, err := wc.Write([]byte(strings.Repeat("f", 1024*4) + "\n")); err != nil {
 		log.Errorf(d.ctx, "createFile: unable to write data to bucket %q, file %q: %v", gcsBucket, fileName, err)
 		return
 	}

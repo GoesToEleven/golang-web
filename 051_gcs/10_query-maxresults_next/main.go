@@ -8,7 +8,6 @@ import (
 	"google.golang.org/cloud/storage"
 	"io"
 	"net/http"
-	"strings"
 )
 
 func init() {
@@ -79,10 +78,6 @@ func (d *demo) listBucket() {
 	}
 }
 
-func (d *demo) dumpStats(obj *storage.ObjectAttrs) {
-
-}
-
 func (d *demo) listFiles() {
 	io.WriteString(d.res, "\nRETRIEVING FILE NAMES\n")
 
@@ -121,10 +116,7 @@ func (d *demo) createFile(fileName string) {
 		log.Errorf(d.ctx, "createFile: unable to write data to bucket %q, file %q: %v", gcsBucket, fileName, err)
 		return
 	}
-	if _, err := wc.Write([]byte(strings.Repeat("f", 1024*4) + "\n")); err != nil {
-		log.Errorf(d.ctx, "createFile: unable to write data to bucket %q, file %q: %v", gcsBucket, fileName, err)
-		return
-	}
+
 	if err := wc.Close(); err != nil {
 		log.Errorf(d.ctx, "createFile: unable to close bucket %q, file %q: %v", gcsBucket, fileName, err)
 		return
