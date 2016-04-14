@@ -50,11 +50,10 @@ func handler(res http.ResponseWriter, req *http.Request) {
 
 	d.createFiles()
 	d.listFiles()
-	d.statFiles()
 }
 
-func (d *demo) statFiles() {
-	io.WriteString(d.res, "\nRETRIEVING FILE STATS\n")
+func (d *demo) listFiles() {
+	io.WriteString(d.res, "RETRIEVING FILE ATTRIBUTES\n")
 
 	client, err := storage.NewClient(d.ctx)
 	if err != nil {
@@ -70,12 +69,13 @@ func (d *demo) statFiles() {
 	}
 
 	for _, obj := range objs.Results {
+		io.WriteString(d.res, "\n"+obj.Name+"\n")
 		d.dumpStats(obj)
 	}
 }
 
 func (d *demo) dumpStats(obj *storage.ObjectAttrs) {
-	fmt.Fprintf(d.res, "\nfilename: /%v/%v, \n", obj.Bucket, obj.Name)
+	fmt.Fprintf(d.res, "filename: /%v/%v, \n", obj.Bucket, obj.Name)
 	fmt.Fprintf(d.res, "ContentType: %q, \n", obj.ContentType)
 	fmt.Fprintf(d.res, "ACL: %#v, \n", obj.ACL)
 	fmt.Fprintf(d.res, "Owner: %v, \n", obj.Owner)
@@ -89,28 +89,7 @@ func (d *demo) dumpStats(obj *storage.ObjectAttrs) {
 	if !obj.Deleted.IsZero() {
 		fmt.Fprintf(d.res, "Deleted: %v, \n", obj.Deleted)
 	}
-	fmt.Fprintf(d.res, "Updated: %v)\n", obj.Updated)
-}
-
-func (d *demo) listFiles() {
-	io.WriteString(d.res, "\nRETRIEVING FILE NAMES\n")
-
-	client, err := storage.NewClient(d.ctx)
-	if err != nil {
-		log.Errorf(d.ctx, "%v", err)
-		return
-	}
-	defer client.Close()
-
-	objs, err := client.Bucket(gcsBucket).List(d.ctx, nil)
-	if err != nil {
-		log.Errorf(d.ctx, "%v", err)
-		return
-	}
-
-	for _, obj := range objs.Results {
-		io.WriteString(d.res, obj.Name+"\n")
-	}
+	fmt.Fprintf(d.res, "Updated: %v)\n\n", obj.Updated)
 }
 
 func (d *demo) createFiles() {
