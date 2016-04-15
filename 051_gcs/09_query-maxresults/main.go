@@ -127,7 +127,7 @@ func (d *demo) createFiles() {
 }
 
 func (d *demo) createFile(fileName string) {
-	fmt.Fprintf(d.res, "Creating file /%v/%v\n", gcsBucket, fileName)
+	fmt.Fprintf(d.res, "FILE CREATED: %v\n", fileName)
 
 	wc := d.bucket.Object(fileName).NewWriter(d.ctx)
 	wc.ContentType = "text/plain"
@@ -136,10 +136,7 @@ func (d *demo) createFile(fileName string) {
 		log.Errorf(d.ctx, "createFile: unable to write data to bucket %q, file %q: %v", gcsBucket, fileName, err)
 		return
 	}
-	if _, err := wc.Write([]byte(strings.Repeat("f", 1024*4) + "\n")); err != nil {
-		log.Errorf(d.ctx, "createFile: unable to write data to bucket %q, file %q: %v", gcsBucket, fileName, err)
-		return
-	}
+
 	if err := wc.Close(); err != nil {
 		log.Errorf(d.ctx, "createFile: unable to close bucket %q, file %q: %v", gcsBucket, fileName, err)
 		return
