@@ -52,7 +52,7 @@ func handler(res http.ResponseWriter, req *http.Request) {
 }
 
 func (d *demo) queryFiles() {
-	io.WriteString(d.res, "\nRETRIEVING  QUERY LIMITED FILE NAMES ( MaxResults: 2 )\n")
+	io.WriteString(d.res, "\nRETRIEVING QUERY LIMITED FILE NAMES ( MaxResults: 2 each loop )\n")
 
 	// create a query
 	q := &storage.Query{

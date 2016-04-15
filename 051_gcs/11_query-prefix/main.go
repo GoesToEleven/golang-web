@@ -59,31 +59,21 @@ func (d *demo) listBucket() {
 		Prefix: "foo",
 	}
 
-	for query != nil {
-		objs, err := d.bucket.List(d.ctx, query)
-		if err != nil {
-			log.Errorf(d.ctx, "listBucket: unable to list bucket %q: %v", gcsBucket, err)
-			return
-		}
-		query = objs.Next
+	objs, err := d.bucket.List(d.ctx, query)
+	if err != nil {
+		log.Errorf(d.ctx, "listBucket: unable to list bucket %q: %v", gcsBucket, err)
+		return
+	}
 
-		for _, obj := range objs.Results {
-			fmt.Fprintf(d.res, "%v\n", obj.Name)
-		}
+	for _, obj := range objs.Results {
+		fmt.Fprintf(d.res, "%v\n", obj.Name)
 	}
 }
 
 func (d *demo) listFiles() {
 	io.WriteString(d.res, "ALL FILE NAMES\n")
 
-	client, err := storage.NewClient(d.ctx)
-	if err != nil {
-		log.Errorf(d.ctx, "%v", err)
-		return
-	}
-	defer client.Close()
-
-	objs, err := client.Bucket(gcsBucket).List(d.ctx, nil)
+	objs, err := d.bucket.List(d.ctx, nil)
 	if err != nil {
 		log.Errorf(d.ctx, "%v", err)
 		return
