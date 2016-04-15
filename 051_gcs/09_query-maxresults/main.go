@@ -54,7 +54,7 @@ func (d *demo) queryFiles() {
 	io.WriteString(d.res, "\nRETRIEVING  QUERY MaxResults LIMITED FILE NAMES\n")
 
 	// create a query
-	q := storage.Query{
+	q := &storage.Query{
 		MaxResults: 2,
 	}
 
