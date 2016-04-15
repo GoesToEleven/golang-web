@@ -702,7 +702,104 @@ foo2
 Please notice that we have not used the `Delimiter` field from the query. Because we have not specified a `Delimiter`, our query treats the entire string of the object's name as the object's name. It pays no attention to any delimiters such as the forward slash. That forward slash could just be another letter. The forward slash makes no difference in the object's name when we run a query unless was specify a `Delimiter` in the query, which is what we're going to do next.
  
 ## Delimiter ( storage.Query )
- 
 
+When you use a delimiter in your query ...
+
+```go
+	query := &storage.Query{
+		Delimiter: "/",
+	}
+```
+
+... you get every object whose name does not contain the prefix.
+
+For instance, if we had all of these objects ...
+
+```
+2d2542c1d2b96b196df6efbd24e24af88765178e.txt
+3d79b3c8f88125cdc1fa1e0b82953460508f79e5.jpeg
+48cabad77dc220c4ca91dba582b0b681aa0195fe.md
+bar
+bar/1
+bar/2
+bar/nonce/8
+bar/nonce/9
+bar/nonce/compadre/10
+bar/nonce/compadre/11
+boo/
+boo/yah5
+compadre/amigo/diaz6
+compadre/luego/hasta7
+foo/boo/foo/4
+foo/boo/foo3
+foo1
+foo2
+```
+
+... and we ran `List(ctx, query)` with the above query, we would receive these objects ...
+
+```
+2d2542c1d2b96b196df6efbd24e24af88765178e.txt
+3d79b3c8f88125cdc1fa1e0b82953460508f79e5.jpeg
+48cabad77dc220c4ca91dba582b0b681aa0195fe.md
+bar
+foo1
+foo2
+```
+
+You can see the above example in the "query-delimeter" folder.
+
+What the delimiter is saying is that the delimiter has significance in the name of the object - and thus treat the delimiter as if it has significance.
+
+The significance with which the delimeter is treated is this: it's as if we now have files stored in folders:
+
+```
+folder1/folder2/objectname
+```
+
+So if we had these files ...
+
+```
+firstobject
+folder1/folder2/secondobject
+```
+
+... and we ran `List(ctx, query)` with this query ...
+ 
+ ```go
+ 	query := &storage.Query{
+ 		Delimiter: "/",
+ 	}
+ ```
+ 
+ ... we would receive only this object ...
+ 
+ ```
+ firstobject
+ ```
+
+To get the secondobject, we would need to run either this query ...
+ 
+```go
+ 	query := &storage.Query{
+ 		Delimiter: "/",
+ 		Prefix: "folder1/folder2/",
+ 	}
+ ```
+ 
+ ... or this query ...
+ 
+ ```go
+  	query := &storage.Query{
+  		Delimiter: "/",
+  		Prefix: "folder1/folder2/",
+  	}
+  ```
+  
+  You can see both of those examples in this folder: 
+ 
+ 
+ 
+We could use a delimiter of "/" and 
 
 
