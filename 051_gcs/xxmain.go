@@ -1,6 +1,7 @@
 package skyhdd
 
 import (
+	"fmt"
 	"golang.org/x/net/context"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/log"
@@ -13,14 +14,14 @@ func init() {
 	http.HandleFunc("/", handler)
 }
 
+const gcsBucket = "learning-1130.appspot.com"
+
 type demo struct {
 	ctx    context.Context
 	res    http.ResponseWriter
 	bucket *storage.BucketHandle
 	client *storage.Client
 }
-
-const gcsBucket = "learning-1130.appspot.com"
 
 func handler(res http.ResponseWriter, req *http.Request) {
 
@@ -47,32 +48,47 @@ func handler(res http.ResponseWriter, req *http.Request) {
 
 	d.createFiles()
 	d.listFiles()
-	d.queryFiles()
+	d.listBucket()
 }
 
-func (d *demo) queryFiles() {
-	io.WriteString(d.res, "\nRETRIEVING  QUERY LIMITED FILE NAMES ( MaxResults: 2 )\n")
+func (d *demo) listBucket() {
+	io.WriteString(d.res, "\nLISTBUCKET RESULT:\n")
 
-	// create a query
-	q := &storage.Query{
+	// get any object with the prefix "foo" in its name
+	query := &storage.Query{
 		MaxResults: 2,
 	}
 
-	objs, err := d.bucket.List(d.ctx, q)
-	if err != nil {
-		log.Errorf(d.ctx, "%v", err)
-		return
-	}
+	for query != nil {
+		objs, err := d.bucket.List(d.ctx, query)
+		if err != nil {
+			log.Errorf(d.ctx, "listBucket: unable to list bucket %q: %v", gcsBucket, err)
+			return
+		}
 
-	for _, obj := range objs.Results {
-		io.WriteString(d.res, obj.Name+"\n")
+		fmt.Fprintf(d.res, "\n%s\n", "LOOPING THROUGH")
+
+		for _, obj := range objs.Results {
+			fmt.Fprintf(d.res, "%v\n", obj.Name)
+		}
+		// Next is the continuation query to retrieve more
+		// results with the same filtering criteria. If there
+		// are no more results to retrieve, it is nil.
+		query = objs.Next
 	}
 }
 
 func (d *demo) listFiles() {
-	io.WriteString(d.res, "\nRETRIEVING ALL FILE NAMES\n")
+	io.WriteString(d.res, "\nRETRIEVING FILE NAMES\n")
 
-	objs, err := d.bucket.List(d.ctx, nil)
+	client, err := storage.NewClient(d.ctx)
+	if err != nil {
+		log.Errorf(d.ctx, "%v", err)
+		return
+	}
+	defer client.Close()
+
+	objs, err := client.Bucket(gcsBucket).List(d.ctx, nil)
 	if err != nil {
 		log.Errorf(d.ctx, "%v", err)
 		return
@@ -84,12 +100,14 @@ func (d *demo) listFiles() {
 }
 
 func (d *demo) createFiles() {
+	io.WriteString(d.res, "\nCreating more files for listbucket...\n")
 	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/"} {
 		d.createFile(n)
 	}
 }
 
 func (d *demo) createFile(fileName string) {
+	fmt.Fprintf(d.res, "Creating file /%v/%v\n", gcsBucket, fileName)
 
 	wc := d.bucket.Object(fileName).NewWriter(d.ctx)
 	wc.ContentType = "text/plain"
