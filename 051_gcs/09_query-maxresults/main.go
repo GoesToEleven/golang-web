@@ -8,7 +8,6 @@ import (
 	"google.golang.org/cloud/storage"
 	"io"
 	"net/http"
-	"strings"
 )
 
 func init() {
@@ -55,13 +54,6 @@ func handler(res http.ResponseWriter, req *http.Request) {
 func (d *demo) statFiles() {
 	io.WriteString(d.res, "\nRETRIEVING FILE STATS\n")
 
-	client, err := storage.NewClient(d.ctx)
-	if err != nil {
-		log.Errorf(d.ctx, "%v", err)
-		return
-	}
-	defer client.Close()
-
 	// create a query
 	q := storage.Query{
 		MaxResults: 2,
@@ -69,7 +61,7 @@ func (d *demo) statFiles() {
 
 	// instead of nil
 	// now passing in a *storage.Query
-	objs, err := client.Bucket(gcsBucket).List(d.ctx, &q)
+	objs, err := d.bucket.List(d.ctx, &q)
 	if err != nil {
 		log.Errorf(d.ctx, "%v", err)
 		return
@@ -101,14 +93,7 @@ func (d *demo) dumpStats(obj *storage.ObjectAttrs) {
 func (d *demo) listFiles() {
 	io.WriteString(d.res, "\nRETRIEVING FILE NAMES\n")
 
-	client, err := storage.NewClient(d.ctx)
-	if err != nil {
-		log.Errorf(d.ctx, "%v", err)
-		return
-	}
-	defer client.Close()
-
-	objs, err := client.Bucket(gcsBucket).List(d.ctx, nil)
+	objs, err := d.bucket.List(d.ctx, nil)
 	if err != nil {
 		log.Errorf(d.ctx, "%v", err)
 		return
