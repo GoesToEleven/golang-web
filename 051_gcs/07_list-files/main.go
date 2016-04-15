@@ -54,14 +54,7 @@ func handler(res http.ResponseWriter, req *http.Request) {
 func (d *demo) listFiles() {
 	io.WriteString(d.res, "\nRETRIEVING FILE NAMES\n")
 
-	client, err := storage.NewClient(d.ctx)
-	if err != nil {
-		log.Errorf(d.ctx, "%v", err)
-		return
-	}
-	defer client.Close()
-
-	objs, err := client.Bucket(gcsBucket).List(d.ctx, nil)
+	objs, err := d.bucket.List(d.ctx, nil)
 	if err != nil {
 		log.Errorf(d.ctx, "%v", err)
 		return
