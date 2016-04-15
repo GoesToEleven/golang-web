@@ -777,6 +777,8 @@ folder1/folder2/secondobject
  ```
  firstobject
  ```
+ 
+You can run this example in the **02** folder inside the **query-delimeter** folder.
 
 To get the secondobject, we would need to run either this query ...
  
