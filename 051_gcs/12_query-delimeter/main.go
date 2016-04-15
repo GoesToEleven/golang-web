@@ -48,12 +48,12 @@ func handler(res http.ResponseWriter, req *http.Request) {
 
 	d.createFiles()
 	d.listFiles()
-	io.WriteString(d.res, "\nRESULTS FROM LISTDIR - WITH DELIMITER\n")
-	d.listDir()
+	io.WriteString(d.res, "\nFILE NAMES WITH DELIMITER QUERY ( Delimeter: / )\n")
+	d.listDelim()
 
 }
 
-func (d *demo) listDir() {
+func (d *demo) listDelim() {
 
 	query := &storage.Query{
 		Delimiter: "/",
@@ -69,22 +69,13 @@ func (d *demo) listDir() {
 		fmt.Fprintf(d.res, "%v\n", obj.Name)
 	}
 
-	io.WriteString(d.res, "\nPREFIXES FOUND ( storage.ObjectList Prefixes ) \n")
-
-	fmt.Fprintf(d.res, "%v", objs.Prefixes)
+	fmt.Fprintf(d.res, "\nEVERY OTHER FILE HAS A DELIMETER IN FRONT OF IT \nIT'S AS IF EVERY OTHER FILE IS IN A FOLDER \nAND YOU ARE ONLY LOOKING AT THE FILES IN THIS FOLDER \nTO SEE THE OTHER FILES, YOU WILL NEED TO ADD A PREFIX QUERY \nWITH A PREFIX, THE QUERY WILL RETURN EVERY FILE WITH NO DELIMETER IN FRONT OF IT \nAND THEN ANY OTHER PREFIXES STILL REMAINING \nPREFIXES FOUND WITH THIS QUERY ( storage.ObjectList Prefixes )\n%v", objs.Prefixes)
 }
 
 func (d *demo) listFiles() {
 	io.WriteString(d.res, "ALL FILE NAMES\n")
 
-	client, err := storage.NewClient(d.ctx)
-	if err != nil {
-		log.Errorf(d.ctx, "%v", err)
-		return
-	}
-	defer client.Close()
-
-	objs, err := client.Bucket(gcsBucket).List(d.ctx, nil)
+	objs, err := d.bucket.List(d.ctx, nil)
 	if err != nil {
 		log.Errorf(d.ctx, "%v", err)
 		return

@@ -8,6 +8,7 @@ import (
 	"google.golang.org/cloud/storage"
 	"io"
 	"net/http"
+	"strings"
 )
 
 func init() {
@@ -48,33 +49,38 @@ func handler(res http.ResponseWriter, req *http.Request) {
 
 	d.createFiles()
 	d.listFiles()
-	d.listBucket()
+	io.WriteString(d.res, "\nRESULTS FROM LISTDIR - WITH DELIMITER\n")
+	d.listDir("bar", "/", "  ")
+	io.WriteString(d.res, "\nRESULTS FROM LISTDIR - *WITHOUT* DELIMITER\n")
+	d.listDir("bar", "", "  ")
+
 }
 
-func (d *demo) listBucket() {
-	io.WriteString(d.res, "\nLISTBUCKET RESULT:\n")
+func (d *demo) listDir(name, delim, indent string) {
 
-	// get any object with the prefix "foo" in its name
 	query := &storage.Query{
-		MaxResults: 2,
+		Prefix:    name,
+		Delimiter: delim,
 	}
 
 	for query != nil {
 		objs, err := d.bucket.List(d.ctx, query)
 		if err != nil {
-			log.Errorf(d.ctx, "listBucket: unable to list bucket %q: %v", gcsBucket, err)
+			log.Errorf(d.ctx, "listBucketDirMode: unable to list bucket %q: %v", gcsBucket, err)
 			return
 		}
-
-		fmt.Fprintf(d.res, "\n%s\n", "LOOPING THROUGH")
+		query = objs.Next
 
 		for _, obj := range objs.Results {
-			fmt.Fprintf(d.res, "%v\n", obj.Name)
+			fmt.Fprintf(d.res, "%v%v\n", indent, obj.Name)
 		}
-		// Next is the continuation query to retrieve more
-		// results with the same filtering criteria. If there
-		// are no more results to retrieve, it is nil.
-		query = objs.Next
+
+		fmt.Fprintf(d.res, "%v\n", objs.Prefixes)
+
+		for _, pfix := range objs.Prefixes {
+			log.Infof(d.ctx, "DIR: %v", pfix)
+			d.listDir(pfix, delim, indent+"  ")
+		}
 	}
 }
 
@@ -101,7 +107,7 @@ func (d *demo) listFiles() {
 
 func (d *demo) createFiles() {
 	io.WriteString(d.res, "\nCreating more files for listbucket...\n")
-	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/"} {
+	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/", "foo/boo/foo3", "foo/boo/foo/4", "boo/yah5", "compadre/amigo/diaz6", "compadre/luego/hasta7", "bar/nonce/8", "bar/nonce/9", "bar/nonce/compadre/10", "bar/nonce/compadre/11"} {
 		d.createFile(n)
 	}
 }

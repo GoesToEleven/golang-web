@@ -8,7 +8,6 @@ import (
 	"google.golang.org/cloud/storage"
 	"io"
 	"net/http"
-	"strings"
 )
 
 func init() {
@@ -49,52 +48,55 @@ func handler(res http.ResponseWriter, req *http.Request) {
 
 	d.createFiles()
 	d.listFiles()
-	io.WriteString(d.res, "\nRESULTS FROM LISTDIR - WITH DELIMITER\n")
-	d.listDir("bar", "/", "  ")
-	io.WriteString(d.res, "\nRESULTS FROM LISTDIR - *WITHOUT* DELIMITER\n")
-	d.listDir("bar", "", "  ")
+	io.WriteString(d.res, "\nFILE NAMES WITH DELIMITER QUERY ( Delimeter: / )\n")
+	d.listDelim()
 
 }
 
-func (d *demo) listDir(name, delim, indent string) {
+func (d *demo) listDelim() {
 
 	query := &storage.Query{
-		Prefix:    name,
-		Delimiter: delim,
+		Delimiter: "/",
 	}
 
-	for query != nil {
+	objs, err := d.bucket.List(d.ctx, query)
+	if err != nil {
+		log.Errorf(d.ctx, "listBucketDirMode: unable to list bucket %q: %v", gcsBucket, err)
+		return
+	}
+
+	for _, obj := range objs.Results {
+		fmt.Fprintf(d.res, "%v\n", obj.Name)
+	}
+
+	fmt.Fprintf(d.res, "\nEVERY OTHER FILE HAS A DELIMETER IN FRONT OF IT \nIT'S AS IF EVERY OTHER FILE IS IN A FOLDER \nAND YOU ARE ONLY LOOKING AT THE FILES IN THIS FOLDER \nTO SEE THE OTHER FILES, YOU WILL NEED TO ADD A PREFIX QUERY \nWITH A PREFIX, THE QUERY WILL RETURN EVERY FILE WITH NO DELIMETER IN FRONT OF IT \nAND THEN ANY OTHER PREFIXES STILL REMAINING \nPREFIXES FOUND WITH THIS QUERY ( storage.ObjectList Prefixes )\n%v", objs.Prefixes)
+
+	io.WriteString(d.res,"\n\nNOW LET'S GET THE FILES WITH ALL OF THOSE PREFIXES\n\n")
+
+	for _, v := range objs.Prefixes {
+		query = &storage.Query{
+			Delimiter: "/",
+			Prefix: v,
+		}
+
 		objs, err := d.bucket.List(d.ctx, query)
 		if err != nil {
 			log.Errorf(d.ctx, "listBucketDirMode: unable to list bucket %q: %v", gcsBucket, err)
 			return
 		}
-		query = objs.Next
 
+		fmt.Fprintf(d.res, "WITH DELIMITER AND THIS PREFIX %v - THESE FILES\n", v)
 		for _, obj := range objs.Results {
-			fmt.Fprintf(d.res, "%v%v\n", indent, obj.Name)
+			fmt.Fprintf(d.res, "%v\n", obj.Name)
 		}
-
-		fmt.Fprintf(d.res, "%v\n", objs.Prefixes)
-
-		for _, pfix := range objs.Prefixes {
-			log.Infof(d.ctx, "DIR: %v", pfix)
-			d.listDir(pfix, delim, indent+"  ")
-		}
+		fmt.Fprintf(d.res, "And remaining prefixes ( storage.ObjectList Prefixes )\n%v\n\n", objs.Prefixes)
 	}
 }
 
 func (d *demo) listFiles() {
-	io.WriteString(d.res, "\nRETRIEVING FILE NAMES\n")
+	io.WriteString(d.res, "ALL FILE NAMES\n")
 
-	client, err := storage.NewClient(d.ctx)
-	if err != nil {
-		log.Errorf(d.ctx, "%v", err)
-		return
-	}
-	defer client.Close()
-
-	objs, err := client.Bucket(gcsBucket).List(d.ctx, nil)
+	objs, err := d.bucket.List(d.ctx, nil)
 	if err != nil {
 		log.Errorf(d.ctx, "%v", err)
 		return
@@ -106,14 +108,12 @@ func (d *demo) listFiles() {
 }
 
 func (d *demo) createFiles() {
-	io.WriteString(d.res, "\nCreating more files for listbucket...\n")
 	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/", "foo/boo/foo3", "foo/boo/foo/4", "boo/yah5", "compadre/amigo/diaz6", "compadre/luego/hasta7", "bar/nonce/8", "bar/nonce/9", "bar/nonce/compadre/10", "bar/nonce/compadre/11"} {
 		d.createFile(n)
 	}
 }
 
 func (d *demo) createFile(fileName string) {
-	fmt.Fprintf(d.res, "Creating file /%v/%v\n", gcsBucket, fileName)
 
 	wc := d.bucket.Object(fileName).NewWriter(d.ctx)
 	wc.ContentType = "text/plain"
@@ -122,7 +122,6 @@ func (d *demo) createFile(fileName string) {
 		log.Errorf(d.ctx, "createFile: unable to write data to bucket %q, file %q: %v", gcsBucket, fileName, err)
 		return
 	}
-
 	if err := wc.Close(); err != nil {
 		log.Errorf(d.ctx, "createFile: unable to close bucket %q, file %q: %v", gcsBucket, fileName, err)
 		return
