@@ -52,7 +52,7 @@ func handler(res http.ResponseWriter, req *http.Request) {
 }
 
 func (d *demo) listFiles() {
-	io.WriteString(d.res, "ALL OBJECT NAMES\n")
+	io.WriteString(d.res, "OBJECTS\n")
 
 	objs, err := d.bucket.List(d.ctx, nil)
 	if err != nil {
@@ -61,12 +61,12 @@ func (d *demo) listFiles() {
 	}
 
 	for _, obj := range objs.Results {
-		io.WriteString(d.res, obj.Name+" - "+obj.ACL+"\n")
+		fmt.Fprintf(d.res, "%v - %v\n", obj.Name, obj.ACL)
 	}
 }
 
 func (d *demo) createFiles() {
-	for _, n := range []string{"foo1", "bar1", "bar/foo2"} {
+	for _, n := range []string{"foo", "bar"} {
 		d.createFile(n)
 	}
 }
