@@ -1010,3 +1010,5 @@ The gcs-example was written by Google.
 # A Challenge
 
 Store images in GCS for three different users where the object name on GCS is in the format <username>/<object-name>.txt. For each user, print the file names.
+
+You can find a solution to this challenge using images instead of text files in the **challenge** folder.
