@@ -5,12 +5,16 @@
     <title></title>
 </head>
 <body>
-<!--div{$}*3-->
-<div>1</div>
+
+<!-- emmet -->
+<!--(div{DIV $}+p{-------------})*3 -->
+
+<div>DIV 1</div>
 <p>-------------</p>
-<div>2</div>
+<div>DIV 2</div>
 <p>-------------</p>
-<div>3</div>
+<div>DIV 3</div>
+<p>-------------</p>
 
 <script>
     var items = ['dog', 'chocolate', 'roses', 'blender'];
@@ -18,21 +22,21 @@
         food: 'quesadilla',
         drink: 'beer',
         dessert: ['ice cream', 'zang bar', 'peanut butter pie']
-    }
+    };
     var otras = [
         {
             name: 'Todd',
-            friends: [1, 4, 7, 8, 53],
+            friends: [1, 4, 7, 8, 53]
         },
         {
             name: 'Julian',
-            friends: [7, 98, 16, 12, 44],
+            friends: [7, 98, 16, 12, 44]
         },
         {
             name: 'Nina',
-            friends: [65, 34, 23, 76, 33],
-        },
-    ]
+            friends: [65, 34, 23, 76, 33]
+        }
+    ];
 
     var myNode = document.querySelector('div');
     var paragraph = '';

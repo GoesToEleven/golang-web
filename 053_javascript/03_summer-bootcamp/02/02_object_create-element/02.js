@@ -3,8 +3,8 @@ var myObj = {
     lName: 'McLeod',
     happy: true,
     secret: 42,
-    movies: ['Alien', 'Heat', 'Hmm', 'Other'],
-}
+    movies: ['Alien', 'Heat', 'Hmm', 'Other']
+};
 
 var myParagraph = myObj.fName + ' ' + myObj.lName + ' is ';
 
@@ -27,5 +27,11 @@ for (var i = 0; i < myObj.movies.length; i++) {
 }
 
 console.log(myParagraph);
+console.log(myObj);
 
+// inject
+var body = document.querySelector('body');
+var newH = document.createElement('h1');
+body.appendChild(newH);
+newH.innerHTML = myParagraph;
 

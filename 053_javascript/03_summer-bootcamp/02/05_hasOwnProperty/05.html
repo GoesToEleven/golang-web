@@ -17,19 +17,20 @@
     console.log(info.links.blog);
     console.log(info.links.facebook);
 
+
+    for (var i in info.links) {
+        if (info.links.hasOwnProperty(i)) {
+            console.log("Index: " + i + " Value: " + info.links[i] + "\n");
+        }
+    }
+
+
     for (var i in info.links) {
         console.log('Index: ' + i + 'Value' + '\n' + info.links[i] + '\n');
     }
     /*
-    it is a good idea to use the safety feature below
+    it is a good idea to use hasOwnProperty
     it checks to make sure an object property exists before you access it
-
-     for (var index in info.links) {
-     if (info.links.hasOwnProperty(index)) {
-            console.log("Index: " + index + " Value: " + info.links[index] + "\n");
-        }
-     }
-
      */
 </script>
 </body>
