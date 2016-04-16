@@ -48,9 +48,9 @@ func handler(res http.ResponseWriter, req *http.Request) {
 
 	d.createFiles()
 	d.listFiles()
-	io.WriteString(d.res, "\nQUERY WITHOUT DELIMITER\n")
+	io.WriteString(d.res, "\nQUERY WITHOUT PREFIX OR DELIMITER\n")
 	d.listDir("", "", "  ")
-	io.WriteString(d.res, "\nQUERY WITH DELIMITER\n")
+	io.WriteString(d.res, "\nQUERY WITH PREFIX AND DELIMITER\n")
 	d.listDir("", "/", "  ")
 
 }
@@ -75,13 +75,12 @@ func (d *demo) listDir(name, delim, indent string) {
 	fmt.Fprintf(d.res, "PREFIXES: %v\n", objs.Prefixes)
 
 	for _, pfix := range objs.Prefixes {
-		log.Infof(d.ctx, "DIR: %v", pfix)
 		d.listDir(pfix, delim, indent+"  ")
 	}
 }
 
 func (d *demo) listFiles() {
-	io.WriteString(d.res, "\nALL FILES\n")
+	io.WriteString(d.res, "\nALL OBJECTS\n")
 
 	objs, err := d.bucket.List(d.ctx, nil)
 	if err != nil {

@@ -95,6 +95,7 @@ func (d *demo) createFiles() {
 		"folder1/folder2/secondobject",
 		"folder1/folder2/folder3/thirdobject",
 		"folder1/folder2/folders-can-be-any-string/fourthobject",
+		"folder1/folder2/folder3/folder4/fifthobject",
 	} {
 		d.createFile(n)
 	}

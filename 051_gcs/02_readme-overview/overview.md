@@ -808,6 +808,7 @@ firstobject
 folder1/folder2/secondobject
 folder1/folder2/folder3/thirdobject
 folder1/folder2/folders-can-be-any-string/fourthobject
+folder1/folder2/folder3/folder4/fifthobject
 ```
 
 ... we would still get the same results, as you can see in the **"03"** folder inside the **"query-prefix-delimeter"** folder. Now, however, we would be able to access `Prefixes`: the `*storage.ObjectList` which `List` returns would have `Prefixes` field which is a `[]string` that would have values in it. Running the above query on the above files would give us these `Prefixes`:
@@ -835,24 +836,27 @@ To summarize what we have learned about the `Prefix` and `Delimeter` fields in a
 1. If run a query with a `Prefix`, all objects with that prefix are returned.
 1. If run a query with a `Prefix` and a `Delimiter`
   1. All objects with that prefix are returned *as long as they do not have another delimeter after the prefix.*
-  1. *If an object does have another delimiter after the prefix*, then we are going to have some additional prefixes returned to us in the `*storage.ObjectList` which `List` returns ( the `Prefixes` field of the `*storage.ObjectList` which is a `[]string` ). The prefixes returned will be everything up to the final delimeter. Everything after the final delimeter is the last part of the object's name.
+  1. *If an object does have another delimiter after the prefix*, then we are going to have some additional prefixes returned to us in the `*storage.ObjectList` which `List` returns ( the `Prefixes` field of the `*storage.ObjectList` which is a `[]string` ). The prefixes returned will be everything up to the next delimeter.
 1. Our query, which we pass into the `List` method, will return a `*storage.ObjectList` which is a struct with three fields: `Results`, `Next`, and `Prefixes`. We can use `Prefixes` to access additional objects.
 
-Here is how the [documentation](https://godoc.org/google.golang.org/cloud/storage#Query) talks about it:
+Here is how the [documentation](https://godoc.org/google.golang.org/cloud/storage#Query) talks about it with a few slight modifications from me:
 
 ```go
 type Query struct {
     // Delimiter returns results in a directory-like fashion.
+    
     // Results will contain only objects whose names, aside from the
-    // prefix, do not contain delimiter. Objects whose names,
-    // aside from the prefix, contain delimiter will have their name,
-    // truncated after the delimiter, returned in prefixes.
+    // prefix, do not contain delimiter. 
+    
+    // Objects whose names, aside from the prefix, contain another delimiter 
+    // will have their name truncated after the next delimiter and returned in prefixes.
+    
     // Duplicate prefixes are omitted.
+    
     // Optional.
     Delimiter string
 
-    // Prefix is the prefix filter to query objects
-    // whose names begin with this prefix.
+    // Prefix is the prefix filter to query objects whose names begin with this prefix.
     // Optional.
     Prefix string
 
@@ -865,12 +869,14 @@ type Query struct {
     // Optional.
     Cursor string
 
-    // MaxResults is the maximum number of items plus prefixes
-    // to return. As duplicate prefixes are omitted,
+    // MaxResults is the maximum number of items plus prefixes to return. 
+    // As duplicate prefixes are omitted,
     // fewer total results may be returned than requested.
     // The default page limit is used if it is negative or zero.
     MaxResults int
 }
 ```
+
+To reinforce building queries with a `Prefix` and/or `Delimeter`, two additional examples have been included: the **"04"** and **"05"** folders inside the **"query-prefix-delimeter"** folder.
 
 
