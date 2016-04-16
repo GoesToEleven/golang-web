@@ -830,5 +830,8 @@ folder1/folder2/folders-can-be-any-string/
 
 We could then use those `Prefixes` to access yet more objects in our bucket.
 
+To summarize what we have learned about the `Prefix` and `Delimeter` fields in a `storage.Query` struct:
+
+1. Any
 
 
