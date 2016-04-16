@@ -960,3 +960,53 @@ const (
 
 You can see what ACL's look like, by default, when you don't specifically set any ACL's by running the code in the **"03_default"** folder in the **"ACL"** folder of the examples.
 
+
+# Delete
+
+You may have already seen this method in our code:
+
+```go
+func (d *demo) delFiles() {
+
+	objs, err := d.bucket.List(d.ctx, nil)
+	if err != nil {
+		log.Errorf(d.ctx, "%v", err)
+		return
+	}
+
+	for _, obj := range objs.Results {
+		if err := d.bucket.Object(obj.Name).Delete(d.ctx); err != nil {
+			log.Errorf(d.ctx, "deleteFiles: unable to delete bucket %q, file %q: %v", d.bucket, obj.Name, err)
+			return
+		}
+	}
+}
+```
+
+To delete an object, you specify the bucket and the object, and then you call the Delete method.
+
+In the [documentation](https://godoc.org/google.golang.org/cloud/storage#ACLRole), you would go these functions and methods:
+
+```go
+func NewClient(ctx context.Context, opts ...cloud.ClientOption) (*Client, error)
+
+func (c *Client) Bucket(name string) *BucketHandle
+
+func (b *BucketHandle) Object(name string) *ObjectHandle
+
+func (o *ObjectHandle) Delete(ctx context.Context) error
+```
+
+`NewClient` gives you a pointer to a client. You can now call the method `Bucket` which gives you a pointer to a `BucketHandle`. You can now call the method `Object` which gives you a pointer to an `ObjectHandle`. You can now call the method `Delete`.
+
+# Two Examples
+
+There are two last examples: **file-browser** and **gcs-example** for you to peruse.
+
+The file-browser example was written by Caleb Doxsey. 
+
+The gcs-example was written by Google.
+
+# A Challenge
+
+Store images in GCS for three different users where the object name on GCS is in the format <username>/<object-name>.txt. For each user, print the file names.

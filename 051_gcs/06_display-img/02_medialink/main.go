@@ -7,6 +7,8 @@ import (
 	"google.golang.org/cloud/storage"
 	"io"
 	"net/http"
+"strings"
+	"fmt"
 )
 
 func init() {
@@ -45,12 +47,15 @@ func handler(res http.ResponseWriter, req *http.Request) {
 		bucket: client.Bucket(gcsBucket),
 	}
 
-	d.delFiles()
+	res.Header().Set("Content-Language", "en")
+	res.Header().Set("Content-Type", "text/html; charset=utf-8")
+
 	d.createFiles()
 	d.listFiles()
 }
 
-func (d *demo) delFiles() {
+func (d *demo) listFiles() {
+	io.WriteString(d.res, "RETRIEVING OBJECTS<br>")
 
 	objs, err := d.bucket.List(d.ctx, nil)
 	if err != nil {
@@ -59,16 +64,19 @@ func (d *demo) delFiles() {
 	}
 
 	for _, obj := range objs.Results {
-		if err := d.bucket.Object(obj.Name).Delete(d.ctx); err != nil {
-			log.Errorf(d.ctx, "deleteFiles: unable to delete bucket %q, file %q: %v", d.bucket, obj.Name, err)
-			return
+
+		ext := obj.Name[strings.LastIndex(obj.Name, ".")+1:]
+		//log.Infof(d.ctx, "%v", ext)
+		if ext == "jpg" || ext == "jpeg" {
+			fmt.Fprintf(d.res, `<br><img src="%v"><br>%v<br>`, obj.MediaLink, obj.MediaLink)
+		} else {
+			io.WriteString(d.res, obj.Name+"<br>")
 		}
 	}
 }
 
-
 func (d *demo) createFiles() {
-	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/", "bar/nonce/1", "bar/nonce/2", "bar/nonce/compadre/1", "bar/nonce/compadre/2"} {
+	for _, n := range []string{"foo1", "foo2"} {
 		d.createFile(n)
 	}
 }
@@ -87,19 +95,3 @@ func (d *demo) createFile(fileName string) {
 		return
 	}
 }
-
-func (d *demo) listFiles() {
-
-	io.WriteString(d.res, "OBJECTS IN BUCKET\n")
-
-	objs, err := d.bucket.List(d.ctx, nil)
-	if err != nil {
-		log.Errorf(d.ctx, "%v", err)
-		return
-	}
-
-	for _, obj := range objs.Results {
-		io.WriteString(d.res, obj.Name+"\n")
-	}
-}
-
