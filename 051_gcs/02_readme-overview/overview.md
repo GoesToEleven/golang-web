@@ -900,3 +900,42 @@ In our first code example in the **"02_allusers_rolereader"** folder in the **"A
 		{storage.AllUsers, storage.RoleReader},
 	}
 ```
+
+## ACLRule
+
+An `ACLRule` is a [struct](https://godoc.org/google.golang.org/cloud/storage#ACLRule) with two fields: 
+ 
+ ```go
+ type ACLRule struct {
+     Entity ACLEntity
+     Role   ACLRole
+ }
+ ```
+ 
+### ACLEntity
+
+An `ACLEntity` refers to a user or group. They are sometimes referred to as grantees.
+ 
+It could be in the form of: "user-<userId>", "user-<email>", "group-<groupId>", "group-<email>", "domain-<domain>" and "project-team-<projectId>".
+ 
+Or one of the predefined constants: `AllUsers`, `AllAuthenticatedUsers`.
+
+  ```go
+ const (
+     AllUsers              ACLEntity = "allUsers"
+     AllAuthenticatedUsers ACLEntity = "allAuthenticatedUsers"
+ )
+ ```
+
+### ACLRole
+ 
+An `ACLRole` is the level of access to grant.
+
+```go
+const (
+    RoleOwner  ACLRole = "OWNER"
+    RoleReader ACLRole = "READER"
+)
+```
+
+
