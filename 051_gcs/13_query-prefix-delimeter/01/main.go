@@ -49,7 +49,7 @@ func handler(res http.ResponseWriter, req *http.Request) {
 	d.delFiles()
 	d.createFiles()
 	d.listFiles()
-	io.WriteString(d.res, "\nFILE NAMES WITH DELIMITER & PREFIX QUERY ( Delimeter: / ) ( Prefix: folder1/folder2/ )\n")
+	io.WriteString(d.res, "\nFILE NAMES WITH PREFIX QUERY ( Prefix: folder1/folder2/ )\n")
 	d.listDelim()
 
 }
@@ -58,7 +58,6 @@ func (d *demo) listDelim() {
 
 	// this will only give us files that have this prefix
 	query := &storage.Query{
-		Delimiter: "/",
 		Prefix: "folder1/folder2/",
 	}
 

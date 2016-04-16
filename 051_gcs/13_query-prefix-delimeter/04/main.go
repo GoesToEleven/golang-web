@@ -70,6 +70,27 @@ func (d *demo) listDelim() {
 	}
 
 	fmt.Fprintf(d.res, "\nEVERY OTHER FILE HAS A DELIMETER IN FRONT OF IT \nIT'S AS IF EVERY OTHER FILE IS IN A FOLDER \nAND YOU ARE ONLY LOOKING AT THE FILES IN THIS FOLDER \nTO SEE THE OTHER FILES, YOU WILL NEED TO ADD A PREFIX QUERY \nWITH A PREFIX, THE QUERY WILL RETURN EVERY FILE WITH NO DELIMETER IN FRONT OF IT \nAND THEN ANY OTHER PREFIXES STILL REMAINING \nPREFIXES FOUND WITH THIS QUERY ( storage.ObjectList Prefixes )\n%v", objs.Prefixes)
+
+	io.WriteString(d.res,"\n\nNOW LET'S GET THE FILES WITH ALL OF THOSE PREFIXES\n\n")
+
+	for _, v := range objs.Prefixes {
+		query = &storage.Query{
+			Delimiter: "/",
+			Prefix: v,
+		}
+
+		objs, err := d.bucket.List(d.ctx, query)
+		if err != nil {
+			log.Errorf(d.ctx, "listBucketDirMode: unable to list bucket %q: %v", gcsBucket, err)
+			return
+		}
+
+		fmt.Fprintf(d.res, "WITH DELIMITER AND THIS PREFIX %v - THESE FILES\n", v)
+		for _, obj := range objs.Results {
+			fmt.Fprintf(d.res, "%v\n", obj.Name)
+		}
+		fmt.Fprintf(d.res, "And remaining prefixes ( storage.ObjectList Prefixes )\n%v\n\n", objs.Prefixes)
+	}
 }
 
 func (d *demo) listFiles() {

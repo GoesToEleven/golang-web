@@ -747,7 +747,7 @@ foo1
 foo2
 ```
 
-You can see the above example in the "query-delimeter" folder.
+You can see the above example in the **"query-delimeter"** folder.
 
 What the delimiter is saying is that the delimiter has significance in the name of the object - and thus treat the delimiter as if it has significance.
 
@@ -778,18 +778,21 @@ folder1/folder2/secondobject
  firstobject
  ```
  
-You can run this example in the **02** folder inside the **query-delimeter** folder.
+You can run this example in the **"02"** folder inside the **"query-delimeter"** folder.
 
 To get the secondobject, we would need to run either this query ...
  
 ```go
  	query := &storage.Query{
- 		Delimiter: "/",
  		Prefix: "folder1/folder2/",
  	}
  ```
  
+( You can run the above example in the **"01"** folder inside the **"query-prefix-delimeter"** folder. )
+ 
  ... or this query ...
+
+( You can run the below example in the **"02"** folder inside the **"query-prefix-delimeter"** folder. )
  
  ```go
   	query := &storage.Query{
@@ -798,10 +801,34 @@ To get the secondobject, we would need to run either this query ...
   	}
   ```
   
-  You can see both of those examples in this folder: 
- 
- 
- 
-We could use a delimiter of "/" and 
+If we used the above query with these files in our bucket ...
+
+```
+firstobject
+folder1/folder2/secondobject
+folder1/folder2/folder3/thirdobject
+folder1/folder2/folders-can-be-any-string/fourthobject
+```
+
+... we would still get the same results, as you can see in the **"03"** folder inside the **"query-prefix-delimeter"** folder. Now, however, we would be able to access `Prefixes`: the `*storage.ObjectList` which `List` returns would have `Prefixes` field which is a `[]string` that would have values in it. Running the above query on the above files would give us these `Prefixes`:
+
+```
+[folder1/folder2/folder3/ folder1/folder2/folders-can-be-any-string/]
+```
+
+That is, we would have this `Prefix` ...
+
+```
+folder1/folder2/folder3/
+```
+
+... and this `Prefix` ...
+
+```
+folder1/folder2/folders-can-be-any-string/
+```
+
+We could then use those `Prefixes` to access yet more objects in our bucket.
+
 
 

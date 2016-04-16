@@ -90,7 +90,12 @@ func (d *demo) listFiles() {
 }
 
 func (d *demo) createFiles() {
-	for _, n := range []string{"firstobject", "folder1/folder2/secondobject",} {
+	for _, n := range []string{
+		"firstobject",
+		"folder1/folder2/secondobject",
+		"folder1/folder2/folder3/thirdobject",
+		"folder1/folder2/folders-can-be-any-string/fourthobject",
+	} {
 		d.createFile(n)
 	}
 }
