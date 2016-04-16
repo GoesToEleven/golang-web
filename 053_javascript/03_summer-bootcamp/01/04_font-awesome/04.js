@@ -54,10 +54,10 @@ console.log(output);
 // inject
 
 var newDiv = document.createElement("div");
-document.querySelector('body').appendChild(newDiv);
+document.querySelector('p').appendChild(newDiv);
 newDiv.innerHTML = output;
 
-document.querySelector('body').innerHTML = output;
+//document.querySelector('body').innerHTML = output;
 
 
 
