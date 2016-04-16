@@ -8,7 +8,6 @@ import (
 	"google.golang.org/cloud/storage"
 	"io"
 	"net/http"
-	"strings"
 )
 
 func init() {
@@ -47,92 +46,32 @@ func handler(res http.ResponseWriter, req *http.Request) {
 		bucket: client.Bucket(gcsBucket),
 	}
 
+	d.delFiles()
 	d.createFiles()
 	d.listFiles()
-	d.statFiles()
-}
-
-func (d *demo) statFiles() {
-	io.WriteString(d.res, "\nRETRIEVING FILE STATS\n")
-
-	client, err := storage.NewClient(d.ctx)
-	if err != nil {
-		log.Errorf(d.ctx, "%v", err)
-		return
-	}
-	defer client.Close()
-
-	objs, err := client.Bucket(gcsBucket).List(d.ctx, nil)
-	if err != nil {
-		log.Errorf(d.ctx, "%v", err)
-		return
-	}
-
-	for _, v := range objs.Results {
-		d.statFile(v.Name)
-	}
-}
-
-func (d *demo) statFile(fileName string) {
-	io.WriteString(d.res, "\nFILE STAT:\n")
-
-	obj, err := d.bucket.Object(fileName).Attrs(d.ctx)
-	if err != nil {
-		log.Errorf(d.ctx, "statFile: unable to stat file from bucket %q, file %q: %v", gcsBucket, fileName, err)
-		return
-	}
-
-	d.dumpStats(obj)
-}
-
-func (d *demo) dumpStats(obj *storage.ObjectAttrs) {
-	fmt.Fprintf(d.res, "filename: /%v/%v, \n", obj.Bucket, obj.Name)
-	fmt.Fprintf(d.res, "ContentType: %q, \n", obj.ContentType)
-	fmt.Fprintf(d.res, "ACL: %#v, \n", obj.ACL)
-	fmt.Fprintf(d.res, "Owner: %v, \n", obj.Owner)
-	fmt.Fprintf(d.res, "ContentEncoding: %q, \n", obj.ContentEncoding)
-	fmt.Fprintf(d.res, "Size: %v, \n", obj.Size)
-	fmt.Fprintf(d.res, "MD5: %q, \n", obj.MD5)
-	fmt.Fprintf(d.res, "CRC32C: %q, \n", obj.CRC32C)
-	fmt.Fprintf(d.res, "Metadata: %#v, \n", obj.Metadata)
-	fmt.Fprintf(d.res, "MediaLink: %q, \n", obj.MediaLink)
-	fmt.Fprintf(d.res, "StorageClass: %q, \n", obj.StorageClass)
-	if !obj.Deleted.IsZero() {
-		fmt.Fprintf(d.res, "Deleted: %v, \n", obj.Deleted)
-	}
-	fmt.Fprintf(d.res, "Updated: %v)\n", obj.Updated)
 }
 
 func (d *demo) listFiles() {
-	io.WriteString(d.res, "\nRETRIEVING FILE NAMES\n")
+	io.WriteString(d.res, "ALL OBJECT NAMES\n")
 
-	client, err := storage.NewClient(d.ctx)
-	if err != nil {
-		log.Errorf(d.ctx, "%v", err)
-		return
-	}
-	defer client.Close()
-
-	objs, err := client.Bucket(gcsBucket).List(d.ctx, nil)
+	objs, err := d.bucket.List(d.ctx, nil)
 	if err != nil {
 		log.Errorf(d.ctx, "%v", err)
 		return
 	}
 
 	for _, obj := range objs.Results {
-		io.WriteString(d.res, obj.Name+"\n")
+		io.WriteString(d.res, obj.Name+" - "+obj.ACL+"\n")
 	}
 }
 
 func (d *demo) createFiles() {
-	io.WriteString(d.res, "\nCreating more files for listbucket...\n")
-	for _, n := range []string{"foo1", "foo2", "bar", "bar/1", "bar/2", "boo/"} {
+	for _, n := range []string{"foo1", "bar1", "bar/foo2"} {
 		d.createFile(n)
 	}
 }
 
 func (d *demo) createFile(fileName string) {
-	fmt.Fprintf(d.res, "Creating file /%v/%v\n", gcsBucket, fileName)
 
 	wc := d.bucket.Object(fileName).NewWriter(d.ctx)
 	wc.ContentType = "text/plain"
@@ -144,12 +83,23 @@ func (d *demo) createFile(fileName string) {
 		log.Errorf(d.ctx, "createFile: unable to write data to bucket %q, file %q: %v", gcsBucket, fileName, err)
 		return
 	}
-	if _, err := wc.Write([]byte(strings.Repeat("f", 1024*4) + "\n")); err != nil {
-		log.Errorf(d.ctx, "createFile: unable to write data to bucket %q, file %q: %v", gcsBucket, fileName, err)
-		return
-	}
 	if err := wc.Close(); err != nil {
 		log.Errorf(d.ctx, "createFile: unable to close bucket %q, file %q: %v", gcsBucket, fileName, err)
 		return
+	}
+}
+
+func (d *demo) delFiles() {
+	objs, err := d.bucket.List(d.ctx, nil)
+	if err != nil {
+		log.Errorf(d.ctx, "%v", err)
+		return
+	}
+
+	for _, obj := range objs.Results {
+		if err := d.bucket.Object(obj.Name).Delete(d.ctx); err != nil {
+			log.Errorf(d.ctx, "deleteFiles: unable to delete bucket %q, file %q: %v", d.bucket, obj.Name, err)
+			return
+		}
 	}
 }

@@ -889,4 +889,14 @@ Google Cloud Storage uses access control lists (ACLs) to manage **bucket** and *
  
  **Scope** defines who the permission applies to (for example, a specific user or group of users). Scopes are sometimes referred to as *grantees.* 
 
-You can read more about ACL in the **"01_readme"** folder in the **"ACL"** folder of the examples.
+You can read more about ACL's in the **"01_readme"** folder in the **"ACL"** folder of the examples.
+
+In our first code example in the **"02_allusers_rolereader"** folder in the **"ACL"** folder, we see how to set permissions for all users to the role of reader:
+
+```go
+	wc := d.bucket.Object(fileName).NewWriter(d.ctx)
+	wc.ContentType = "text/plain"
+	wc.ACL = []storage.ACLRule{
+		{storage.AllUsers, storage.RoleReader},
+	}
+```
