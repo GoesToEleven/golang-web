@@ -835,6 +835,19 @@ To summarize what we have learned about the `Prefix` and `Delimeter` fields in a
 1. If run a query with a `Prefix`, all objects with that prefix are returned.
 1. If run a query with a `Prefix` and a `Delimiter`
   1. All objects with that prefix are returned *as long as they do not have another delimeter after the prefix.*
-  1. *If an object does have another delimiter after the prefix*, then we are going to have some additional prefixes returned to us in the `*storage.ObjectList` which `List` returns ( the `Prefixes` field which is a `[]string` ). The prefixes returned will be everything up to the final delimter. Everything after the final delimeter is the object's name. 
+  1. *If an object does have another delimiter after the prefix*, then we are going to have some additional prefixes returned to us in the `*storage.ObjectList` which `List` returns ( the `Prefixes` field of the `*storage.ObjectList` which is a `[]string` ). The prefixes returned will be everything up to the final delimeter. Everything after the final delimeter is the last part of the object's name.
+1. Our query, which we pass into the `List` method, will return a `*storage.ObjectList` which is a struct with three fields: `Results`, `Next`, and `Prefixes`. We can use `Prefixes` to access additional objects.
+
+Here is how the [documentation](https://godoc.org/google.golang.org/cloud/storage#Query) talks about it:
+
+```go
+    // Delimiter returns results in a directory-like fashion.
+    // Results will contain only objects whose names, aside from the
+    // prefix, do not contain delimiter. Objects whose names,
+    // aside from the prefix, contain delimiter will have their name,
+    // truncated after the delimiter, returned in prefixes.
+    // Duplicate prefixes are omitted.
+    // Optional.
+```
 
 
