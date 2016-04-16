@@ -958,4 +958,5 @@ const (
 )
 ```
 
+You can see what ACL's look like, by default, when you don't specifically set any ACL's by running the code in the **"03_default"** folder in the **"ACL"** folder of the examples.
 

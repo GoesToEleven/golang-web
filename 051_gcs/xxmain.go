@@ -8,6 +8,7 @@ import (
 	"google.golang.org/cloud/storage"
 	"io"
 	"net/http"
+"google.golang.org/appengine/user"
 )
 
 func init() {
@@ -32,18 +33,31 @@ func handler(res http.ResponseWriter, req *http.Request) {
 
 	ctx := appengine.NewContext(req)
 
-	client, err := storage.NewClient(ctx)
+	u := user.Current(ctx)
+	if u == nil {
+		url, err := user.LoginURL(ctx, req.URL.String())
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		res.Header().Set("Location", url)
+		res.WriteHeader(http.StatusFound)
+		return
+	}
+	fmt.Fprintf(res, "Hello, %v\n\n", u)
+
+	gcsClient, err := storage.NewClient(ctx)
 	if err != nil {
 		log.Errorf(ctx, "ERROR handler NewClient: ", err)
 		return
 	}
-	defer client.Close()
+	defer gcsClient.Close()
 
 	d := &demo{
 		ctx:    ctx,
 		res:    res,
-		client: client,
-		bucket: client.Bucket(gcsBucket),
+		client: gcsClient,
+		bucket: gcsClient.Bucket(gcsBucket),
 	}
 
 	d.delFiles()
@@ -61,12 +75,12 @@ func (d *demo) listFiles() {
 	}
 
 	for _, obj := range objs.Results {
-		fmt.Fprintf(d.res, "%v - %v\n", obj.Name, obj.ACL)
+		fmt.Fprintf(d.res, "%v - %v - %v\n", obj.Name, obj.ACL, obj.MediaLink)
 	}
 }
 
 func (d *demo) createFiles() {
-	for _, n := range []string{"foo", "bar"} {
+	for _, n := range []string{"foo"} {
 		d.createFile(n)
 	}
 }
@@ -75,8 +89,14 @@ func (d *demo) createFile(fileName string) {
 
 	wc := d.bucket.Object(fileName).NewWriter(d.ctx)
 	wc.ContentType = "text/plain"
+	wc.ACL = []storage.ACLRule{
+		{"user-toddmcleod@gmail.com", storage.RoleReader},
+	}
+	//wc.ACL = []storage.ACLRule{
+	//	{"user-<some-email-here>@gmail.com", storage.RoleReader},
+	//}
 
-	if _, err := wc.Write([]byte("abcde\n")); err != nil {
+	if _, err := wc.Write([]byte("You accessed the file\n")); err != nil {
 		log.Errorf(d.ctx, "createFile: unable to write data to bucket %q, file %q: %v", gcsBucket, fileName, err)
 		return
 	}
