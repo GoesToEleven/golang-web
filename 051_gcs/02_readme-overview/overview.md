@@ -926,6 +926,26 @@ Or one of the predefined constants: `AllUsers`, `AllAuthenticatedUsers`.
      AllAuthenticatedUsers ACLEntity = "allAuthenticatedUsers"
  )
  ```
+ 
+When looking at the constants, directly above, some people aren't sure how to read that code. All we're doing there is declaring a constant. To declare a constant in Go, you do it [like this](https://play.golang.org/p/Okk1cj_Wi5):
+
+```go
+	const name string = "Henry"
+	fmt.Println(name)
+```
+
+There is the **const** part, and then the **identifier**, and then the **type**, and then you set it equal to some **value**:
+
+```go
+	const identifier type = value
+```
+
+You could also do it [like this](https://play.golang.org/p/7RlENlV97X) and leave the type part out:
+
+```go
+	const name = "Henry"
+	fmt.Println(name)
+```
 
 ### ACLRole
  
