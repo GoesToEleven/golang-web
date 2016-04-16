@@ -834,7 +834,7 @@ To summarize what we have learned about the `Prefix` and `Delimeter` fields in a
 
 1. If run a query with a `Prefix`, all objects with that prefix are returned.
 1. If run a query with a `Prefix` and a `Delimiter`
-  1. All objects with that prefix are returned *as long as they do not have another delimeter after the prefix.*
+  1. All objects with that prefix are returned ** *as long as they do not have another delimeter after the prefix.* **
   1. If an object does have another delimiter after the prefix, then we are going to have some additional prefixes returned to us in the `*storage.ObjectList` which `List` returns ( the `Prefixes` field which is a `[]string` ). The prefixes returned will be everything up to the final delimter. Everything after the final delimeter is the object's name. 
 
 
