@@ -879,4 +879,14 @@ type Query struct {
 
 To reinforce building queries with a `Prefix` and/or `Delimeter`, two additional examples have been included: the **"04"** and **"05"** folders inside the **"query-prefix-delimeter"** folder.
 
+# ACL - Access Control List
 
+Google Cloud Storage uses access control lists (ACLs) to manage **bucket** and **object** access. ACLs are the mechanism you use to share objects with other users and allow other users to access your buckets and objects.
+
+*An ACL consists of one or more entries, where each entry grants permissions to a scope.* 
+
+**Permissions** define the actions that can be performed against a bucket or object (for example, read or write).
+ 
+ **Scope** defines who the permission applies to (for example, a specific user or group of users). Scopes are sometimes referred to as *grantees.* 
+
+You can read more about ACL in the **"01_readme"** folder in the **"ACL"** folder of the examples.
