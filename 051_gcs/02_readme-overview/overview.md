@@ -841,6 +841,7 @@ To summarize what we have learned about the `Prefix` and `Delimeter` fields in a
 Here is how the [documentation](https://godoc.org/google.golang.org/cloud/storage#Query) talks about it:
 
 ```go
+type Query struct {
     // Delimiter returns results in a directory-like fashion.
     // Results will contain only objects whose names, aside from the
     // prefix, do not contain delimiter. Objects whose names,
@@ -848,6 +849,28 @@ Here is how the [documentation](https://godoc.org/google.golang.org/cloud/storag
     // truncated after the delimiter, returned in prefixes.
     // Duplicate prefixes are omitted.
     // Optional.
+    Delimiter string
+
+    // Prefix is the prefix filter to query objects
+    // whose names begin with this prefix.
+    // Optional.
+    Prefix string
+
+    // Versions indicates whether multiple versions of the same
+    // object will be included in the results.
+    Versions bool
+
+    // Cursor is a previously-returned page token
+    // representing part of the larger set of results to view.
+    // Optional.
+    Cursor string
+
+    // MaxResults is the maximum number of items plus prefixes
+    // to return. As duplicate prefixes are omitted,
+    // fewer total results may be returned than requested.
+    // The default page limit is used if it is negative or zero.
+    MaxResults int
+}
 ```
 
 
