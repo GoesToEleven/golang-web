@@ -10,7 +10,7 @@
         background-color: deeppink;
     }
 
-    li:nth-child(2n) {
+    li:nth-child(even) {
         background-color: #2ec371;
     }
 
@@ -54,7 +54,7 @@
         var allLists = document.querySelectorAll('ul');
         for (var i = 0; i < allLists.length; i++) {
             if (i % 2 == 0) {
-                allLists[i].style.backgroundColor = '#cecece';
+                allLists[i].style.backgroundColor = '#ff0000';
             }
         }
     }

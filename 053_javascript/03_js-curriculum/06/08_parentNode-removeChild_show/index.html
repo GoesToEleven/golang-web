@@ -73,15 +73,12 @@
 
 </body>
 <script>
-    var nodes = document.querySelectorAll('div');
-    console.dir(nodes);
-    console.dir(nodes[0]);
-    console.log(nodes);
-    console.log(nodes[0]);
+
     setInterval(function() {
         nodes = document.querySelectorAll('div');
+        console.log('removing', nodes[0]);
         nodes[0].parentNode.removeChild(nodes[0]);
     }, 1000);
-//    nodes[0].parentNode.removeChild(nodes[0]);
+
 </script>
 </html>
