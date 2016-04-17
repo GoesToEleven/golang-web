@@ -19,7 +19,6 @@
         'http://lorempixel.com/120/120/sports/1/',
         'http://lorempixel.com/120/120/sports/2/',
         'http://lorempixel.com/120/120/sports/3/',
-        'http://lorempixel.com/120/120/sports/4/',
         'http://lorempixel.com/120/120/sports/5/',
         'http://lorempixel.com/120/120/sports/6/',
         'http://lorempixel.com/120/120/sports/7/',
@@ -27,22 +26,31 @@
         'http://lorempixel.com/120/120/sports/9/'
     ];
 
+    // create and append UL
     var myHeader = document.querySelector('header');
     var myUL = document.createElement('ul');
     myHeader.appendChild(myUL);
+
     var usedImages = [];
     for (var i = 0; i <= 5; i++) {
+
+        // create and append li
         var myLI = document.createElement('li');
-        myLI.id = '' + i;
+        myLI.id = i;
         myUL.appendChild(myLI);
+
+        // create and append a
         var myA = document.createElement('a');
-        var randomNumber = Math.floor((Math.random())*(images.length))
-        myA.href='' + images[randomNumber];
+        var randomNumber = Math.floor((Math.random())*(images.length));
+        myA.href= images[randomNumber];
         myLI.appendChild(myA);
+
+        // create and append img
         var myImg = document.createElement('img');
-        myImg.src = '' + images[randomNumber];
+        myImg.src = images[randomNumber];
         myImg.alt = 'random image # ' + (i+1);
         myA.appendChild(myImg);
+
         // remove displayed image from images
         console.log('random number \t\t', randomNumber);
         console.log('Chosen URL \t\t', images[randomNumber]);
@@ -56,7 +64,9 @@
         }
         console.log('------------------------------------')
     }
- while (-1 != -1) {console.log('hello');}
+
+// while (-1 != -1) {console.log('hello');}
+
 </script>
 </body>
 </html>

@@ -86,7 +86,7 @@
 
 <section>
     <div id="form-fields">
-        <input type="text" name="question" id="question" tabindex="1" placeholder="Enter Your Question ...">
+        <input type="text" id="question" autofocus placeholder="Enter Your Question ...">
         <button>Know Your Future</button>
     </div>
     <div><p id="userQuestion">somETHing here</p></div>
@@ -116,7 +116,7 @@
             'http://planetoftheweb.com/i/8ball/3.png',
             'http://planetoftheweb.com/i/8ball/2.png',
             'http://planetoftheweb.com/i/8ball/1.png',
-            'http://planetoftheweb.com/i/8ball/0.png',
+            'http://planetoftheweb.com/i/8ball/0.png'
         ]
     }
 
@@ -127,7 +127,7 @@
     // choose a message when a question is asked
     function chooseMessage() {
         var myImg = document.querySelector('#main-image');
-        var randomNumber = Math.floor((Math.random()) * (images.length))
+        var randomNumber = Math.floor((Math.random()) * (images.length));
         console.log(images.length);
         myImg.style.backgroundImage = 'url(' + images[randomNumber] + ')';
         // remove displayed image from images
