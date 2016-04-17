@@ -67,22 +67,45 @@
         'Info 001', '#',
         'Info 002', '#',
         'Info 003', '#',
-        'Info 004', '#',
-    ]
+        'Info 004', '#'
+    ];
 
     var myList = document.querySelector('#myList');
+
+//    <li><a id="1" href="#">Info 001</a></li>
+        var counter = 1;
     for (var i = 0; i < myNav.length; i++) {
         var myListItem = document.createElement('li');
-        myList.appendChild(myListItem);
         var myAnchor = document.createElement('a');
-        myAnchor.innerHTML = '' + myNav[i];
-        myAnchor.id = '' + (i + 1);
+        myAnchor.innerHTML = myNav[i];
+        myAnchor.id = counter;
+        console.log(myAnchor.id);
+        counter++;
         i++;
         myAnchor.href = myNav[i];
         myListItem.appendChild(myAnchor);
+        myList.appendChild(myListItem);
     }
+//
+//    function popUp(event) {
+//        if (event.target.id == '1') {
+//            alert('you clicked info 001');
+//        } else if (event.target.id == '2') {
+//            alert('you clicked info 002');
+//        } else if (event.target.id == '3') {
+//            alert('you clicked info 003');
+//        } else if (event.target.id == '4') {
+//            alert('you clicked info 004');
+//        } else {
+//            alert('not sure what you clicked');
+//        }
+//    }
+//
+//    var myListItems = document.querySelectorAll('li');
+//    for (var i = 0; i < myListItems.length; i++) {
+//        myListItems[i].addEventListener('click', popUp, false);
+//    }
 
-    var myListItems = document.querySelectorAll('li');
 
     function popUp(event) {
         if (event.target.id == '1') {
@@ -98,9 +121,7 @@
         }
     }
 
-    for (var i = 0; i < myListItems.length; i++) {
-        myListItems[i].addEventListener('click', popUp, false);
-    }
+    myList.addEventListener('click', popUp, false);
 
 </script>
 </body>
