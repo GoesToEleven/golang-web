@@ -10,6 +10,7 @@
     //    create object
     var myObj = {
         name: 'John Doe',
+        speak: 'Hello world',
         age: 32,
         numbers: [3, 5, 7, 9],
         relatives: {
@@ -22,47 +23,39 @@
     // even though parameters aren't specified
     // we can access any arguments passed in with ARGUMENTS array
     var acceptsObj = (function () {
-        return {
 
+        var defaultsObj = {
+            name: 'Default Name',
+            speak: 'Punjabi',
+            age: 99,
+            numbers: [7, 7, 7, 7],
+            relatives: {
+                mom: 'Mother',
+                dad: 'Father'
+            }
+//            say: 'wassup',
+        };
+
+        return {
             speak: function () {
                 var myArguments = arguments[0] || '';
-                var statement = myArguments.say || '';
+                var statement = myArguments.say || defaultsObj.say || '';
                 console.log(statement);
             },
-
             name: function () {
                 var myArguments = arguments[0] || '';
-                var statement = myArguments.name || '';
+                var statement = myArguments.name || defaultsObj.name || '';
                 console.log(statement);
-            },
-
-            age: function () {
-                var myArguments = arguments[0] || '';
-                var statement = myArguments.age || '';
-                console.log(statement);
-            },
-
-            numbers: function () {
-                var myArguments = arguments[0] || '';
-                var statement = myArguments.numbers || '';
-                console.log(statement);
-            },
-
-            relatives: function () {
-                var myArguments = arguments[0] || '';
-                var statement = myArguments.relatives || '';
-                console.log(statement);
-            },
-
+            }
         };
+
     })();
 
     acceptsObj.speak();
     acceptsObj.speak({say: 'howdy'});
+    acceptsObj.speak(myObj);
+    acceptsObj.name();
     acceptsObj.name(myObj);
-    acceptsObj.age(myObj);
-    acceptsObj.numbers(myObj);
-    acceptsObj.relatives(myObj);
 
 </script>
 </body>
