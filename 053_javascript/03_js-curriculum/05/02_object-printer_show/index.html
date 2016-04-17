@@ -25,10 +25,16 @@
             console.log(obj[i]);
             if (typeof obj[i] == 'object') {
                 arrayPrinter(obj[i]);
-                console.log('arrayPrinter ran inside printObject');
+                console.log('---------arrayPrinter ran inside printObject---------');
             }
         }
     }
+
+    console.log('*******************');
+    console.log('running printObject');
+    console.log('*******************');
+    printObject(customer);
+    console.log('------------------------------------------------------------');
 
     function printRecursive(obj) {
         for (var i in obj) {
@@ -40,10 +46,9 @@
         }
     }
 
-    //    logic
-    //    arrayPrinter(customer.cart);
-    //    arrayPrinter(customer.comments);
-    //    printObject(customer);
+    console.log('*******************');
+    console.log('running printRecursive');
+    console.log('*******************');
     printRecursive(customer);
 </script>
 </body>

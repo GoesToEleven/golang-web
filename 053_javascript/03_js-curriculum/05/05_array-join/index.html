@@ -15,10 +15,10 @@
     ];
 
     function arrayJoin(stringArray, separator) {
-        var newString = separator;
-        newString += stringArray.join(separator);
-        newString += separator;
-        return newString;
+        var str = separator;
+        str += stringArray.join(separator);
+        str += separator;
+        return str;
     }
 
     console.log(arrayJoin(noCap, ' | '));
