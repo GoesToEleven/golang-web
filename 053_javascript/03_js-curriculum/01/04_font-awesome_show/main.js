@@ -7,22 +7,22 @@ for (var i = 0; i < socialSites.length; i++) {
     console.log(socialSites[i]);
 }
 
-console.log('--------------')
+console.log('--------------');
 
 var output = '<ul>';
 for (var i = 0; i < socialSites.length; i++) {
-    output += '\n'
+    output += '\n';
     output += ('<li>' + socialSites[i] + '</li>');
 }
 output += '\n</ul>';
 console.log(output);
 
-console.log('--------------')
+console.log('--------------');
 
 var output = '<ul>';
 for (var i = 0; i < socialSites.length; i++) {
-    output += '\n'
-    output += '<li>'
+    output += '\n';
+    output += '<li>';
     output += ('<a href="' + socialSites[i] + '">');
     output += (socialSites[i]);
     output += '</a>';
@@ -32,17 +32,17 @@ output += '\n</ul>';
 console.log(output);
 
 
-console.log('--------------')
+console.log('--------------');
 
 var myIcon = ['fa fa-camera-retro fa-5x',
     'fa fa-home fa-fw fa-5x',
     'fa fa-cog fa-spin fa-5x',
-    'fa fa-arrow-circle-down fa-5x']
+    'fa fa-arrow-circle-down fa-5x'];
 
 var output = '<ul>';
 for (var i = 0; i < socialSites.length; i++) {
-    output += '\n'
-    output += '<li>'
+    output += '\n';
+    output += '<li>';
     output += ('<a href="' + socialSites[i] + '">');
     output += '<i class="' + myIcon[i] +'"></i>';
     output += '</a>';
