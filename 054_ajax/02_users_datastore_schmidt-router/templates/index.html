@@ -65,29 +65,33 @@
     </table>
 </form>
 
+<h1></h1>
+
 <script>
 
     function makeRequest() {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "/api/profile");
         xhr.send(null);
-        xhr.onreadystatechange = receiveResponse;
-    }
-
-    function receiveResponse() {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
+        xhr.onreadystatechange = function () {
+            console.log("STATUS", xhr.status, "READYSTATE", xhr.readyState);
+            if (xhr.readyState === 4 && xhr.status === 200) {
                 var result = JSON.parse(xhr.responseText);
                 document.querySelector("#email").value = result.Email;
                 document.querySelector("#lastname").value = result.LastName;
                 document.querySelector("#firstname").value = result.FirstName;
                 document.querySelector("#age").value = result.Age;
-                alert('Values received:', result.Email, result.LastName, result.FirstName, result.Age);
-            } else {
-                alert('There was a problem with the request.');
+                // show results
+                console.log("Email", result.Email);
+                console.log("First", result.FirstName);
+                console.log("Last", result.LastName);
+                console.log("Age", result.Age);
+                var heading = document.querySelector('h1');
+                heading.innerHTML = result.FirstName +" "+ result.LastName +"<br>"+ result.Email +"<br>"+ result.Age;
             }
-        }
+        };
     }
+
 
     var profileForm = document.querySelector("#profile-form");
     profileForm.onsubmit = function (evt) {
@@ -107,9 +111,10 @@
             Age: age
         }));
 
-        makeRequest();
+        // datastore is eventually consistent
+        // so give it 500ms to process
+        setTimeout(makeRequest, 500);
     };
-
 
     makeRequest();
 

@@ -28,7 +28,7 @@ func init() {
 	router.POST("/api/profile", updateAPIProfile)
 	http.Handle("/", router)
 
-	tpl = template.Must(template.ParseGlob("*.html"))
+	tpl = template.Must(template.ParseGlob("templates/*.html"))
 }
 
 func index(res http.ResponseWriter, req *http.Request, params httprouter.Params) {
