@@ -3,39 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <style>
+        span {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 
-<span id="ajaxButton" style="cursor: pointer; text-decoration: underline">
-  Make a request
-</span>
+<span>Make a request</span>
 
 <script>
-    document.querySelector('#ajaxButton').onclick = function () {
+    document.querySelector('span').onclick = function () {
         makeRequest('test.html');
     };
 
     // STEP ONE - create a new XMLHttpRequest
-    var httpRequest = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest();
 
     function makeRequest(url) {
         // make the request
-        httpRequest.open('GET', url);
-        httpRequest.send();
+        xhr.open('GET', url);
+        xhr.send();
         // listen for the response
-        // call alertContents function after we receive server response
-        httpRequest.onreadystatechange = alertContents;
+        // call receiveResponse function after we receive server response
+        xhr.onreadystatechange = receiveResponse;
     }
-    
-    function alertContents() {
-        if (httpRequest.readyState === 4) {
-            if (httpRequest.status === 200) {
-                alert(httpRequest.responseText);
+
+    function receiveResponse() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                alert(xhr.responseText);
             } else {
                 alert('There was a problem with the request.');
             }
         }
     }
+
 </script>
 </body>
 </html>
