@@ -67,21 +67,27 @@
 
 <script>
 
-    function getProfile() {
+    function makeRequest() {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "/api/profile");
         xhr.send(null);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
+        xhr.onreadystatechange = receiveResponse;
+    }
+
+    function receiveResponse() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
                 var result = JSON.parse(xhr.responseText);
                 document.querySelector("#email").value = result.Email;
                 document.querySelector("#lastname").value = result.LastName;
                 document.querySelector("#firstname").value = result.FirstName;
                 document.querySelector("#age").value = result.Age;
+                alert('Values received:', result.Email, result.LastName, result.FirstName, result.Age);
+            } else {
+                alert('There was a problem with the request.');
             }
-        };
+        }
     }
-
 
     var profileForm = document.querySelector("#profile-form");
     profileForm.onsubmit = function (evt) {
@@ -101,11 +107,11 @@
             Age: age
         }));
 
-        getProfile();
+        makeRequest();
     };
 
 
-    getProfile();
+    makeRequest();
 
 </script>
 </body>

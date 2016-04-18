@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
+
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/datastore"
 	"google.golang.org/appengine/user"
@@ -18,26 +19,20 @@ type Profile struct {
 	Age       int
 }
 
+var tpl *template.Template
+
 func init() {
 	router := httprouter.New()
 	router.GET("/", index)
-	router.GET("/profile", showProfile)
 	router.GET("/api/profile", getAPIProfile)
 	router.POST("/api/profile", updateAPIProfile)
 	http.Handle("/", router)
+
+	tpl = template.Must(template.ParseGlob("*.html"))
 }
 
 func index(res http.ResponseWriter, req *http.Request, params httprouter.Params) {
-	http.Redirect(res, req, "/profile", 302)
-}
-
-func showProfile(res http.ResponseWriter, req *http.Request, params httprouter.Params) {
-	tpl, err := template.ParseFiles("templates/templates.gohtml")
-	if err != nil {
-		panic(err)
-	}
-
-	err = tpl.ExecuteTemplate(res, "templates.gohtml", nil)
+	err := tpl.ExecuteTemplate(res, "index.html", nil)
 	if err != nil {
 		http.Error(res, err.Error(), 500)
 	}
