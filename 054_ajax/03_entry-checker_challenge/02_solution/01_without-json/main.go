@@ -3,11 +3,11 @@ package checker
 import (
 	"html/template"
 	"net/http"
-	"encoding/json"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/datastore"
 	"google.golang.org/appengine/log"
 	"io"
+	"io/ioutil"
 )
 
 type Word struct {
@@ -54,7 +54,11 @@ func wordCheck(res http.ResponseWriter, req *http.Request) {
 
 	// acquire the incoming word
 	var w Word
-	w.Name = req.Body
+	bs, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		log.Infof(ctx, err.Error())
+	}
+	w.Name = string(bs)
 	log.Infof(ctx, "ENTERED wordCheck - w.Name: %v", w.Name)
 
 	// check the incoming word against the datastore
