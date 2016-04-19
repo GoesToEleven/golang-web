@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/datastore"
+	"google.golang.org/appengine/log"
 )
 
 type Word struct {
@@ -28,9 +29,13 @@ func init() {
 func index(res http.ResponseWriter, req *http.Request) {
 
 	if req.Method == "POST" {
+
 		var w Word
-		w.Name = req.FormValue("entry")
+		w.Name = req.FormValue("new-word")
+
 		ctx := appengine.NewContext(req)
+		log.Infof(ctx, "WORD SUBMITTED: %v", w.Name)
+
 		key := datastore.NewKey(ctx, "Dictionary", w.Name, 0, nil)
 		_, err := datastore.Put(ctx, key, &w)
 		if err != nil {
