@@ -15,7 +15,7 @@ entry.addEventListener('input', function(){
     // AJAX RECEIVE
     xhr.addEventListener('readystatechange', function(){
         if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log("JSON RCVD:", JSON.parse(xhr.responseText));
+            console.log("JSON RCVD:", xhr.responseText);
             var taken = JSON.parse(xhr.responseText);
             console.log('TAKEN:', taken, '\n\n');
             if (taken == 'true') {
