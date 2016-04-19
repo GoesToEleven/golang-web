@@ -1,0 +1,10 @@
+	var profile Profile
+	json.NewDecoder(req.Body).Decode(&profile)
+
+	ctx := appengine.NewContext(req)
+	u := user.Current(ctx)
+	key := datastore.NewKey(ctx, "Profile", u.Email, 0, nil)
+	_, err := datastore.Put(ctx, key, &profile)
+	if err != nil {
+		http.Error(res, err.Error(), 500)
+	}
