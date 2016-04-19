@@ -6,7 +6,7 @@ html, body, h1, form, label, input {
 }
 
 * {
-    border: 4px solid hotpink !important;
+    /*border: 4px solid hotpink !important;*/
 }
 
 html, body {
