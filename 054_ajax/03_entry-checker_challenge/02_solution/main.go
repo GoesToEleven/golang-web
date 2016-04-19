@@ -48,7 +48,7 @@ func wordCheck(res http.ResponseWriter, req *http.Request) {
 
 	var w Word
 	json.NewDecoder(req.Body).Decode(&w)
-	key := datastore.NewKey(ctx, "Dictionary", w, 0, nil)
+	key := datastore.NewKey(ctx, "Dictionary", w.Name, 0, nil)
 	err := datastore.Get(ctx, key, &w)
 	if err != nil {
 		json.NewEncoder(res).Encode("false")
