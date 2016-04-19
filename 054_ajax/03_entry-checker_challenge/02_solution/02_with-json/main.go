@@ -51,6 +51,8 @@ func wordCheck(res http.ResponseWriter, req *http.Request) {
 
 	ctx := appengine.NewContext(req)
 
+	log.Infof(ctx, "ENTERED wordCheck")
+
 	var w Word
 	json.NewDecoder(req.Body).Decode(&w)
 	key := datastore.NewKey(ctx, "Dictionary", w.Name, 0, nil)
