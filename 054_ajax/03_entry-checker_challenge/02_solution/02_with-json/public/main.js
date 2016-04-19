@@ -10,7 +10,7 @@ entry.addEventListener('input', function(){
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/api/check');
     xhr.send(JSON.stringify({'Name':entry.value}));
-    console.log("JSON SENT:", JSON.stringify({'Name':entry.value}));l
+    console.log("JSON SENT:", JSON.stringify({'Name':entry.value}));
 
     // AJAX RECEIVE
     xhr.addEventListener('readystatechange', function(){
