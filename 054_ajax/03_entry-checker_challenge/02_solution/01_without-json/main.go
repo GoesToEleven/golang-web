@@ -63,7 +63,7 @@ func wordCheck(res http.ResponseWriter, req *http.Request) {
 
 	// check the incoming word against the datastore
 	key := datastore.NewKey(ctx, "Dictionary", w.Name, 0, nil)
-	err := datastore.Get(ctx, key, &w)
+	err = datastore.Get(ctx, key, &w)
 	if err != nil {
 		io.WriteString(res, "false")
 		return
