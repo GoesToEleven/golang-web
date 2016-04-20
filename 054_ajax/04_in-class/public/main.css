@@ -1,0 +1,51 @@
+* {
+    /*border: 4px solid hotpink;*/
+}
+
+html, body, #atf {
+    height: 100%;
+}
+
+html, body, h1, #atf {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: green;
+}
+
+#atf {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    color: rgba(255,255,255,.7);
+    font-size: 10vw;
+}
+
+#atf form {
+    display: flex;
+    flex-direction: column;
+}
+
+#enter-area {
+    font-size: 8vw;
+    text-align: center;
+}
+
+#btn-submit {
+    font-size: 5vw;
+    border-radius: 20px;
+    background-color: hotpink;
+    margin: 15px;
+}
+
+#feedback {
+    visibility: hidden;
+}

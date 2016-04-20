@@ -18,27 +18,35 @@
 
 <script>
 
+    // load images into an array
     var backgrounds = new Array();
-
     function loadArray() {
 
         for (var i = 0; i < 72; i++) {
-            backgrounds.push(`img/`+i+'.jpeg');
+            backgrounds.push(`img/` + i + '.jpeg');
         }
 
         console.log(backgrounds);
         console.log('--------------------------------');
+
+        // preload hack
+        function preload() {
+            var images = new Array();
+            for (i = 0; i < backgrounds.length; i++) {
+                images[i] = new Image();
+                images[i].src = backgrounds[i];
+            }
+        }
+        preload();
     }
 
     loadArray();
-
-
 
     var intervalID = window.setInterval(myCallback, 4000);
 
     function myCallback() {
         var node = document.querySelector('html');
-        var backgroundIndex = Math.floor(Math.random()*backgrounds.length);
+        var backgroundIndex = Math.floor(Math.random() * backgrounds.length);
         node.style.transition = 'all 2s';
         node.style.backgroundImage = 'url(' + backgrounds[backgroundIndex] + ')';
 
@@ -53,19 +61,6 @@
         }
         console.log('--------------------------------');
     }
-
-//
-//    function preload() {
-//        for (i = 0; i < backgrounds.length; i++) {
-//            			images[i] = new Image();
-//            			images[i].src = backgrounds[i];
-//            		}
-//        	}
-//    	preload();
-
-//    https://github.com/Oralordos/Oralordos.github.io/blob/0b569f1157db7f54c88806b6ce7bfc5d6e336db9/SummerWebBootcamp/Week2/changingBackground/changingBackground.js
-
-//    https://github.com/Oralordos/Oralordos.github.io/blob/0b569f1157db7f54c88806b6ce7bfc5d6e336db9/SummerWebBootcamp/Week2/magic8ball/magic8ball.html
 
 </script>
 </body>
