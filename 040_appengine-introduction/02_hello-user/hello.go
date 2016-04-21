@@ -12,18 +12,18 @@ func init() {
 	http.HandleFunc("/", handler)
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
-	u := user.Current(c)
+func handler(res http.ResponseWriter, req *http.Request) {
+	ctx := appengine.NewContext(req)
+	u := user.Current(ctx)
 	if u == nil {
-		url, err := user.LoginURL(c, r.URL.String())
+		url, err := user.LoginURL(ctx, req.URL.String())
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		w.Header().Set("Location", url)
-		w.WriteHeader(http.StatusFound)
+		res.Header().Set("Location", url)
+		res.WriteHeader(http.StatusFound)
 		return
 	}
-	fmt.Fprintf(w, "Hello, %v", u)
+	fmt.Fprintf(res, "Hello, %v", u)
 }
